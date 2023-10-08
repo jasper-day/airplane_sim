@@ -1,3 +1,17 @@
+# Tasks
+
+- Coding
+    - Curve fitting (linear and polynomial) for experimental data
+    - Differential Equations numerical solver with state variables
+    - Equation solver (root finder) for trim conditions
+- User Interface
+    - Graphs and charts
+    - Input desired values, commands
+    - Would be really nice to have a GUI application
+- Project Report
+
+
+
 # Files in this repository
 
 Files containing the airplane characteristics, aerodynamics, and the environment:
@@ -20,32 +34,19 @@ Develop python code with the following functionality
 
 - Compute the coefficients for the simplified models of CL, CD, and CM from a set of
 experimental data.
-- Trim the airplane: For given values of the velocity V and flight path angle γ, compute
-the angle of attack α, the value of the commands T (thrust) and δE (elevator angle),
-and all the other state variables.
-- Solve the 3 DoF equations of motion of the airplane. The simulation should start from a
-trim initial condition and then compute the response of the system to time-dependent
-commands such as a variation of the thrust T and elevator angle δE , or a combination of
-the two.
-
+- Trim the airplane: For given values of the velocity V and flight path angle γ, compute the angle of attack α, the value of the commands T (thrust) and δE (elevator angle), and all the other state variables. 
+- Solve the 3 DoF equations of motion of the airplane. The simulation should start from a trim initial condition and then compute the response of the system to time-dependent commands such as a variation of the thrust T and elevator angle δE , or a combination of the two. 
 ## Part B1.
 
 Use the python code you developed to perform the following engineering design
 simulations:
 
-- Trim the airplane for a range of values of the velocity Vmin < V < Vmax and flight path
-angle γmin < γ < γmax to find the value of the commands T (thrust) and δE (elevator
-angle) for several combinations of V and γ in the range above. Plot the T and δE vs V
-and γ.
-Pay attention at the min and max values of the ranges for V and γ. Limit the ranges
-such that physical constrains are not violated. For example, the thrust T should always
-be positive, α and δE should be in the ranges of the experimental data provided for the
-aerodynamics coefficients CL, CD, and CM, etc.
+- Trim the airplane for a range of values of the velocity Vmin < V < Vmax and flight path angle γmin < γ < γmax to find the value of the commands T (thrust) and δE (elevator angle) for several combinations of V and γ in the range above. Plot the T and δE vs V and γ. 
+- Pay attention at the min and max values of the ranges for V and γ. Limit the ranges such that physical constrains are not violated. For example, the thrust T should always be positive, α and δE should be in the ranges of the experimental data provided for the aerodynamics coefficients CL, CD, and CM, etc. 
 
 ## Part B2. 
 
-Use your python code to analyse the climb from horizontal flight at an altitude
-h1 = 1000m to horizontal flight at another altitude h2 = 2000m.
+Use your python code to analyse the climb from horizontal flight at an altitude h1 = 1000m to horizontal flight at another altitude h2 = 2000m.
 - First, consider the following 3 equilibrium conditions:
     - Trim condition 1: Consider a trim condition at constant altitude h1 = 1000m (flight path angle γ = 0) with a velocity V = (100 + U) m/s, where U is the day of birth (1-31) of the oldest member of your group.
         - In this conditions the commands are T1 and δE1.
@@ -67,6 +68,5 @@ appropriate tclimb.
 
 Develop a user interface that allows the following:
 
-- Prescribe a desired flight trim condition (the velocity V and flight path angle γ) and see the resulting angle of attack α, the value of the commands T (thrust) and δE (elevator
-angle).
+- Prescribe a desired flight trim condition (the velocity V and flight path angle γ) and see the resulting angle of attack α, the value of the commands T (thrust) and δE (elevator angle).
 - Starting from the trim condition computed above, prescribe a step change of commands (T and δE ) and a total solution time, to see the resulting time evolution. For example the software could output the plots of some variables vs time.
