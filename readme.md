@@ -1,9 +1,23 @@
+# How to Use This Repository
+
+- Install Git
+    - For apple users: Included in Apple development pack
+    - Should be included in Windows and Linux by default
+    - 
+
 # Tasks
 
 - Coding
     - Curve fitting (linear and polynomial) for experimental data
+        - Mehmet
+        - Kaartic
     - Differential Equations numerical solver with state variables
+        - Thomas
+        - Jasper
+        - Niketa
     - Equation solver (root finder) for trim conditions
+        - Shanilka
+        - Xavier
 - User Interface
     - Graphs and charts
     - Input desired values, commands
