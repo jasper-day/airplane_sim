@@ -35,7 +35,6 @@
 # niketa was here :)
 # Xaier here
 
-
 # Files in this repository
 
 Files containing the airplane characteristics, aerodynamics, and the environment:
