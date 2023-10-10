@@ -6,7 +6,7 @@
         - Windows: `winget install Git.Git` or download from online
     - Check installed with `git --version` in terminal
 - Commands:
-    0. Go to the directory where you want to copy the files to (`cd ~/Documents/` or similar) and run
+    1. Go to the directory where you want to copy the files to (`cd ~/Documents/` or similar) and run
       `git clone https://github.com/jasper-day/airplane_sim` to copy the assignment into a new folder
     1. Before starting to work: `git pull` to update to the latest version of the code
     2. After making changes: `git add -A` to add your work to the index, then `git commit -a` to make a new commit (you'll be prompted to write a commit message - say what changes you've made)
