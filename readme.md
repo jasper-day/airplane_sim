@@ -31,6 +31,8 @@
     - Would be really nice to have a GUI application
 - Project Report
 
+## Thomas has been here
+
 
 
 # Files in this repository
