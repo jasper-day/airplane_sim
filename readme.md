@@ -31,7 +31,7 @@
     - Would be really nice to have a GUI application
 - Project Report
 
-## Thomas has been here
+Thomas has been here :)
 
 
 
