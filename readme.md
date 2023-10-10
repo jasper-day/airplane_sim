@@ -24,12 +24,14 @@
     - Curve fitting (linear and polynomial) for experimental data (part 1 of part A)
         - Input: table of values (e.g., from `aero_tables.py`)
         - Output: list of coefficients for a linear or quadratic line of best fit
+        - File: `curve_fit.py`
         - Working:
             - Mehmet
             - Kaartic
     - Differential Equations numerical solver with state variables (part 3 of part A)
         - Input: State change equation, commands
         - Output: 2D array of state integrated through time
+        - File: `diffeq_solver.py`
         - Working:
             - Thomas
             - Jasper
@@ -37,6 +39,7 @@
     - Equation solver (root finder) for trim conditions (part 2 of part A)
         - Input: Multivariate equation
         - Output: Roots of that equation
+        - File: `root_finder.py`
         - Working:
             - Shanilka
             - Xavier
