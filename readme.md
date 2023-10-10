@@ -11,18 +11,24 @@
     1. Before starting to work: `git pull` to update to the latest version of the code
     2. After making changes: `git add -A` to add your work to the index, then `git commit -a` to make a new commit (you'll be prompted to write a commit message - say what changes you've made)
     3. To make your work seen by everyone else: `git push` to push to github.
+- Python venv:
+    - Make sure that your shell is in the airplane_sim folder. (use `cd`)
+    - First run `python -m venv venv` to add a venv folder
+    - Activate the venv (`source venv/bin/activate` on mac, or find your shell [here](https://docs.python.org/3/library/venv.html#how-venvs-work))
+    - Run `pip install -r requirements.txt` to get all the requirements
+    - When you're dun, run `deactivate` to remove the virtual environment.
 
 # Tasks
 
 - Coding
-    - Curve fitting (linear and polynomial) for experimental data
+    - Curve fitting (linear and polynomial) for experimental data (part 1 of part A)
         - Mehmet
         - Kaartic
-    - Differential Equations numerical solver with state variables
+    - Differential Equations numerical solver with state variables (part 3 of part A)
         - Thomas
         - Jasper
         - Niketa
-    - Equation solver (root finder) for trim conditions
+    - Equation solver (root finder) for trim conditions (part 2 of part A)
         - Shanilka
         - Xavier
 - User Interface
@@ -31,10 +37,12 @@
     - Would be really nice to have a GUI application
 - Project Report
 
+# Test Area
+```
 # Thomas has been here :)
 # niketa was here :)
 # Xaier here
-
+```
 # Files in this repository
 
 Files containing the airplane characteristics, aerodynamics, and the environment:
