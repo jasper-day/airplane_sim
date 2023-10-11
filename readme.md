@@ -32,6 +32,7 @@
         - Input: table of values (e.g., from `aero_tables.py`)
         - Output: list of coefficients for a linear or quadratic line of best fit
         - File: `curve_fit.py`
+        - Method: Linear regression
         - Working:
             - Mehmet
             - Kaartic
@@ -39,6 +40,7 @@
         - Input: State change equation, commands
         - Output: 2D array of state integrated through time
         - File: `diffeq_solver.py`
+        - Method: Runge-Kutta
         - Working:
             - Thomas
             - Jasper
@@ -47,6 +49,7 @@
         - Input: Multivariate equation
         - Output: Roots of that equation
         - File: `root_finder.py`
+        - Method: Newton-Raphson
         - Working:
             - Shanilka
             - Xavier
@@ -76,6 +79,12 @@ Files containing the airplane characteristics, aerodynamics, and the environment
 
 Code files:
 - aero_analytical_build_ToBeCompleted.py
+- curve_fit.py
+    - Linear and quadratic curve fitting
+- diffeq_solver.py
+    - Solve ODEs
+- root_finder.py
+    - Find roots of equations
 
 
 # Design Project Tasks
