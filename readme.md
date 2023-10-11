@@ -67,7 +67,7 @@
 # Xaier here
 # Mehmet was here
 #Kaartic was here
-#SHanilka Was here
+#Shanilka was here
 ```
 # Files in this repository
 
