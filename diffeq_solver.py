@@ -5,7 +5,12 @@
 
 import math 
 
-def rk_integrate(U_0, dU_dt, forcing, dt):
+def rk_integrate(U_0, f, t):
+    # Write code that integrates U through the time
+    """
+    Given initial conditions U_0 (state array), and an array of time values,
+    returns an array with the state at each time value [U_0, U_1, ... U_n]
+    """
     pass
 
 
@@ -24,7 +29,7 @@ def rk4_step(U_n, f, t, dt):
     """
     f_n = f(U_n, t)
     # Forward Euler
-    U_hat_midpoint = U_n + 1/2 * dt * f(U_n, t)
+    U_hat_midpoint = U_n + 1/2 * dt * f_n
     f_hat_midpoint = f(U_hat_midpoint, t + 1/2 * dt)
     # Backward Euler
     U_twiddle_midpoint = U_n + 1/2 * dt * f_hat_midpoint
