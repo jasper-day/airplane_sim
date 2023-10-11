@@ -5,12 +5,19 @@
     - Should be included in Windows and Linux by default
         - Windows: `winget install Git.Git` or download from online
     - Check installed with `git --version` in terminal
+    - Configure Git:
+        - `git config --global user.name <YOUR NAME HERE>`
+        - `git config --global user.email <YOUR EMAIL HERE>`
+        - `git config --global pull.rebase true`
 - Commands:
     1. Go to the directory where you want to copy the files to (`cd ~/Documents/` or similar) and run
       `git clone https://github.com/jasper-day/airplane_sim` to copy the assignment into a new folder
     1. Before starting to work: `git pull` to update to the latest version of the code
     2. After making changes: `git add -A` to add your work to the index, then `git commit -a` to make a new commit (you'll be prompted to write a commit message - say what changes you've made)
     3. To make your work seen by everyone else: `git push` to push to github.
+    4. If something goes wrong:
+        - Copy anything you want to change outside of the folder (or [stash it](https://git-scm.com/docs/git-stash))
+        - Run `git reset --hard` to get back to a known good state (this will delete all changes you've made and haven't committed!)
 - Python venv:
     - Make sure that your shell is in the airplane_sim folder. (use `cd`)
     - First run `python -m venv venv` to add a venv folder
