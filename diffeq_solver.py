@@ -5,5 +5,32 @@
 
 import math 
 
-def rk_integrate(f, x, q):
+def rk_integrate(U_0, dU_dt, forcing, dt):
     pass
+
+
+def rk4_step(U_n, f, t, dt):
+    # RK4 algorithm (programming for computations, p. 254)
+    # We have dU_dt = f(U, t) as our differential equation
+    # We want to find U_n_1
+    """
+    Given: U_n (state array)
+    f such that DU_dt = f(U, t)
+    t: current time
+    dt: desired time step
+    
+    Returns:
+    Next value of U (state array)
+    """
+    f_n = f(U_n, t)
+    # Forward Euler
+    U_hat_midpoint = U_n + 1/2 * dt * f(U_n, t)
+    f_hat_midpoint = f(U_hat_midpoint, t + 1/2 * dt)
+    # Backward Euler
+    U_twiddle_midpoint = U_n + 1/2 * dt * f_hat_midpoint
+    f_twiddle_midpoint = f(U_twiddle_midpoint, t + 1/2 * dt)
+    # Crank-nicolson
+    U_bar_n_1 = U_n + dt * f_hat_midpoint
+    f_bar_n_1 = f(U_bar_n_1, t + dt)
+    # Simpson's rule
+    return dt/6 * (f_n + 2 * f_hat_midpoint + 2 * f_twiddle_midpoint + f_bar_n_1)
