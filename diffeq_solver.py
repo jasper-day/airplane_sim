@@ -7,6 +7,8 @@ import math
 
 def rk_integrate(U_0, f, t):
     # Write code that integrates U through the time
+    #create an array from 0 to 100s in time step of 0.1 
+    #iterates rk4 step
     """
     Given initial conditions U_0 (state array), and an array of time values,
     returns an array with the state at each time value [U_0, U_1, ... U_n]
