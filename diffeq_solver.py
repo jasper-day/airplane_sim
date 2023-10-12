@@ -3,25 +3,39 @@
 # Output: Array of integrated state variables through time
 # Method: Runge-Kutta
 
-import math 
 import numpy as np
+
 def rk_integrate(U_0, f, t):
     # Write code that integrates U through the time
     """
     Given initial conditions U_0 (state array), and an array of time values,
     returns an array with the state at each time value [U_0, U_1, ... U_n]
     """
-    #time step size
-    dt = 0.1
-    #create an array for the time in tervals of 0.1 from 0s to 100s
-    t = np.linspace(0, 100, (100/dt)+1)
-    #create an empty array for the state array
-    U = np.empty([100,6])
-    U[0] = [0,0,0,0,0,0] #fill in with initial conditions given by root finding
-    #loop rk4_step for every time value
-    for i in range (0,100):
-        U[i+1] = rk4_step(U[i],f,t[i],dt)
-    pass
+    # find time differences
+    dt = np.diff(t)
+    # create an empty array for the state array
+    U = np.empty([len(t),len(U_0)])
+    U[0] = U_0 # fill in with initial conditions given by root finding
+    # loop rk4_step for every time value
+    for i in range(len(dt)):
+        U[i+1] = rk4_step(U[i],f,t[i],dt[i])
+    return U
+
+def rk4_generator(U_0, f, dt):
+    # might be useful for some real-time simulations?
+    # I think that we have to put in better control options than having f explicitly depend on time, if we want real-time control.
+    """
+    Given initial conditions U_0 and a timestep dt, returns a generator (iterator) of future conditions.
+    """
+    # Initial conditions
+    t = 0
+    U_curr = U_0
+    while True:
+        yield U_curr
+        # Take one step forward in time
+        t += dt
+        U_next = rk4_step(U_curr, f, t, dt)
+        U_curr = U_next
 
 
 def rk4_step(U_n, f, t, dt):
