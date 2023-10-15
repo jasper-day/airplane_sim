@@ -16,6 +16,8 @@ alpha_table = np.array([alpha, CD, CL, CM])
 delta_el_table = np.array([delta_el, CL_el, CM_el])
 
 class AlphaTable(QTableWidget):
+    # QTableWidget presents tabular data in a spreadsheet-like fashion.
+    # Here we present the relation between angle of attack and various coefficients
     def __init__(self, parent=None):
         super(AlphaTable, self).__init__(parent)
         self.setColumnCount(len(alpha))
@@ -27,6 +29,8 @@ class AlphaTable(QTableWidget):
                 self.setItem(j, i, QTableWidgetItem(str(alpha_table[j][i])))
 
 class DeltaTable(QTableWidget):
+    # QTableWidget presents tabular data in a spreadsheet-like fashion.
+    # Here we present the relation between elevator angle and various coefficients
     def __init__(self, parent=None):
         super(DeltaTable, self).__init__(parent)
         self.setColumnCount(len(delta_el))
@@ -38,18 +42,23 @@ class DeltaTable(QTableWidget):
                 self.setItem(j, i, QTableWidgetItem(str(delta_el_table[j][i])))
 
 class AlphaGraph(QWidget):
+    # Matplotlib graphs can be widgets too.
     def __init__(self, parent=None):
         super(AlphaGraph, self).__init__(parent)
         self.resize(400, 300)
+        # Figures contain axes, which plot data
         self.figure = Figure()
+        # canvases contain figures and are Qt Widgets
         self.canvas = FigureCanvas(self.figure)
+        # Plot the desired data
         self.ax = self.figure.add_subplot(111)
-        self.ax.plot(alpha, CD, label="CD")
-        self.ax.plot(alpha, CL, label="CL")
-        self.ax.plot(alpha, CM, label="CM")
+        self.ax.scatter(alpha, CD, label="CD")
+        self.ax.scatter(alpha, CL, label="CL")
+        self.ax.scatter(alpha, CM, label="CM")
         self.ax.set_xlabel("Angle of Attack")
         self.ax.legend()
         self.layout = QVBoxLayout(self)
+        # Add the widget to the layout
         self.layout.addWidget(self.canvas)
 
 class DeltaGraph(QWidget):
@@ -59,14 +68,19 @@ class DeltaGraph(QWidget):
         self.figure = Figure()
         self.canvas = FigureCanvas(self.figure)
         self.ax = self.figure.add_subplot(111)
-        self.ax.plot(delta_el, CL_el, label="CL_el")
-        self.ax.plot(delta_el, CM_el, label="CM_el")
+        # Plot the desired data
+        self.ax.scatter(delta_el, CL_el, label="CL_el")
+        self.ax.scatter(delta_el, CM_el, label="CM_el")
         self.ax.set_xlabel("Elevator Deflection")
         self.ax.legend()
         self.layout = QVBoxLayout(self)
         self.layout.addWidget(self.canvas)
 
 class MainWindow(QMainWindow):
+    # The MainWindow holds everything.
+    # Here I coded everything by hand (with the help of Copilot), 
+    # but in the future it would be more efficient to use pyside6-designer.exe
+    # to design the layouts.
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setWindowTitle("Aero Table")
