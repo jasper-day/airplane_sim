@@ -9,4 +9,4 @@ def linear_fit(arr):
     pass
 
 def quadratic_fit(arr):
-    pass
+    pa
