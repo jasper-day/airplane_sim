@@ -14,7 +14,7 @@ def equation (alpha,L,D,W,gamma):
     term_3 = W * np.cos(alpha+gamma)
     return term_1 + term_2 + term_3
 
-def derivertive (alpha,L,D,W,gamma):
+def derivative (alpha,L,D,W,gamma):
     term_1 = L * np.sin(alpha)
     term_2 = -D * np.cos(alpha)
     term_3 = -W * np.sin(alpha+gamma)
@@ -24,7 +24,7 @@ def newton_raphson(L, D , W , gamma , alpha_initial=0.0, max_interations=1000, t
     alpha = alpha_initial
     for i in range (max_interations):
         f_alpha_alpha = equation(alpha, L, D, W, gamma)
-        f_prime_alpha = derivertive(alpha, L, D, W, gamma)
+        f_prime_alpha = derivative(alpha, L, D, W, gamma)
         alpha_new = alpha - f_alpha_alpha / f_prime_alpha
         
         
