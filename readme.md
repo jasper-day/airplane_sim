@@ -34,8 +34,8 @@
         - File: `curve_fit.py`
         - Method: Linear regression
         - Working:
-            - Mehmet
-            - Kaartic
+            - Shanilka
+            - Xavier
     - Differential Equations numerical solver with state variables (part 3 of part A)
         - Input: State change equation, commands
         - Output: 2D array of state integrated through time
@@ -51,8 +51,8 @@
         - File: `root_finder.py`
         - Method: Newton-Raphson
         - Working:
-            - Shanilka
-            - Xavier
+            - Mehmet
+            - Kaartic
 - User Interface
     - Graphs and charts
     - Input desired values, commands
