@@ -31,5 +31,9 @@ def minimizing_function(V, gamma):
     return f
 
 # use any root-finding code here to find the root of f(alpha)
+# The following is an example, but we can do better lol
+from scipy import optimize
 
+_f = minimizing_function(100, 5)
+print(optimize.newton(_f, 0))
 

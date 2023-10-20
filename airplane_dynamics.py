@@ -11,7 +11,7 @@ import math
 
 from env import gravity, air_density
 from vehicle import Sref, cbar, acMass, inertia_yy
-from vehicle import C_D_0, C_L_0, C_L_alpha, C_L_delta_E, C_M_0, C_M_alpha, C_M_delta_E
+from vehicle import C_D_0, C_L_0, C_L_alpha, C_L_delta_E, C_M_0, C_M_alpha, C_M_delta_E, K_CD
 
 def get_angle_of_attack(u_B, w_B):
     """
@@ -81,7 +81,7 @@ def find_lift(V, C_L, Sref=Sref, rho=air_density):
     """
     Finds the lift given the velocity and coefficient of lift
     """
-    return 1/2 * rho * V**2 * S * C_L
+    return 1/2 * rho * V**2 * Sref * C_L
 
 def find_drag(V, C_D, Sref=Sref, rho=air_density):
     """
