@@ -21,7 +21,6 @@ inertia_yy = 7000
 Thrust = 1.0
 delta_el = 0.0
 
-
 # Dummy definition of coeff
 # Properly defined should come from curve fitting
 # The current values are close, but just placeholders

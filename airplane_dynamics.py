@@ -1,16 +1,15 @@
-# 3-DOF simulation for airplane
-# State vector U is chosen as:
-# U[0] = x_B (body-relative forward location)
-# U[1] = u_B (body-relative forward velocity)
-# U[2] = z_B (body-relative downward location)
-# U[3] = w_B (body-relative downward velocity)
-# U[4] = theta (angle to the ground)
-# U[5] = q (angular velocity, d(theta)/dt)
+"""
+Code for flight mechanics
+
+Contains functions for calculating aerodynamic forces and moments, as well as
+the equations of motion for the airplane.
+"""
 
 import math
 
 from env import gravity, air_density
 from vehicle import Sref, cbar, acMass, inertia_yy
+# eventually replace these with curve-fit values
 from vehicle import C_D_0, C_L_0, C_L_alpha, C_L_delta_E, C_M_0, C_M_alpha, C_M_delta_E, K_CD
 
 def get_angle_of_attack(u_B, w_B):
@@ -101,12 +100,12 @@ def find_weight(m=acMass, g=gravity):
     """
     return m*g
 
-def dU_b_dt(L,D,alpha,T,q,w_B,m=acMass, g=gravity):
+def dU_b_dt(L,D,alpha,T,q,w_B, m=acMass):
     """
     Given flight parameters, returns the body-relative x acceleration.
     """
-    W = find_weight(m, g)
-    # Forces 
+    W = find_weight()
+    # Force components
     lift = (L * math.sin(alpha))/m
     drag = -(D * math.cos(alpha))/m
     weight = -(W * sin(theta))/m
@@ -115,14 +114,44 @@ def dU_b_dt(L,D,alpha,T,q,w_B,m=acMass, g=gravity):
     euler_acceleration = -q * w_B
     return lift + drag + weight + thrust + euler_acceleration
 
+def dW_b_dt(L,D,alpha,q,u_B, m=acMass):
+    """
+    Given flight parameters, returns the body-relative z acceleration.
+    """
+    W = find_weight()
+    # Force components
+    lift = (L * math.cos(alpha))/m
+    drag = -(D * math.sin(alpha))/m
+    weight = W * cos(theta)/m
+    # Accelerations
+    euler_acceleration = q * u_B
+    return lift + drag + weight + euler_acceleration
+
+def dq_dt(M, I_yy=inertia_yy):
+    """
+    Given flight parameters, returns the angular acceleration.
+    """
+    return M/I_yy
+
 def dU_dt(U, X, _t):
     """
     Input:
-    U: state array   [x_B, u_B, z_B, w_B, theta, q]
-    X: command array [delta_E, thrust]
+    U: state array   
+    U = [x_B, u_B, z_B, w_B, theta, q]
+    X: command array 
+    X = [delta_E, thrust]
     t: time
     Output:
-    dU_dt: change in state array [xdot_B, udot_B, zdot_B, wdot_B, thetadot_B, qdot_B]
+    dU_dt: change in state array 
+    dU_dt = [xdot_B, udot_B, zdot_B, wdot_B, thetadot_B, qdot_B]
+
+    State vector U is chosen as:
+    U[0] = x_B (body-relative forward location)
+    U[1] = u_B (body-relative forward velocity)
+    U[2] = z_B (body-relative downward location)
+    U[3] = w_B (body-relative downward velocity)
+    U[4] = theta (angle to the ground)
+    U[5] = q (angular velocity, d(theta)/dt)
     """
     [x_B, u_B, z_B, w_B, theta, q] = U
     [delta_E, thrust] = X
@@ -130,11 +159,20 @@ def dU_dt(U, X, _t):
     xdot_B = u_B
     zdot_B = w_B
     thetadot_B = q
-    # Calculate angle of attack
+    # Calculate angle of attack and velocity
     alpha = angle_of_attack(u_B, w_B)
-    gamma = theta - alpha
-    # remaining: find udot, wdot, qdot
-    
-
+    V = velocity(u_B, w_B)
+    # Find flight coefficients
+    C_L = find_C_L(alpha, delta_E)
+    C_D = find_C_D(C_L)
+    C_M = find_C_M(alpha, delta_E)
+    # Find forces
+    lift = find_lift(V, C_L)
+    drag = find_drag(V, C_D)
+    moment = find_moment(V, C_M)
+    # Find accelerations
+    udot_B = dU_b_dt(lift, drag, alpha, thrust, q, w_B)
+    wdot_B = dW_b_dt(lift, drag, alpha, q, u_B)
+    qdot = dq_dt(M)
     # dU_dt
     return [xdot_B, udot_B, zdot_B, wdot_B, thetadot_B, qdot_B]
