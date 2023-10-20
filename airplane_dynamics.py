@@ -9,10 +9,11 @@
 
 import math
 
-from env.py import gravity, air_density
-from vehicle.py import Sref, cbar, acMass, inertia_yy, CL, CD, CM
+from env import gravity, air_density
+from vehicle import Sref, cbar, acMass, inertia_yy
+from vehicle import C_D_0, C_L_0, C_L_alpha, C_L_delta_E, C_M_0, C_M_alpha, C_M_delta_E
 
-def angle_of_attack(u_B, w_B):
+def get_angle_of_attack(u_B, w_B):
     """
     Given body-relative x and z velocities, calculates the angle of attack
     Input:
@@ -23,7 +24,7 @@ def angle_of_attack(u_B, w_B):
     """
     return math.atan2(w_B, u_B)
 
-def velocity(u_B, w_B):
+def get_velocity(u_B, w_B):
     """
     Given body-relative x and z velocities, calculates the velocity
     Input:
@@ -34,68 +35,77 @@ def velocity(u_B, w_B):
     """
     return math.sqrt(u_B**2 + w_B**2)
 
-def C_L(C_L_0, C_L_alpha, alpha, C_L_delta_E, delta_E):
+def find_C_L(alpha, delta_E, C_L_0=C_L_0, C_L_alpha=C_L_alpha, C_L_delta_E=C_L_delta_E):
     """
     Finds the coefficient of lift, given the inputs:
     Input:
+    delta_E: Elevator angle
+    alpha: Angle of attack
+    Default:
     C_L_0: coefficient of lift at zero angle of attack, zero elevator
     C_L_alpha: linear approximation to increase in lift with angle of attack
-    alpha: Angle of attack
     C_L_delta_E: linear approximation to increase in lift with elevator angle
-    delta_E: Elevator angle
     Output:
     C_L: total coefficient of lift
     """
     return C_L_0 + C_L_alpha*alpha + C_L_delta_E*delta_E
 
-def C_D(C_D_0, K, C_L):
+def find_C_D(C_L, C_D_0 = C_D_0, K = K_CD):
     """
     Finds the coefficient of drag.
     Input:
+    C_L: Coefficient of lift
+    Default:
     C_D_0: Zero-lift coefficient of drag
     K: Quadratic factor relating lift and drag
-    C_L: Coefficient of lift
     """
     return C_D_0 + K*C_L**2
 
-def C_M(C_M_0, C_M_alpha, alpha, C_M_delta_E, delta_E):
+def find_C_M(alpha, delta_E, C_M_0=C_M_0, C_M_alpha=C_M_alpha, C_M_delta_E=C_M_delta_E):
     """
     Finds the moment coefficient.
     Input:
+    alpha: Angle of attack
+    delta_E: Elevator angle
+    Default:
     C_M_0: Zero angle-of-attack moment coefficient
     C_M_alpha: Linear approximation to increase in moment with aoa
-    alpha: Angle of attack
     C_M_delta_E: Linear approximation to increase in moment with delta_E
-    delta_E: Elevator angle
     Output:
     C_M: Total moment coefficient
     """
     return C_M_0 + C_M_alpha * alpha + C_M_delta_E * delta_E
 
 
-def lift(V, C_L, Sref=Sref, rho=air_density):
+def find_lift(V, C_L, Sref=Sref, rho=air_density):
     """
     Finds the lift given the velocity and coefficient of lift
     """
     return 1/2 * rho * V**2 * S * C_L
 
-def drag(V, C_D, Sref=Sref, rho=air_density):
+def find_drag(V, C_D, Sref=Sref, rho=air_density):
     """
     Finds the drag given the velocity and coefficient of drag
     """
     return 1/2 * rho * V**2 * Sref * C_D
 
-def moment(V, C_M, Sref=Sref, rho=air_density, chord=cbar):
+def find_moment(V, C_M, Sref=Sref, rho=air_density, chord=cbar):
     """
     Finds the moment given the velocity and moment coefficient
     """
     return 1/2 * rho * V**2 * Sref * chord * C_M
 
+def find_weight(m=acMass, g=gravity):
+    """
+    Finds the weight given the mass and gravity
+    """
+    return m*g
+
 def dU_b_dt(L,D,alpha,T,q,w_B,m=acMass, g=gravity):
     """
     Given flight parameters, returns the body-relative x acceleration.
     """
-    W = m*g
+    W = find_weight(m, g)
     # Forces 
     lift = (L * math.sin(alpha))/m
     drag = -(D * math.cos(alpha))/m
@@ -104,7 +114,6 @@ def dU_b_dt(L,D,alpha,T,q,w_B,m=acMass, g=gravity):
     # Accelerations
     euler_acceleration = -q * w_B
     return lift + drag + weight + thrust + euler_acceleration
-
 
 def dU_dt(U, X, _t):
     """
