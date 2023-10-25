@@ -8,6 +8,11 @@ from airplane_dynamics import find_lift, find_drag, find_moment, find_weight, \
 from vehicle import C_M_0, C_M_alpha, C_M_delta_E
 import math
 
+# Functions prefixed with _ (underscore) are *private functions* 
+# not intended to be called outside of this module. We use them
+# as intermediate results in calculating the lift, drag, and moment
+# at equilibrium given alpha.
+
 def _delta_E(alpha):
     return - (C_M_0 + C_M_alpha * alpha) / C_M_delta_E
 
