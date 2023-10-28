@@ -94,6 +94,11 @@ print(f"Alpha in radians: {a}")
 alpha_initial = 0
 alpha = alpha_initial
 f = lambda alpha: equation(alpha, L, D, W, gamma) 
+V = 100
+gamma = 5
+from root_finder import minimizing_function
+f = minimizing_function(V, gamma)
+
 solution = secant(f,0,2,25)
 print(solution)
 

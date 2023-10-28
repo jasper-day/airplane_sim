@@ -25,6 +25,7 @@ def _C_D(alpha):
 def _C_M(alpha):
     return find_C_M(alpha, _delta_E(alpha))
 
+
 def minimizing_function(V, gamma):
     "Returns a function of alpha which should be minimized for trim conditions"
     W = find_weight()
