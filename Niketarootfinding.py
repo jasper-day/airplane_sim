@@ -83,6 +83,23 @@ def bisection(f,a,b,N):
     return (a_n + b_n)/2
 
         
+
+
+V = 100
+gamma = 5
+from root_finder import minimizing_function
+f = minimizing_function(V, gamma)
+
+
+solution = secant(f,-1,2,25)
+print(solution)
+
+approx_phi = bisection(f,-1,2,100)
+print(approx_phi)
+
+alpha_initial = 0
+alpha = alpha_initial
+f = lambda alpha: equation(alpha, L, D, W, gamma) 
 L =1
 W =2
 D =2
@@ -90,18 +107,3 @@ M =3
 gamma = np.pi/3
 a = newton_raphson(L, D, W, gamma)
 print(f"Alpha in radians: {a}")
-
-alpha_initial = 0
-alpha = alpha_initial
-f = lambda alpha: equation(alpha, L, D, W, gamma) 
-V = 100
-gamma = 5
-from root_finder import minimizing_function
-f = minimizing_function(V, gamma)
-
-solution = secant(f,0,2,25)
-print(solution)
-
-
-approx_phi = bisection(f,-1,2,100)
-print(approx_phi)

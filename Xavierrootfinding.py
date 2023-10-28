@@ -5,7 +5,6 @@ Created on Mon Oct 16 12:25:58 2023
 
 @author: xavieryee
 """
-
 import numpy as np
 
 def equation (alpha,L,D,W,gamma):
@@ -13,6 +12,7 @@ def equation (alpha,L,D,W,gamma):
     term_2 = -D * np.sin(alpha)
     term_3 = W * np.cos(alpha+gamma)
     return term_1 + term_2 + term_3
+
 
 def derivative (alpha,L,D,W,gamma):
     term_1 = L * np.sin(alpha)
