@@ -27,7 +27,16 @@ def _C_M(alpha):
 
 
 def minimizing_function(V, gamma):
-    "Returns a function of alpha which should be minimized for trim conditions"
+    """
+    Returns a function of alpha which should be minimized for trim conditions
+
+    Input:
+    V: Velocity (m/s)
+    gamma: flight angle (rad)
+
+    Output:
+    f: function of alpha
+    """
     W = find_weight()
     def f(alpha):
         L = find_lift(V, _C_L(alpha))
@@ -42,4 +51,3 @@ from scipy import optimize
 
 _f = minimizing_function(100, 5)
 print(optimize.newton(_f, 0))
-
