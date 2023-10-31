@@ -6,6 +6,19 @@ Created on Mon Oct 16 12:25:58 2023
 @author: xavieryee
 """
 import numpy as np
+def _delta_E(alpha):
+    return - (C_M_0 + C_M_alpha * alpha) / C_M_delta_E
+
+def _C_L(alpha):
+    return find_C_L(alpha, _delta_E(alpha))
+
+def _C_D(alpha):
+    return find_C_D(_C_L(alpha))
+
+def _C_M(alpha):
+    return find_C_M(alpha, _delta_E(alpha))
+
+
 L = find_lift(V, _C_L(alpha))
 D = find_drag(V, _C_D(alpha)) 
 W = find_weight()
