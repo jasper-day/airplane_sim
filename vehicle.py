@@ -24,14 +24,14 @@ delta_el = 0.0
 # Dummy definition of coeff
 # Properly defined should come from curve fitting
 # The current values are close, but just placeholders
-C_L_0 = math.degrees(0.1)
-C_L_alpha = math.degrees(0.05)
-C_L_delta_E = math.degrees(0.0002)
-C_M_0 = math.degrees(-0.005)
-C_M_alpha = math.degrees(-0.005)
-C_M_delta_E = math.degrees(-4e-5)
-C_D_0 = math.degrees(0.005)
-K_CD = math.degrees(0.02)
+C_L_0 = 0.0469
+C_L_alpha = 5.329
+C_L_delta_E = 0.161
+C_M_0 = -0.007
+C_M_alpha = -0.39
+C_M_delta_E = -2.619
+C_D_0 = 0.0266
+K_CD = 0.044
 
 # future:
 # from curve_fit import find_coefficients
