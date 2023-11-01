@@ -52,3 +52,6 @@ gamma = np.pi/3
 
 a = newton_raphson(L, D, W, gamma)
 print(f"Alpha in radians: {a}")
+
+
+
