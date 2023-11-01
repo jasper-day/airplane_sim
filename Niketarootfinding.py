@@ -8,6 +8,7 @@ Created on Fri Oct 20 14:14:16 2023
 
 import numpy as np
 import math
+#  This is the wrong place to import these from -- find them in vehicle.py for now
 from aero_analytical_build_ToBeCompleted import CM_0, CM_alpha,CM_delta
 
 
@@ -59,8 +60,7 @@ def secant(f,a,b,N):
             iterations, the secant method fails and return None.
         #condition where secant method fails'''
     if f(a)*f(b) >= 0:
-        print("Secant method fails.")
-        return None
+        raise ValueError(f"Secant method fails: f({a}) = {f(a)} and f({b}) = {f(b)}")
     #defining variables
     a_n = a
     b_n = b
@@ -79,15 +79,14 @@ def secant(f,a,b,N):
             b_n = b_n
             m_n_old = m_n
         elif f_m_n == 0:
-            print("Found exact solution.")
-            return m_n
-        elif -0.5 < f_m_n < 0.5:
-            print("Found approximate solution.")
-            return m_n
-        else:
-            print("Secant method fails.")
-            return None
-    return a_n - f(a_n)*(b_n - a_n)/(f(b_n) - f(a_n)), ea
+            return {"solution": m_n, "success": True, "error": 0}
+        # elif -0.5 < f_m_n < 0.5:
+        # I don't think you want this
+            # return {"solution": m_n, "success": True, "error": ea}
+        # else:
+            # print("Secant method fails.")
+            # return None
+    return {"solution": a_n - f(a_n)*(b_n - a_n)/(f(b_n) - f(a_n)),"success": True, "error": ea}
 
 def bisection(f,a,b,N):
         '''Approximate solution of f(x)=0 on interval [a,b] by the secant method.
@@ -115,8 +114,7 @@ def bisection(f,a,b,N):
 # Check if a and b bound a root
         ea = 0
         if f(a)*f(b) >= 0:
-            print("a and b do not bound a root")
-            return None
+            raise ValueError("a and b do not bound a root")
         a_n = a
         b_n = b
         m_n_old=0
@@ -134,46 +132,47 @@ def bisection(f,a,b,N):
                 b_n = b_n
                 m_n_old = m_n
             elif f_m_n == 0:
-                print("Found exact solution.")
-                return m_n
+                return {"solution": m_n, "success": True, "error": 0}
             else:
-                print("Bisection method fails.")
-                return None
-        return (a_n + b_n)/2, ea
+                return {"solution": None, "success": False}
+        return {"solution": (a_n + b_n)/2, "success": True, "error": ea}
 
         
-#defining velocity and gamma
-V = 100
-gamma = 0.05
+if __name__ == "__main__":
 
-#newton raphson from scipy
-from root_finder import minimizing_function
-f = minimizing_function(V, gamma)
+    #defining velocity and gamma
+    V = 100
+    gamma = 0.05
 
-#secant method
-solution,error_s = secant(f,-1,2,25)
-#output the solution and error of the secant method in decimal
-print(solution,error_s)
+    #newton raphson from scipy
+    from root_finder import minimizing_function
+    f = minimizing_function(V, gamma)
 
-#bisection method
-approx_phi,error_b = bisection(f,-1,2,100)
-#output the solution and error of the bisection method in decimal
-print(approx_phi,error_b)
+    #secant method
+    result_secant = secant(f,-1,2,25)
+    #output the solution and error of the secant method in decimal
+    from pprint import pprint
+    pprint(result_secant)
+
+    #bisection method
+    result_bisection = bisection(f,-1,2,100)
+    #output the solution and error of the bisection method in decimal
+    pprint(result_bisection)
 
 
-alpha_initial = 0
-alpha = alpha_initial
-f = lambda alpha: equation(alpha, L, D, W, gamma) 
-L =1
-W =2
-D =2
-M =3
-gamma = np.pi/3
-a = newton_raphson(L, D, W, gamma)
-print(f"Alpha in radians: {a}")
+    # alpha_initial = 0
+    # alpha = alpha_initial
+    # f = lambda alpha: equation(alpha, L, D, W, gamma) 
+    # L =1
+    # W =2
+    # D =2
+    # M =3
+    # gamma = np.pi/3
+    # a = newton_raphson(L, D, W, gamma)
+    # print(f"Alpha in radians: {a}")
 
-#choosing the best value for alpha
-actual_alpha = approx_phi 
-#finding delta_e
-delta_e = -(CM_0 + CM_alpha*actual_alpha)/CM_delta
-print(delta_e)
+    # #choosing the best value for alpha
+    # actual_alpha = approx_phi 
+    # #finding delta_e
+    # delta_e = -(CM_0 + CM_alpha*actual_alpha)/CM_delta
+    # print(delta_e)
