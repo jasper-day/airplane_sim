@@ -6,11 +6,27 @@ Created on Mon Oct 16 12:25:58 2023
 @author: xavieryee
 """
 from airplane_dynamics import find_lift, find_drag, find_moment, find_weight, \
-    find_C_L, find_C_D, find_C_M
+      find_C_L, find_C_D, find_C_M
 from vehicle import C_M_0, C_M_alpha, C_M_delta_E
-import numpy as np
 import math
+import numpy as np
+from sympy import symbols, diff
+
+
+
+def _delta_E(alpha):
+    return - (C_M_0 + C_M_alpha * alpha) / C_M_delta_E
+
+def _C_L(alpha):
+    return find_C_L(alpha, _delta_E(alpha))
+
+def _C_D(alpha):
+    return find_C_D(_C_L(alpha))
+
+def _C_M(alpha):
+    return find_C_M(alpha, _delta_E(alpha))
 def minimizing_function(V, gamma):
+
     """
     Returns a function of alpha which should be minimized for trim conditions
 
@@ -31,51 +47,60 @@ def minimizing_function(V, gamma):
     return f
 
 
-
-def _delta_E(alpha):
-    return - (C_M_0 + C_M_alpha * alpha) / C_M_delta_E
-
-def _C_L(alpha):
-    return find_C_L(alpha, _delta_E(alpha))
-
-def _C_D(alpha):
-    return find_C_D(_C_L(alpha))
-
-def _C_M(alpha):
-    return find_C_M(alpha, _delta_E(alpha))
-
-V = 100
 W = find_weight()
 
-def equation (alpha,L,D,W,gamma):
-    term_1 = find_lift(V, _C_L(alpha)) * np.cos(alpha)
-    term_2 = find_drag(V, _C_D(alpha)) * np.sin(alpha)
-    term_3 = find_weight() * np.cos(alpha+gamma)
-    return term_1 + term_2 + term_3
+from sympy import symbols, diff
+import math
+
+# ...
+
+# Define the variables and the function 'f'
+alpha = symbols('alpha')
+V = 100  # Example value, replace with your actual value
+gamma = 5  # Example value, replace with your actual value
+
+def f(alpha):
+    L = find_lift(V, _C_L(alpha))
+    D = find_drag(V, _C_D(alpha))
+    return -L*math.cos(alpha) - D*math.sin(alpha) + W*math.cos(alpha + gamma)
+
+# Find the first derivative of 'f' with respect to 'alpha'
+f_derivative = diff(f(alpha), alpha)
+
+# Print the derivative of 'f'
+print("The first derivative of the function f is: ", f_derivative)
 
 
-def derivative (alpha,L,D,W,gamma):
+'''def derivative (alpha,L,D,W,gamma):
     term_1 = find_lift(V, _C_L(alpha)) * np.sin(alpha)
     term_2 = - find_drag(V, _C_D(alpha)) * np.cos(alpha)
     term_3 = find_weight() * np.sin(alpha+gamma)
-    return term_1 + term_2 + term_3
+    return term_1 + term_2 + term_3'''
 
-def newton_raphson(L, D , W , gamma , alpha_initial=0.0, max_interations=1000, tol=1e-6):
+def newton_raphson(alpha, alpha_initial=0.0, max_interations=1000, tol=1e-6):
     alpha = alpha_initial
     for i in range (max_interations):
-        f_alpha_alpha = equation(alpha, L, D, W, gamma)
-        f_prime_alpha = derivative(alpha, L, D, W, gamma)
-        alpha_new = alpha - f_alpha_alpha / f_prime_alpha
+       
+        alpha_new = alpha - f(alpha) / f_derivative
         
         
         if abs(alpha_new - alpha) < tol:
             return alpha_new
         
+print(newton_raphson(alpha, alpha_initial=0.0, max_interations=1000, tol=1e-6))
 
+
+
+'''from scipy import optimize
+
+V = 100
 gamma = 5
 
-a = newton_raphson(L, D, W, gamma)
-print(f"Alpha in radians: {a}")
+_f = minimizing_function(V,gamma)
+print(optimize.newton(_f, 0))
+
+# a = newton_raphson(L, D, W, gamma)
+# print(f"Alpha in radians: {a}")'''
 
 
 
