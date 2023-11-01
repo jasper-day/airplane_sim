@@ -144,7 +144,7 @@ def bisection(f,a,b,N):
         
 #defining velocity and gamma
 V = 100
-gamma = 5
+gamma = 0.05
 
 #newton raphson from scipy
 from root_finder import minimizing_function

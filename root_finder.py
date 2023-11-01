@@ -50,6 +50,7 @@ def minimizing_function(V, gamma):
 # The following is an example, but we can do better lol
 from scipy import optimize
 
-_f = minimizing_function(100, 0.05)
-print("test, desired values: alpha = 0.0164")
-print(optimize.newton(_f, 0))
+if __name__ == "__main__":
+    _f = minimizing_function(100, 0.05)
+    print("test, desired values: alpha = 0.0164")
+    print(optimize.newton(_f, 0))
