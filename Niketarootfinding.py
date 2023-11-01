@@ -33,6 +33,8 @@ def newton_raphson(L, D , W , gamma , alpha_initial=0.0, max_interations=1000, t
         
         if abs(alpha_new - alpha) < tol:
             return alpha_new
+    
+
 #function to calculate the root using secant
 def secant(f,a,b,N):
     '''Approximate solution of f(x)=0 on interval [a,b] by the secant method.
