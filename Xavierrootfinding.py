@@ -5,7 +5,33 @@ Created on Mon Oct 16 12:25:58 2023
 
 @author: xavieryee
 """
+from airplane_dynamics import find_lift, find_drag, find_moment, find_weight, \
+    find_C_L, find_C_D, find_C_M
+from vehicle import C_M_0, C_M_alpha, C_M_delta_E
 import numpy as np
+import math
+def minimizing_function(V, gamma):
+    """
+    Returns a function of alpha which should be minimized for trim conditions
+
+    Input:
+    V: Velocity (m/s)
+    gamma: flight angle (rad)
+
+    Output:
+    f: function of alpha
+    """
+    W = find_weight()
+
+    def f(alpha):
+        L = find_lift(V, _C_L(alpha))
+        D = find_drag(V, _C_D(alpha))
+        M = find_moment(V, _C_M(alpha))
+        return -L*math.cos(alpha) - D*math.sin(alpha) + W*math.cos(alpha + gamma)
+    return f
+
+
+
 def _delta_E(alpha):
     return - (C_M_0 + C_M_alpha * alpha) / C_M_delta_E
 
@@ -18,9 +44,7 @@ def _C_D(alpha):
 def _C_M(alpha):
     return find_C_M(alpha, _delta_E(alpha))
 
-
-L = find_lift(V, _C_L(alpha))
-D = find_drag(V, _C_D(alpha)) 
+V = 100
 W = find_weight()
 
 def equation (alpha,L,D,W,gamma):
@@ -48,7 +72,7 @@ def newton_raphson(L, D , W , gamma , alpha_initial=0.0, max_interations=1000, t
             return alpha_new
         
 
-gamma = np.pi/3
+gamma = 5
 
 a = newton_raphson(L, D, W, gamma)
 print(f"Alpha in radians: {a}")
