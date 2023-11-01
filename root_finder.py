@@ -25,8 +25,18 @@ def _C_D(alpha):
 def _C_M(alpha):
     return find_C_M(alpha, _delta_E(alpha))
 
+
 def minimizing_function(V, gamma):
-    "Returns a function of alpha which should be minimized for trim conditions"
+    """
+    Returns a function of alpha which should be minimized for trim conditions
+
+    Input:
+    V: Velocity (m/s)
+    gamma: flight angle (rad)
+
+    Output:
+    f: function of alpha
+    """
     W = find_weight()
     def f(alpha):
         L = find_lift(V, _C_L(alpha))
@@ -35,10 +45,10 @@ def minimizing_function(V, gamma):
         return -L*math.cos(alpha) - D*math.sin(alpha) + W*math.cos(alpha + gamma)
     return f
 
+
 # use any root-finding code here to find the root of f(alpha)
 # The following is an example, but we can do better lol
 from scipy import optimize
 
 _f = minimizing_function(100, 5)
 print(optimize.newton(_f, 0))
-

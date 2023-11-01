@@ -3,6 +3,9 @@ Code for flight mechanics
 
 Contains functions for calculating aerodynamic forces and moments, as well as
 the equations of motion for the airplane.
+
+All units should be normalized to SI units
+All angles in radians
 """
 
 import math
@@ -12,14 +15,22 @@ from vehicle import Sref, cbar, acMass, inertia_yy
 # eventually replace these with curve-fit values
 from vehicle import C_D_0, C_L_0, C_L_alpha, C_L_delta_E, C_M_0, C_M_alpha, C_M_delta_E, K_CD
 
+def degrees(alpha):
+    """ Convert degrees to radians """
+    return 180 / math.pi * alpha
+
+def radians(alpha):
+    """ Convert radians to degrees """
+    return alpha * math.pi / 180
+
 def get_angle_of_attack(u_B, w_B):
     """
     Given body-relative x and z velocities, calculates the angle of attack
     Input:
-    u_B: body-relative x velocity
-    w_B: body-relative z velocity
+    u_B: body-relative x velocity (m/s)
+    w_B: body-relative z velocity (m/s)
     Output:
-    alpha: Angle of attack
+    alpha: Angle of attack (rad)
     """
     return math.atan2(w_B, u_B)
 
@@ -64,8 +75,8 @@ def find_C_M(alpha, delta_E, C_M_0=C_M_0, C_M_alpha=C_M_alpha, C_M_delta_E=C_M_d
     """
     Finds the moment coefficient.
     Input:
-    alpha: Angle of attack
-    delta_E: Elevator angle
+    alpha: Angle of attack (rad)
+    delta_E: Elevator angle (rad)
     Default:
     C_M_0: Zero angle-of-attack moment coefficient
     C_M_alpha: Linear approximation to increase in moment with aoa

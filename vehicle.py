@@ -24,16 +24,18 @@ delta_el = 0.0
 # Dummy definition of coeff
 # Properly defined should come from curve fitting
 # The current values are close, but just placeholders
-C_L_0 = 0.1
-C_L_alpha = 0.05
-C_L_delta_E = 0.0002
-C_M_0 = -0.005
-C_M_alpha = -0.005
-C_M_delta_E = -4e-5
-C_D_0 = 0.005
-K_CD = 0.02
+C_L_0 = math.degrees(0.1)
+C_L_alpha = math.degrees(0.05)
+C_L_delta_E = math.degrees(0.0002)
+C_M_0 = math.degrees(-0.005)
+C_M_alpha = math.degrees(-0.005)
+C_M_delta_E = math.degrees(-4e-5)
+C_D_0 = math.degrees(0.005)
+K_CD = math.degrees(0.02)
 
-
+# future:
+# from curve_fit import find_coefficients
+# C_L_0 = find_coefficients("C_L_0")
 
 
 # Command for manoeuvre
