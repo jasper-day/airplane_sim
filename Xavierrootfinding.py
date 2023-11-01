@@ -22,14 +22,14 @@ def minimizing_function(V, gamma):
     f: function of alpha
     """
     W = find_weight()
+
     def f(alpha):
         L = find_lift(V, _C_L(alpha))
         D = find_drag(V, _C_D(alpha))
         M = find_moment(V, _C_M(alpha))
         return -L*math.cos(alpha) - D*math.sin(alpha) + W*math.cos(alpha + gamma)
     return f
-def 
-W = find_weight()  
+
 
 
 def _delta_E(alpha):
@@ -44,13 +44,8 @@ def _C_D(alpha):
 def _C_M(alpha):
     return find_C_M(alpha, _delta_E(alpha))
 
-
-def f(alpha):
-        L = find_lift(V, _C_L(alpha))
-        D = find_drag(V, _C_D(alpha))
-        M = find_moment(V, _C_M(alpha))
-        return -L*math.cos(alpha) - D*math.sin(alpha) + W*math.cos(alpha + gamma)
-        return f
+V = 100
+W = find_weight()
 
 def equation (alpha,L,D,W,gamma):
     term_1 = find_lift(V, _C_L(alpha)) * np.cos(alpha)
@@ -77,7 +72,7 @@ def newton_raphson(L, D , W , gamma , alpha_initial=0.0, max_interations=1000, t
             return alpha_new
         
 
-gamma = np.pi/3
+gamma = 5
 
 a = newton_raphson(L, D, W, gamma)
 print(f"Alpha in radians: {a}")
