@@ -8,6 +8,8 @@ Created on Fri Oct 20 14:14:16 2023
 
 import numpy as np
 import math
+from aero_analytical_build_ToBeCompleted import CM_0, CM_alpha,CM_delta
+
 
 def equation (alpha,L,D,W,gamma):
     term_1 = -L * np.cos(alpha)
@@ -167,3 +169,9 @@ M =3
 gamma = np.pi/3
 a = newton_raphson(L, D, W, gamma)
 print(f"Alpha in radians: {a}")
+
+#choosing the best value for alpha
+actual_alpha = approx_phi 
+#finding delta_e
+delta_e = -(CM_0 + CM_alpha*actual_alpha)/CM_delta
+print(delta_e)
