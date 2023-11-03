@@ -5,7 +5,7 @@
 
 import numpy as np
 
-def rk_integrate(U_0, X, f, t):
+def rk_integrate(f, U_0, X, t):
     # Write code that integrates U through the time
     """
     Given initial conditions U_0 (state array), and an array of time values,
@@ -24,7 +24,7 @@ def rk_integrate(U_0, X, f, t):
     U[0] = U_0 # fill in with initial conditions given by root finding
     # loop rk4_step for every time value
     for i in range(len(dt)):
-        U[i+1] = rk4_step(U[i],X[i],f,t[i],dt[i])
+        U[i+1] = rk4_step(f,U[i],X[i],t[i],dt[i])
     return U
 
 def rk4_generator(U_0, f, dt):
@@ -48,11 +48,11 @@ def rk4_generator(U_0, f, dt):
         yield U_curr
         # Take one step forward in time
         t += dt
-        U_next = rk4_step(U_curr, f, t, dt)
+        U_next = rk4_step(f, U_curr, [0,0], t, dt)
         U_curr = U_next
 
 
-def rk4_step(U_n, X_n, f, t, dt):
+def rk4_step(f, U_n, X_n, t, dt):
     # RK4 algorithm (programming for computations, p. 254)
     # We have dU_dt = f(U, t) as our differential equation
     # We want to find U_n_1
@@ -77,5 +77,16 @@ def rk4_step(U_n, X_n, f, t, dt):
     U_bar_n_1 = U_n + dt * f_hat_midpoint
     f_bar_n_1 = f(U_bar_n_1, X_n, t + dt)
     # Simpson's rule
-    return dt/6 * (f_n + 2 * f_hat_midpoint + 2 * f_twiddle_midpoint + f_bar_n_1)
+    return U_n + dt/6 * (f_n + 2 * f_hat_midpoint + 2 * f_twiddle_midpoint + f_bar_n_1)
 
+if __name__=="__main__":
+    # test with simple harmonic oscillator
+    def f(U, _X, _t):
+        return np.array([U[1], -U[0]])
+    U_0 = np.array([1,0])
+    t = np.linspace(0, 10, 100)
+    X = np.zeros_like(t)
+    U = rk_integrate(f, U_0, X, t)
+    import matplotlib.pyplot as plt
+    plt.plot(t, U)
+    plt.show()
