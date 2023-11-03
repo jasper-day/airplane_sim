@@ -136,29 +136,29 @@ if __name__ == "__main__":
     pprint(result_secant)
 
 #plot 3d graph to determine ranges of V and gamma
-v_p = np.linspace(0, 200, 400)
-gamma_p = np.linspace(-math.pi/2, math.pi/2, 400)
-params = [(v_p, gamma_p)]
-alpha_p = np.zeros((400, 400))
-for j in range(400):
-    for i in range(400):
-        f = minimizing_function(v_p[i], gamma_p[j])
-        alpha_temp = secant(f,-1,2,25)
-        if alpha_temp is not None:
-            alpha_value = alpha_temp['solution']
-            if -16*(np.pi/180) < alpha_value < 20*(np.pi/180):
-                alpha_p[i, j] = alpha_value
-                
+    v_p = np.linspace(0, 200, 400)
+    gamma_p = np.linspace(-math.pi/2, math.pi/2, 400)
+    params = [(v_p, gamma_p)]
+    alpha_p = np.zeros((400, 400))
+    for j in range(400):
+        for i in range(400):
+            f = minimizing_function(v_p[i], gamma_p[j])
+            alpha_temp = secant(f,-1,2,25)
+            if alpha_temp is not None:
+                alpha_value = alpha_temp['solution']
+                if -16*(np.pi/180) < alpha_value < 20*(np.pi/180):
+                    alpha_p[i, j] = alpha_value
+                    
 
 
 
-V_p, Gamma_p = np.meshgrid(v_p,gamma_p)
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
-surf = ax.plot_surface(V_p, Gamma_p, alpha_p, cmap='viridis')
-ax.set_xlabel('V')
-ax.set_ylabel('Gamma')
-ax.set_zlabel('Alpha')
+    V_p, Gamma_p = np.meshgrid(v_p,gamma_p)
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    surf = ax.plot_surface(V_p, Gamma_p, alpha_p, cmap='viridis')
+    ax.set_xlabel('V')
+    ax.set_ylabel('Gamma')
+    ax.set_zlabel('Alpha')
 
-plt.show()
+    plt.show()
 # plot alpha vs params for each parameter     
