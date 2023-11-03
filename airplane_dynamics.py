@@ -13,7 +13,7 @@ import math
 from env import gravity, air_density
 from vehicle import Sref, cbar, acMass, inertia_yy
 # eventually replace these with curve-fit values
-from vehicle import C_D_0, C_L_0, C_L_alpha, C_L_delta_E, C_M_0, C_M_alpha, C_M_delta_E, K_CD
+from curve_fit import C_D_0, C_L_0, C_L_alpha, C_L_delta_el, C_M_0, C_M_alpha, C_M_delta_el, K_C_D
 
 def degrees(alpha):
     """ Convert degrees to radians """
@@ -45,22 +45,23 @@ def get_velocity(u_B, w_B):
     """
     return math.sqrt(u_B**2 + w_B**2)
 
-def find_C_L(alpha, delta_E, C_L_0=C_L_0, C_L_alpha=C_L_alpha, C_L_delta_E=C_L_delta_E):
+def find_C_L(alpha, delta_el, C_L_0=C_L_0, C_L_alpha=C_L_alpha, 
+C_L_delta_el=C_L_delta_el):
     """
     Finds the coefficient of lift, given the inputs:
     Input:
-    delta_E: Elevator angle
+    delta_el: Elevator angle
     alpha: Angle of attack
     Default:
     C_L_0: coefficient of lift at zero angle of attack, zero elevator
     C_L_alpha: linear approximation to increase in lift with angle of attack
-    C_L_delta_E: linear approximation to increase in lift with elevator angle
+    C_L_delta_el: linear approximation to increase in lift with elevator angle
     Output:
     C_L: total coefficient of lift
     """
-    return C_L_0 + C_L_alpha*alpha + C_L_delta_E*delta_E
+    return C_L_0 + C_L_alpha*alpha + C_L_delta_el*delta_el
 
-def find_C_D(C_L, C_D_0 = C_D_0, K = K_CD):
+def find_C_D(C_L, C_D_0 = C_D_0, K = K_C_D):
     """
     Finds the coefficient of drag.
     Input:
@@ -71,20 +72,20 @@ def find_C_D(C_L, C_D_0 = C_D_0, K = K_CD):
     """
     return C_D_0 + K*C_L**2
 
-def find_C_M(alpha, delta_E, C_M_0=C_M_0, C_M_alpha=C_M_alpha, C_M_delta_E=C_M_delta_E):
+def find_C_M(alpha, delta_el, C_M_0=C_M_0, C_M_alpha=C_M_alpha, C_M_delta_el=C_M_delta_el):
     """
     Finds the moment coefficient.
     Input:
     alpha: Angle of attack (rad)
-    delta_E: Elevator angle (rad)
+    delta_el: Elevator angle (rad)
     Default:
     C_M_0: Zero angle-of-attack moment coefficient
     C_M_alpha: Linear approximation to increase in moment with aoa
-    C_M_delta_E: Linear approximation to increase in moment with delta_E
+    C_M_delta_el: Linear approximation to increase in moment with delta_el
     Output:
     C_M: Total moment coefficient
     """
-    return C_M_0 + C_M_alpha * alpha + C_M_delta_E * delta_E
+    return C_M_0 + C_M_alpha * alpha + C_M_delta_el * delta_el
 
 
 def find_lift(V, C_L, Sref=Sref, rho=air_density):
@@ -150,7 +151,7 @@ def dU_dt(U, X, _t):
     U: state array   
     U = [x_B, u_B, z_B, w_B, theta, q]
     X: command array 
-    X = [delta_E, thrust]
+    X = [delta_el, thrust]
     t: time
     Output:
     dU_dt: change in state array 
@@ -165,7 +166,7 @@ def dU_dt(U, X, _t):
     U[5] = q (angular velocity, d(theta)/dt)
     """
     [x_B, u_B, z_B, w_B, theta, q] = U
-    [delta_E, thrust] = X
+    [delta_el, thrust] = X
     # Identity relations
     xdot_B = u_B
     zdot_B = w_B
@@ -174,9 +175,9 @@ def dU_dt(U, X, _t):
     alpha = angle_of_attack(u_B, w_B)
     V = velocity(u_B, w_B)
     # Find flight coefficients
-    C_L = find_C_L(alpha, delta_E)
+    C_L = find_C_L(alpha, delta_el)
     C_D = find_C_D(C_L)
-    C_M = find_C_M(alpha, delta_E)
+    C_M = find_C_M(alpha, delta_el)
     # Find forces
     lift = find_lift(V, C_L)
     drag = find_drag(V, C_D)

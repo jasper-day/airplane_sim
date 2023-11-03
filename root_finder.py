@@ -5,7 +5,7 @@
 
 from airplane_dynamics import find_lift, find_drag, find_moment, find_weight, \
     find_C_L, find_C_D, find_C_M
-from vehicle import C_M_0, C_M_alpha, C_M_delta_E
+from curve_fit import C_M_0, C_M_alpha, C_M_delta_el
 import math
 import numpy as np
 from mpl_toolkits import mplot3d
@@ -20,17 +20,17 @@ plt.ioff()
 # as intermediate results in calculating the lift, drag, and moment
 # at equilibrium given alpha.
 
-def find_delta_E(alpha):
-    return - (C_M_0 + C_M_alpha * alpha) / C_M_delta_E
+def find_delta_el(alpha):
+    return - (C_M_0 + C_M_alpha * alpha) / C_M_delta_el
 
 def _C_L(alpha):
-    return find_C_L(alpha, find_delta_E(alpha))
+    return find_C_L(alpha, find_delta_el(alpha))
 
 def _C_D(alpha):
     return find_C_D(_C_L(alpha))
 
 def _C_M(alpha):
-    return find_C_M(alpha, find_delta_E(alpha))
+    return find_C_M(alpha, find_delta_el(alpha))
 
 
 def minimizing_function(V, gamma):
@@ -63,8 +63,8 @@ def find_system(V, gamma):
     D = find_drag(V, _C_D(alpha))
     W = find_weight()
     T = D * math.cos(alpha) + W * math.sin(alpha + gamma) - L * math.sin(alpha)
-    delta_E = find_delta_E(alpha)
-    return {"alpha": alpha, "delta_E": delta_E, "Thrust": T}
+    delta_el = find_delta_el(alpha)
+    return {"alpha": alpha, "delta_el": delta_el, "Thrust": T}
     
 
 def secant(f,a,b,N):
@@ -136,61 +136,29 @@ if __name__ == "__main__":
     pprint(result_secant)
 
 #plot 3d graph to determine ranges of V and gamma
-v_p = np.linspace(0, 200, 400)
-gamma_p = np.linspace(-math.pi/2, math.pi/2, 400)
-
-params = [(v_p, gamma_p)]
-alpha_p = np.zeros((400, 400))
-for j in range(400):
-    for i in range(400):
-        f = minimizing_function(v_p[i], gamma_p[j])
-        alpha_temp = secant(f,-1,2,25)
-        if alpha_temp is not None:
-            alpha_value = alpha_temp['solution']
-            if -16*(np.pi/180) < alpha_value < 20*(np.pi/180):
-                alpha_p[i] = alpha_value
-y=[]
-x=[]
-
-# Create an empty list to store legend labels
-legend_labels = []
-
-# Loop over V values with gamma in the range -0.5 to 0.5
-for i in range(400):
-    V = v_p[i]
-    for gamma in np.arange(-0.01, 0.01, 0.01):  # Gamma in the range -0.5 to 0.5 with a step of 0.01
-        system_data = find_system(V, gamma)
-        y_value = system_data['Thrust']
-        y.append(y_value)  # Append y value to the list
-        x.append(V)  # Append x value to the list
-        # Create a legend label based on the current gamma value
-        legend_labels.append(f'gamma = {gamma:.2f}')
-
-# Plot the data with legends for each gamma value
-for i in range(0, len(x), 400):  # Split data into segments for each gamma value
-    plt.plot(x[i:i+400], y[i:i+400], label=legend_labels[i])  # Set legend label for the segment
-
-plt.plot(x, y, label='gamma = 0.05')
-plt.xlabel('V')
-plt.ylabel('Thrust')
-plt.title('Thrust vs. V')
-
-# Add a legend to the plot
-plt.legend()
-
-plt.show()
-
-'''
-plt.show()
-V_p, Gamma_p = np.meshgrid(v_p,gamma_p)
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
-surf = ax.plot_surface(V_p, Gamma_p, alpha_p, cmap='viridis')
-ax.set_xlabel('V')
-ax.set_ylabel('Gamma')
-ax.set_zlabel('Alpha') '''
+    v_p = np.linspace(0, 200, 400)
+    gamma_p = np.linspace(-math.pi/2, math.pi/2, 400)
+    params = [(v_p, gamma_p)]
+    alpha_p = np.zeros((400, 400))
+    for j in range(400):
+        for i in range(400):
+            f = minimizing_function(v_p[i], gamma_p[j])
+            alpha_temp = secant(f,-1,2,25)
+            if alpha_temp is not None:
+                alpha_value = alpha_temp['solution']
+                if -16*(np.pi/180) < alpha_value < 20*(np.pi/180):
+                    alpha_p[i, j] = alpha_value
+                    
 
 
 
+    V_p, Gamma_p = np.meshgrid(v_p,gamma_p)
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    surf = ax.plot_surface(V_p, Gamma_p, alpha_p, cmap='viridis')
+    ax.set_xlabel('V')
+    ax.set_ylabel('Gamma')
+    ax.set_zlabel('Alpha')
 
+    plt.show()
 # plot alpha vs params for each parameter     
