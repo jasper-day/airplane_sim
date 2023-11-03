@@ -5,7 +5,7 @@
 
 from airplane_dynamics import find_lift, find_drag, find_moment, find_weight, \
     find_C_L, find_C_D, find_C_M
-from vehicle import C_M_0, C_M_alpha, C_M_delta_E
+from curve_fit import C_M_0, C_M_alpha, C_M_delta_el
 import math
 import numpy as np
 from mpl_toolkits import mplot3d
@@ -20,17 +20,17 @@ plt.ioff()
 # as intermediate results in calculating the lift, drag, and moment
 # at equilibrium given alpha.
 
-def find_delta_E(alpha):
-    return - (C_M_0 + C_M_alpha * alpha) / C_M_delta_E
+def find_delta_el(alpha):
+    return - (C_M_0 + C_M_alpha * alpha) / C_M_delta_el
 
 def _C_L(alpha):
-    return find_C_L(alpha, find_delta_E(alpha))
+    return find_C_L(alpha, find_delta_el(alpha))
 
 def _C_D(alpha):
     return find_C_D(_C_L(alpha))
 
 def _C_M(alpha):
-    return find_C_M(alpha, find_delta_E(alpha))
+    return find_C_M(alpha, find_delta_el(alpha))
 
 
 def minimizing_function(V, gamma):
@@ -63,8 +63,8 @@ def find_system(V, gamma):
     D = find_drag(V, _C_D(alpha))
     W = find_weight()
     T = D * math.cos(alpha) + W * math.sin(alpha + gamma) - L * math.sin(alpha)
-    delta_E = find_delta_E(alpha)
-    return {"alpha": alpha, "delta_E": delta_E, "Thrust": T}
+    delta_el = find_delta_el(alpha)
+    return {"alpha": alpha, "delta_el": delta_el, "Thrust": T}
     
 
 def secant(f,a,b,N):

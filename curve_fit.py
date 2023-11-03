@@ -5,8 +5,53 @@
 import numpy as np
 import math
 # import data to fit curves
-from aero_table import CD, CL, CM, CL_el, CM_el, alpha, delta_el
 import matplotlib.pyplot as plt
+
+def linear_fit(test_vals, measurements):
+    """
+    Least squares linear fit of measurements to test values
+    Returns:
+    x: np.array([linear_coeff, offset])
+    """
+    const_row = np.ones_like(test_vals)
+    A = np.array([test_vals, const_row]).T
+    b = measurements
+    # (A.T @ A) @ x = A.T @ b
+    x = np.linalg.solve(A.T @ A, A.T @ b)
+    return x
+
+def linear_fit_no_offset(test_vals, measurements):
+    """
+    Least squares linear fit through zero
+    """
+    A = test_vals
+    b = measurements
+    # A.T @ A @ x = A.T @ b (scalars)
+    x= A.T @ b / (A.T @ A)
+    return x
+
+def quadratic_fit(test_vals, measurements):
+    """
+    Least squares quadratic fit of measurements to test values
+    Returns:
+    x: np.array([quadratic_coeff, offset])
+    """
+    const_row = np.ones_like(test_vals)
+    A = np.array([(test_vals**2), const_row]).T
+    b = measurements
+    # (A.T @ A) @ x = A.T @ b
+    x = np.linalg.solve(A.T @ A, A.T @ b)
+    return x
+
+# Define coefficients for plane based on experimental values
+
+from aero_table import CD, CL, CM, CL_el, CM_el, alpha, delta_el
+
+C_L_alpha, C_L_0 = linear_fit(np.radians(alpha), CL)
+C_L_delta_el = linear_fit_no_offset(np.radians(delta_el), CL_el)
+C_M_alpha, C_M_0 = linear_fit(np.radians(alpha),CM)
+C_M_delta_el = linear_fit_no_offset(np.radians(delta_el),CM_el)
+K_C_D, C_D_0 = quadratic_fit(CL, CD)
 
 def _plot_curve_fit_helper(ax, xscatter, yscatter, xline, yline, linelabel=None, xlabel=None, ylabel=None):
     ax.scatter(xscatter, yscatter, label='Data')
