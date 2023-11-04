@@ -61,13 +61,13 @@ class AlphaGraph(QWidget):
         # Add the widget to the layout
         self.layout.addWidget(self.canvas)
 
-class MainWindow(QMainWindow):
+class Page_Alpha(QMainWindow):
     # The MainWindow holds everything.
     # Here I coded everything by hand (with the help of Copilot), 
     # but in the future it would be more efficient to use pyside6-designer.exe
     # to design the layouts.
     def __init__(self, parent=None):
-        super(MainWindow, self).__init__(parent)
+        super(Page_Alpha, self).__init__(parent)
         self.setWindowTitle("Aero Table")
         self.resize(1200, 900)
         self.alpha_table = AlphaTable()
@@ -87,6 +87,6 @@ class MainWindow(QMainWindow):
         
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    mainWin = MainWindow()
+    mainWin = Page_Alpha()
     mainWin.show()
     sys.exit(app.exec())
