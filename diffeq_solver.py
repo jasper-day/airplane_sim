@@ -11,9 +11,10 @@ def rk_integrate(f, U_0, X, t):
     Given initial conditions U_0 (state array), and an array of time values,
     returns an array with the state at each time value [U_0, U_1, ... U_n]
     Input:
+    f: function such that dU_dt = f(U, X, t)
     U_0: 1-dimensional array of initial conditions
     X: 2-dimensional array of commands across time
-    f: function such that dU_dt = f(U, X, t)
+    t: 1-dimensional array of time values
     Output:
     U: 2-dimensional array of state at each moment in time
     """

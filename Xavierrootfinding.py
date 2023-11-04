@@ -7,7 +7,7 @@ Created on Mon Oct 16 12:25:58 2023
 """
 from airplane_dynamics import find_lift, find_drag, find_moment, find_weight, \
       find_C_L, find_C_D, find_C_M
-from vehicle import C_M_0, C_M_alpha, C_M_delta_E
+from curve_fit import C_M_0, C_M_alpha, C_M_delta_el
 import math
 import numpy as np
 from sympy import symbols, diff
@@ -15,7 +15,8 @@ from sympy import symbols, diff
 
 
 def _delta_E(alpha):
-    return - (C_M_0 + C_M_alpha * alpha) / C_M_delta_E
+    return - (C_M_0 + C_M_alpha * alpha) / C_M_delta_el
+
 
 def _C_L(alpha):
     return find_C_L(alpha, _delta_E(alpha))
