@@ -20,9 +20,10 @@ class AlphaTable(QTableWidget):
     # Here we present the relation between angle of attack and various coefficients
     def __init__(self, parent=None):
         super(AlphaTable, self).__init__(parent)
-        self.setColumnCount(len(alpha))
-        self.setRowCount(4)
-        self.setVerticalHeaderLabels(["alpha", "CD", "CL", "CM"])
+        # self.resize(400, 500)
+        self.setColumnCount(4)
+        self.setHorizontalHeaderLabels(["alpha", "CD", "CL", "CM"])
+        self.setRowCount(len(alpha))
         self.setAlternatingRowColors(True)
         for i in range(len(alpha)):
             for j in range(4):
@@ -33,9 +34,9 @@ class DeltaTable(QTableWidget):
     # Here we present the relation between elevator angle and various coefficients
     def __init__(self, parent=None):
         super(DeltaTable, self).__init__(parent)
-        self.setColumnCount(len(delta_el))
-        self.setRowCount(3)
-        self.setVerticalHeaderLabels(["delta_el", "CL_el", "CM_el"])
+        self.setColumnCount(3)
+        self.setHorizontalHeaderLabels(["delta_el", "CL_el", "CM_el"])
+        self.setRowCount(len(delta_el))
         self.setAlternatingRowColors(True)
         for i in range(len(delta_el)):
             for j in range(3):
@@ -45,7 +46,7 @@ class AlphaGraph(QWidget):
     # Matplotlib graphs can be widgets too.
     def __init__(self, parent=None):
         super(AlphaGraph, self).__init__(parent)
-        self.resize(400, 300)
+        # self.resize(400, 300)
         # Figures contain axes, which plot data
         self.figure = Figure()
         # canvases contain figures and are Qt Widgets
@@ -64,6 +65,7 @@ class AlphaGraph(QWidget):
         self.ax1.legend()
         self.ax2.legend()
         self.ax3.legend()
+        Figure.tight_layout(self.figure)
         self.layout = QVBoxLayout(self)
         # Add the widget to the layout
         self.layout.addWidget(self.canvas)
@@ -71,7 +73,6 @@ class AlphaGraph(QWidget):
 class DeltaGraph(QWidget):
     def __init__(self, parent=None):
         super(DeltaGraph, self).__init__(parent)
-        self.resize(400, 300)
         self.figure = Figure()
         self.canvas = FigureCanvas(self.figure)
         self.ax1 = self.figure.add_subplot(121)
@@ -83,6 +84,7 @@ class DeltaGraph(QWidget):
         self.ax2.set_xlabel("Elevator Deflection")
         self.ax1.legend()
         self.ax2.legend()
+        Figure.tight_layout(self.figure)
         self.layout = QVBoxLayout(self)
         self.layout.addWidget(self.canvas)
 
@@ -94,7 +96,7 @@ class MainWindow(QMainWindow):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setWindowTitle("Aero Table")
-        self.resize(800, 600)
+        self.resize(1200, 900)
         self.alpha_table = AlphaTable()
         self.delta_table = DeltaTable()
         self.alpha_graph = AlphaGraph()
@@ -105,6 +107,12 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self._main)
         # nested layout
         layout = QGridLayout(self._main)
+        layout.setColumnMinimumWidth(0,425)
+        layout.setColumnMinimumWidth(1,900)
+        # layout.setRowMinimumHeight(0,150)
+        layout.setRowMinimumHeight(0,400)
+        # layout.setRowMinimumHeight(2,120)
+        layout.setRowMinimumHeight(1,400)
         layout.addWidget(self.alpha_table, 0,0)
         layout.addWidget(self.alpha_graph, 0,1)
         layout.addWidget(self.delta_table, 1,0)
