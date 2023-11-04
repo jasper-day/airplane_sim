@@ -7,6 +7,7 @@ from PySide6.QtWidgets import (QApplication, QMainWindow,
                                QPushButton, QDialog, QLineEdit,
                                QVBoxLayout, QTableWidget, QTableWidgetItem, QWidget, QGridLayout)
 from PySide6.QtCore import Slot
+# from PySide6 import uic
 from aero_table import alpha, delta_el, CD, CL, CM, CL_el, CM_el
 from matplotlib.backends.backend_qtagg import FigureCanvas
 from matplotlib.figure import Figure
@@ -93,6 +94,43 @@ class MainWindow(QMainWindow):
     # Here I coded everything by hand (with the help of Copilot), 
     # but in the future it would be more efficient to use pyside6-designer.exe
     # to design the layouts.
+    # def __init__(self, parent=None):
+    #     super(MainWindow, self).__init__(parent)
+        # self.setWindowTitle("Aero Table")
+        # self.resize(1200, 900)
+        # self.alpha_table = AlphaTable()
+        # self.delta_table = DeltaTable()
+        # self.alpha_graph = AlphaGraph()
+        # self.delta_graph = DeltaGraph()
+        # self.statusBar().showMessage("Ready")
+        # # add tables to main window
+        # self._main = QWidget()
+        # self.setCentralWidget(self._main)
+        # # nested layout
+        # layout = QGridLayout(self._main)
+        # layout.setColumnMinimumWidth(0,425)
+        # layout.setColumnMinimumWidth(1,900)
+        # # layout.setRowMinimumHeight(0,150)
+        # layout.setRowMinimumHeight(0,400)
+        # # layout.setRowMinimumHeight(2,120)
+        # layout.setRowMinimumHeight(1,400)
+        # layout.addWidget(self.alpha_table, 0,0)
+        # layout.addWidget(self.alpha_graph, 0,1)
+        # layout.addWidget(self.delta_table, 1,0)
+        # layout.addWidget(self.delta_graph, 1,1)
+
+    def __init__(self, parent=None):
+        super(MainWindow, self).__init__(parent)
+        # uic.loadUi('pages.ui', self)
+        self.first = Homepage()
+        self.stackedWidget.addWidget(self.first)
+        self.first.change_btn.clicked.connect(self.go_to_second)
+        # self.second = Second()
+        # self.stackedWidget.addWidget(self.second)
+        # self.second.change_btn.clicked.connect(self.go_to_first)
+
+class Homepage(QWidget):
+
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setWindowTitle("Aero Table")
@@ -116,7 +154,7 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.alpha_table, 0,0)
         layout.addWidget(self.alpha_graph, 0,1)
         layout.addWidget(self.delta_table, 1,0)
-        layout.addWidget(self.delta_graph, 1,1)
+        layout.addWidget(self.delta_graph, 1,1)    
         
 if __name__ == "__main__":
     app = QApplication(sys.argv)
