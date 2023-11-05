@@ -97,10 +97,11 @@ class Widget1(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-        # QWidget.startmenu(self)
         self.setWindowTitle("SimuPlane™ 0.1.0")
+
         # Define a label for displaying GIF
         self.label = QtWidgets.QLabel(self)
+        self.setMinimumSize(QtCore.QSize(1200, 800))
 
         # Integrate QMovie to the label and initiate the GIF
         self.movie = QMovie("p51_3d.gif")
@@ -111,8 +112,10 @@ class Widget1(QWidget):
         self.label.setStyleSheet("QLabel {background-color: white;}")
 
         self.button = QPushButton("Start", self)
+        self.button.setMinimumSize(QtCore.QSize(500, 80))
         self.button.clicked.connect(self.switch_widget)
         self.button1 = QPushButton("Quit",self)
+        self.button1.setMinimumSize(QtCore.QSize(500, 80))
 
         self.layout = QGridLayout()
         self.layout.addWidget(self.label, 0, 0)
@@ -128,16 +131,8 @@ class Widget1(QWidget):
 class Widget2(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
-        # layout = QVBoxLayout()
-        # label = QLabel("Welcome to Widget 2!")
-        # layout.addWidget(label)
-        # button = QPushButton("Switch to Widget 1")
-        # button.clicked.connect(self.switch_widget)
-        # layout.addWidget(button)
-        # self.setLayout(layout)
 
-        self.setWindowTitle("QTabWidget Example")
-        self.resize(1440, 900)
+        self.setWindowTitle("Data menu")
         # Create a top-level layout
         layout = QVBoxLayout()
         self.setLayout(layout)
@@ -146,9 +141,6 @@ class Widget2(QWidget):
         tabs.addTab(self.alphaTabUI(), "Alpha")
         tabs.addTab(self.delta_elTabUI(), "Delta_el")
         layout.addWidget(tabs)
-
-        # self.button = QPushButton("Back to Menu", self)
-        # self.button.clicked.connect(self.switch_widget)
 
 
     def alphaTabUI(self):
