@@ -15,6 +15,7 @@ from PyQt6.QtWidgets import (
     QVBoxLayout,
     QGridLayout,
     QStackedLayout,
+    QStackedWidget,
     QWidget,
     QTableWidget,
     QTableWidgetItem,
@@ -100,33 +101,12 @@ class DeltaGraph(QWidget):
         Figure.tight_layout(self.figure)
         self.layout = QVBoxLayout(self)
         self.layout.addWidget(self.canvas)
+ 
+class Widget1(QWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
 
-class Mainmenu(QWidget):
-    
-    def setupUI(self, Main):
-
-        Main.setObjectName("SimuPlane™ 0.1.0")
-        Main.setFixedSize(1440, 900)
-
-        self.width = 1440
-        self.height = 900
-
-        self.resize(self.width, self.height)
-
-        self.menu = QStackedLayout()
-
-        self.mainmenu = QWidget()
-        self.datamenu = QWidget()
-
-        self.mainmenuUI()
-        self.datamenuUI()
-
-        self.menu.addWidget(self.mainmenu)
-        self.menu.addWidget(self.datamenu)
-
-    def mainmenuUI(self):
-
-        QWidget.startmenu(self)
+        # QWidget.startmenu(self)
         self.setWindowTitle("SimuPlane™ 0.1.0")
         # Define a label for displaying GIF
         self.label = QtWidgets.QLabel(self)
@@ -140,20 +120,31 @@ class Mainmenu(QWidget):
         self.label.setStyleSheet("QLabel {background-color: white;}")
 
         self.button = QPushButton("Start", self)
+        self.button.clicked.connect(self.switch_widget)
         self.button1 = QPushButton("Quit",self)
 
         self.layout = QGridLayout()
         self.layout.addWidget(self.label, 0, 0)
         self.layout.addWidget(self.button, 1, 0)
         self.layout.addWidget(self.button1, 2, 0)
-        
 
         self.setLayout(self.layout)
-        self.show()
+ 
+    def switch_widget(self):
+        stacked_widget.setCurrentIndex(1)
+ 
+ 
+class Widget2(QWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        # layout = QVBoxLayout()
+        # label = QLabel("Welcome to Widget 2!")
+        # layout.addWidget(label)
+        # button = QPushButton("Switch to Widget 1")
+        # button.clicked.connect(self.switch_widget)
+        # layout.addWidget(button)
+        # self.setLayout(layout)
 
-
-    def datamenuUI(self):
-        super().__init__()
         self.setWindowTitle("QTabWidget Example")
         self.resize(1440, 900)
         # Create a top-level layout
@@ -165,15 +156,21 @@ class Mainmenu(QWidget):
         tabs.addTab(self.delta_elTabUI(), "Delta_el")
         layout.addWidget(tabs)
 
+        # self.button = QPushButton("Back to Menu", self)
+        # self.button.clicked.connect(self.switch_widget)
+
 
     def alphaTabUI(self):
         """Create the alpha page UI."""
         self.alpha_graph = AlphaGraph()
         self.alpha_table = AlphaTable()
+        self.button = QPushButton("Back to Menu", self)
+        self.button.clicked.connect(self.switch_widget)
         alphaTab = QWidget()
         layout = QGridLayout()
         layout.addWidget(self.alpha_graph,0,0)
         layout.addWidget(self.alpha_table,1,0)
+        layout.addWidget(self.button,2,0)
         alphaTab.setLayout(layout)
         return alphaTab
 
@@ -181,130 +178,33 @@ class Mainmenu(QWidget):
         """Create the del_el page UI."""
         self.delta_table = DeltaTable()
         self.delta_graph = DeltaGraph()
+        self.button = QPushButton("Back to Menu", self)
+        self.button.clicked.connect(self.switch_widget)
         delta_elTab = QWidget()
         layout = QGridLayout()
         layout.addWidget(self.delta_graph,0,0)
         layout.addWidget(self.delta_table,1,0)
+        layout.addWidget(self.button,2,0)
         delta_elTab.setLayout(layout)
         return delta_elTab
-
-class MainWindow(QMainWindow,Mainmenu):
-
-    def __init__(self):
-        super(MainWindow, self).__init__()
-
-        self.setWindowTitle("SimuPlane™ 0.1.0")
-
-        self.setupUI(self)
-
-        self.button.clicked.connect(self.???)
-        self.button1.clicked.connect(self.datamenu)
-
-    def activate_tab_1(self):
-        self.stacklayout.setCurrentIndex(0)
-
-    def activate_tab_2(self):
-        self.stacklayout.setCurrentIndex(1)
-
-
-if __name__ == "__main__":
-    app = QtWidgets.QApplication(sys.argv)
-    window = MainWindow()
-    window.show()
-    sys.exit(app.exec())
-
-
-# class Window(QWidget):
-#     def __init__(self):
-#         super().__init__()
-#         self.setWindowTitle("QTabWidget Example")
-#         self.resize(1440, 900)
-#         # Create a top-level layout
-#         layout = QVBoxLayout()
-#         self.setLayout(layout)
-#         # Create the tab widget with two tabs
-#         tabs = QTabWidget()
-#         tabs.addTab(self.alphaTabUI(), "Alpha")
-#         tabs.addTab(self.delta_elTabUI(), "Delta_el")
-#         layout.addWidget(tabs)
-
-
-#     def alphaTabUI(self):
-#         """Create the alpha page UI."""
-#         self.alpha_graph = AlphaGraph()
-#         self.alpha_table = AlphaTable()
-#         alphaTab = QWidget()
-#         layout = QGridLayout()
-#         layout.addWidget(self.alpha_graph,0,0)
-#         layout.addWidget(self.alpha_table,1,0)
-#         alphaTab.setLayout(layout)
-#         return alphaTab
-
-#     def delta_elTabUI(self):
-#         """Create the del_el page UI."""
-#         self.delta_table = DeltaTable()
-#         self.delta_graph = DeltaGraph()
-#         delta_elTab = QWidget()
-#         layout = QGridLayout()
-#         layout.addWidget(self.delta_graph,0,0)
-#         layout.addWidget(self.delta_table,1,0)
-#         delta_elTab.setLayout(layout)
-#         return delta_elTab
-
-# if __name__ == "__main__":
-#     app = QApplication(sys.argv)
-#     window = Window()
-#     window.show()
-#     sys.exit(app.exec())
-
-
-
-# Code for main menu tab
-# tabs.addTab(self.MainTabUI(MainWindow=0), "Main Menu")
-
-#     def MainTabUI(self, MainWindow):
-#         """Create the main page UI."""
-#         MainWindow.setObjectName("MainWindow")
-#         MainWindow.resize(250, 250)
-#         self.centralwidget = QtWidgets.QWidget(MainWindow)
-#         self.centralwidget.setObjectName("centralwidget")
-#         maintab = QWidget()
-#         layout = QGridLayout()
-#         label = QLabel()
-#         movie = QMovie('p51_3d.gif')
-#         label.setMovie(movie)
-#         movie.start()
-#         return maintab
-
-
-
-
-
-
-# class Mainmenu(QWidget):
-    
-#     def startmenu(self):
-#         QWidget.startmenu(self)
-#         self.setWindowTitle("SimuPlane™ 0.1.0")
-#         # Define a label for displaying GIF
-#         self.label = QtWidgets.QLabel(self)
-
-#         # Integrate QMovie to the label and initiate the GIF
-#         self.movie = QMovie("p51_3d.gif")
-#         self.label.setMovie(self.movie)
-#         self.movie.start()
-
-#         self.label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter | QtCore.Qt.AlignmentFlag.AlignVCenter)
-#         self.label.setStyleSheet("QLabel {background-color: white;}")
-
-#         self.button = QPushButton("Start", self)
-#         self.button1 = QPushButton("Quit",self)
-
-#         self.layout = QGridLayout()
-#         self.layout.addWidget(self.label, 0, 0)
-#         self.layout.addWidget(self.button, 1, 0)
-#         self.layout.addWidget(self.button1, 2, 0)
         
-
-#         self.setLayout(self.layout)
-#         self.show()
+ 
+    def switch_widget(self):
+        stacked_widget.setCurrentIndex(0)
+ 
+ 
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+ 
+    # Create the QStackedWidget and add the two widgets to it
+    stacked_widget = QStackedWidget()
+    widget1 = Widget1()
+    widget2 = Widget2()
+    stacked_widget.addWidget(widget1)
+    stacked_widget.addWidget(widget2)
+ 
+    # Show the first widget
+    stacked_widget.setCurrentIndex(0)
+    stacked_widget.show()
+ 
+    sys.exit(app.exec())

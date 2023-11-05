@@ -1,15 +1,17 @@
 import sys
+from PyQt6 import QtWidgets
+from PyQt6 import QtCore
+from PyQt6.QtGui import QMovie
 from PyQt6.QtWidgets import (
     QApplication,
-    QMainWindow,
-    QCheckBox,
+    QPushButton,
     QTabWidget,
+    QStackedWidget,
     QVBoxLayout,
     QGridLayout,
     QWidget,
     QTableWidget,
     QTableWidgetItem,
-    QLabel,
 )
 from aero_table import alpha, delta_el, CD, CL, CM, CL_el, CM_el
 from matplotlib.backends.backend_qtagg import FigureCanvas
@@ -91,9 +93,49 @@ class DeltaGraph(QWidget):
         self.layout = QVBoxLayout(self)
         self.layout.addWidget(self.canvas)
 
-class Window(QWidget):
-    def __init__(self):
-        super().__init__()
+class Widget1(QWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
+        # QWidget.startmenu(self)
+        self.setWindowTitle("SimuPlane™ 0.1.0")
+        # Define a label for displaying GIF
+        self.label = QtWidgets.QLabel(self)
+
+        # Integrate QMovie to the label and initiate the GIF
+        self.movie = QMovie("p51_3d.gif")
+        self.label.setMovie(self.movie)
+        self.movie.start()
+
+        self.label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter | QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.label.setStyleSheet("QLabel {background-color: white;}")
+
+        self.button = QPushButton("Start", self)
+        self.button.clicked.connect(self.switch_widget)
+        self.button1 = QPushButton("Quit",self)
+
+        self.layout = QGridLayout()
+        self.layout.addWidget(self.label, 0, 0)
+        self.layout.addWidget(self.button, 1, 0)
+        self.layout.addWidget(self.button1, 2, 0)
+
+        self.setLayout(self.layout)
+ 
+    def switch_widget(self):
+        stacked_widget.setCurrentIndex(1)
+ 
+ 
+class Widget2(QWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        # layout = QVBoxLayout()
+        # label = QLabel("Welcome to Widget 2!")
+        # layout.addWidget(label)
+        # button = QPushButton("Switch to Widget 1")
+        # button.clicked.connect(self.switch_widget)
+        # layout.addWidget(button)
+        # self.setLayout(layout)
+
         self.setWindowTitle("QTabWidget Example")
         self.resize(1440, 900)
         # Create a top-level layout
@@ -105,15 +147,21 @@ class Window(QWidget):
         tabs.addTab(self.delta_elTabUI(), "Delta_el")
         layout.addWidget(tabs)
 
+        # self.button = QPushButton("Back to Menu", self)
+        # self.button.clicked.connect(self.switch_widget)
+
 
     def alphaTabUI(self):
         """Create the alpha page UI."""
         self.alpha_graph = AlphaGraph()
         self.alpha_table = AlphaTable()
+        self.button = QPushButton("Back to Menu", self)
+        self.button.clicked.connect(self.switch_widget)
         alphaTab = QWidget()
         layout = QGridLayout()
         layout.addWidget(self.alpha_graph,0,0)
         layout.addWidget(self.alpha_table,1,0)
+        layout.addWidget(self.button,2,0)
         alphaTab.setLayout(layout)
         return alphaTab
 
@@ -121,15 +169,33 @@ class Window(QWidget):
         """Create the del_el page UI."""
         self.delta_table = DeltaTable()
         self.delta_graph = DeltaGraph()
+        self.button = QPushButton("Back to Menu", self)
+        self.button.clicked.connect(self.switch_widget)
         delta_elTab = QWidget()
         layout = QGridLayout()
         layout.addWidget(self.delta_graph,0,0)
         layout.addWidget(self.delta_table,1,0)
+        layout.addWidget(self.button,2,0)
         delta_elTab.setLayout(layout)
         return delta_elTab
-
-if __name__ == "__main__":
+        
+ 
+    def switch_widget(self):
+        stacked_widget.setCurrentIndex(0)
+ 
+ 
+if __name__ == '__main__':
     app = QApplication(sys.argv)
-    window = Window()
-    window.show()
+ 
+    # Create the QStackedWidget and add the two widgets to it
+    stacked_widget = QStackedWidget()
+    widget1 = Widget1()
+    widget2 = Widget2()
+    stacked_widget.addWidget(widget1)
+    stacked_widget.addWidget(widget2)
+ 
+    # Show the first widget
+    stacked_widget.setCurrentIndex(0)
+    stacked_widget.show()
+ 
     sys.exit(app.exec())
