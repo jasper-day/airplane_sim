@@ -8,11 +8,7 @@ from airplane_dynamics import find_lift, find_drag, find_moment, find_weight, \
 from curve_fit import C_M_0, C_M_alpha, C_M_delta_el
 import math
 import numpy as np
-from mpl_toolkits import mplot3d
-from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
-# Disable Matplotlib interactive mode
-plt.ioff()
 
 
 # Functions prefixed with _ (underscore) are *private functions* 
@@ -53,7 +49,54 @@ def minimizing_function(V, gamma):
     return f
 
 
-from Niketarootfinding import bisection
+def bisection(f,a,b,N):
+        '''Approximate solution of f(x)=0 on interval [a,b] by the secant method.
+
+        Parameters
+        ----------
+        f : function
+            The function for which we are trying to approximate a solution f(x)=0.
+        a,b : numbers
+            The interval in which to search for a solution. The function returns
+            None if f(a)*f(b) >= 0 since a solution is not guaranteed.
+        N : (positive) integer
+            The number of iterations to implement.
+
+        Returns
+        -------
+        m_N : number
+            The estimate of the root determined by:
+                m_n = (a_n + b_n)/2
+                where a_n is the lower bound, and b_n is the higher bound.
+            The initial interval [a_0,b_0] is given by [a,b]. If f(m_n) == 0
+            for some intercept m_n then the function returns this solution.
+            If all signs of values f(a_n), f(b_n) and f(m_n) are the same at any
+            iterations, the bisection method fails and return None. '''
+# Check if a and b bound a root
+        ea = 0
+        if f(a)*f(b) >= 0:
+            raise ValueError("a and b do not bound a root")
+        a_n = a
+        b_n = b
+        m_n_old=0
+
+        for n in range(1,N+1):
+            m_n = (a_n + b_n)/2
+            ea = abs((m_n - m_n_old )/(m_n))
+            f_m_n = f(m_n)
+            if f(a_n)*f_m_n < 0:
+                a_n = a_n
+                b_n = m_n
+                m_n_old = m_n
+            elif f(b_n)*f_m_n < 0:
+                a_n = m_n
+                b_n = b_n
+                m_n_old = m_n
+            elif f_m_n == 0:
+                return {"solution": m_n, "success": True, "error": 0}
+            else:
+                return {"solution": None, "success": False}
+        return {"solution": (a_n + b_n)/2, "success": True, "error": ea}
 
 def find_system(V, gamma):
     f = minimizing_function(V, gamma)
@@ -67,58 +110,53 @@ def find_system(V, gamma):
     return {"alpha": alpha, "delta_el": delta_el, "Thrust": T}
     
 
-def secant(f,a,b,N):
-    '''Approximate solution of f(x)=0 on interval [a,b] by the secant method.
+def plot_thrust_vs_velocity(gamma_values, V_range):
+    thrust_values = []
+    alpha_values = [] 
+    for gamma in gamma_values:
+        thrust_data = []
+        alpha_data = []
+        for V in V_range:
+            result = find_system(V, gamma)
+            if -0.27925 < result["alpha"] < 0.2094395 :
+                thrust_data.append(result["Thrust"])
+        thrust_values.append(thrust_data)
 
-        Parameters
-        ----------
-        f : function
-            The function for wherein we are trying to approximate a solution f(x)=0.
-        a,b : numbers
-            The interval in which to search for a solution.
-        N : (positive) integer
-            The number of iterations to carry out.
+    for i, gamma in enumerate(gamma_values):
+        plt.subplot(121)
+        plt.plot(V_range, thrust_values[i], label=f'Gamma = {gamma}')
+    
+    
+    plt.xlabel('Velocity (V)')
+    plt.ylabel('Thrust')
+    plt.legend()
+    plt.title('Thrust vs. Velocity for Different Gamma Values')
+    plt.grid(True)
 
-        Returns
-        -------
-        m_N : number
-            The x intercept of the secant line on the the Nth interval
-                m_n = a_n - f(a_n)*(b_n - a_n)/(f(b_n) - f(a_n))
-            The initial interval [a_0,b_0] is given by [a,b]. If f(m_n) == 0
-            for some intercept m_n then the function returns this solution.
-            If all signs of values f(a_n), f(b_n) and f(m_n) are the same at any
-            iterations, the secant method fails and return None.
-        #condition where secant method fails'''
-    if f(a)*f(b) >= 0:
-        #raise ValueError(f"Secant method fails: f({a}) = {f(a)} and f({b}) = {f(b)}")
-        return None 
-    #defining variables
-    a_n = a
-    b_n = b
-    m_n_old=0
-    #for loop to iterate the secant process for the number of iterations specified
-    for n in range(1,N+1):
-        m_n = a_n - f(a_n)*(b_n - a_n)/(f(b_n) - f(a_n))
-        f_m_n = f(m_n)
-        ea = abs((m_n - m_n_old )/(m_n))
-        if f(a_n)*f_m_n < 0:
-            a_n = a_n
-            b_n = m_n
-            m_n_old = m_n
-        elif f(b_n)*f_m_n < 0:
-            a_n = m_n
-            b_n = b_n
-            m_n_old = m_n
-        elif f_m_n == 0:
-            return {"solution": m_n, "success": True, "error": 0}
-        # elif -0.5 < f_m_n < 0.5:
-        # I don't think you want this
-            # return {"solution": m_n, "success": True, "error": ea}
-        # else:
-            # print("Secant method fails.")
-            # return None
-    return {"solution": a_n - f(a_n)*(b_n - a_n)/(f(b_n) - f(a_n)),"success": True, "error": ea}
+    
 
+def plot_delta_el_vs_velocity(gamma_values, V_range):
+    delta_el_values = []
+    for gamma in gamma_values:
+        delta_el_data = []
+        for V in V_range:
+            result = find_system(V, gamma)
+            if -0.27925 < result["alpha"] < 0.2094395 :
+                delta_el_data.append(result["delta_el"])
+        delta_el_values.append(delta_el_data)
+
+    for i, gamma in enumerate(gamma_values):
+        plt.subplot(122)
+        plt.plot(V_range, delta_el_values[i], label=f'Gamma = {gamma}')
+  
+    
+    plt.xlabel('Velocity (V)')
+    plt.ylabel('Elevator Deflection (delta_el)')
+    plt.legend()
+    plt.title('Elevator Deflection vs. Velocity for Different Gamma Values')
+    plt.grid(True)
+    
+    
 
 if __name__ == "__main__":
     from pprint import pprint
@@ -129,36 +167,13 @@ if __name__ == "__main__":
 
     f = minimizing_function(V, gamma)
 
-    #secant method
-    result_secant = secant(f,-1,2,25)
-    #output the solution and error of the secant method in decimal
-    from pprint import pprint
-    pprint(result_secant)
+    # Example: Plot thrust vs. velocity for different gamma values
+    V_range = np.linspace(75, 150, 400)
+    n = 5
+    gamma_values = np.linspace(0.01, 1, 10)
 
-#plot 3d graph to determine ranges of V and gamma
-    v_p = np.linspace(0, 200, 400)
-    gamma_p = np.linspace(-math.pi/2, math.pi/2, 400)
-    params = [(v_p, gamma_p)]
-    alpha_p = np.zeros((400, 400))
-    for j in range(400):
-        for i in range(400):
-            f = minimizing_function(v_p[i], gamma_p[j])
-            alpha_temp = secant(f,-1,2,25)
-            if alpha_temp is not None:
-                alpha_value = alpha_temp['solution']
-                if -16*(np.pi/180) < alpha_value < 20*(np.pi/180):
-                    alpha_p[i, j] = alpha_value
-                    
-
-
-
-    V_p, Gamma_p = np.meshgrid(v_p,gamma_p)
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
-    surf = ax.plot_surface(V_p, Gamma_p, alpha_p, cmap='viridis')
-    ax.set_xlabel('V')
-    ax.set_ylabel('Gamma')
-    ax.set_zlabel('Alpha')
+    plot_thrust_vs_velocity(gamma_values, V_range)  # Add this line to plot thrust vs. velocity
+    plot_delta_el_vs_velocity(gamma_values, V_range)
+    
 
     plt.show()
-# plot alpha vs params for each parameter     

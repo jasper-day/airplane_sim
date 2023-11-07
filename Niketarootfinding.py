@@ -149,13 +149,13 @@ if __name__ == "__main__":
     f = minimizing_function(V, gamma)
 
     #secant method
-    result_secant = secant(f,-1,2,25)
+    result_secant = secant(f,0,1,25)
     #output the solution and error of the secant method in decimal
     from pprint import pprint
     pprint(result_secant)
 
     #bisection method
-    result_bisection = bisection(f,-1,2,100)
+    result_bisection = bisection(f,0,1,100)
     #output the solution and error of the bisection method in decimal
     pprint(result_bisection)
 
