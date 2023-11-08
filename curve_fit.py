@@ -68,8 +68,12 @@ def plot_curve_fit(ax, xdata, ydata, degree, linelabel=None, xlabel=None, ylabel
     _plot_curve_fit_helper(ax, xdata, ydata, xline, yline, linelabel=linelabel, xlabel=xlabel, ylabel=ylabel)
 
 def fit_curve(xdata, ydata, degree):
-    # fixme!
-    return np.polyfit(xdata,ydata, degree)
+    if degree == 1:
+        return linear_fit(xdata, ydata)
+    elif degree == 2:
+        coeffs = quadratic_fit(xdata, ydata)
+        coeffs = [coeffs[0], 0, coeffs[1]]
+        return coeffs
 
 if __name__ == "__main__":
     # Print results for validation
