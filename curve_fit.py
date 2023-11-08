@@ -72,6 +72,16 @@ def fit_curve(xdata, ydata, degree):
     return np.polyfit(xdata,ydata, degree)
 
 if __name__ == "__main__":
+    # Print results for validation
+    print(f"""C_D_0: {C_D_0}
+K_C_D: {K_C_D}
+C_L_0: {C_L_0}
+C_L_alpha: {C_L_alpha}
+C_L_delta_el: {C_L_delta_el}
+C_M_0: {C_M_0}
+C_M_alpha: {C_M_alpha}
+C_M_delta_el: {C_M_delta_el}""")
+    # plot results for validation
     fig,axs = plt.subplots(3,2)
     plot_curve_fit(axs[0,0], alpha, CD, 2, xlabel=r"\alpha", ylabel=r"CD")
     plot_curve_fit(axs[1,0], alpha, CL, 1, xlabel=r"\alpha", ylabel=r"CL")
