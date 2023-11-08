@@ -4,8 +4,10 @@
 # Method: Runge-Kutta
 
 import numpy as np
+from pprint import pprint
+from airplane_dynamics import find_system_parameters
 
-def rk_integrate(f, U_0, X, t):
+def rk4_integrate(f, U_0, X, t):
     # Write code that integrates U through the time
     """
     Given initial conditions U_0 (state array), and an array of time values,
@@ -26,6 +28,7 @@ def rk_integrate(f, U_0, X, t):
     # loop rk4_step for every time value
     for i in range(len(dt)):
         U[i+1] = rk4_step(f,U[i],X[i],t[i],dt[i])
+        pprint(find_system_parameters(U[i + 1]))
     return U
 
 def rk4_generator(U_0, f, dt):
@@ -87,7 +90,7 @@ if __name__=="__main__":
     U_0 = np.array([1,0])
     t = np.linspace(0, 10, 100)
     X = np.zeros_like(t)
-    U = rk_integrate(f, U_0, X, t)
+    U = rk4_integrate(f, U_0, X, t)
     import matplotlib.pyplot as plt
     plt.plot(t, U)
     plt.show()

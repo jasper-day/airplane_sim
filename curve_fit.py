@@ -68,18 +68,23 @@ def plot_curve_fit(ax, xdata, ydata, degree, linelabel=None, xlabel=None, ylabel
     _plot_curve_fit_helper(ax, xdata, ydata, xline, yline, linelabel=linelabel, xlabel=xlabel, ylabel=ylabel)
 
 def fit_curve(xdata, ydata, degree):
-    # fixme!
-    return np.polyfit(xdata,ydata, degree)
+    if degree == 1:
+        return linear_fit(xdata, ydata)
+    elif degree == 2:
+        coeffs = quadratic_fit(xdata, ydata)
+        coeffs = [coeffs[0], 0, coeffs[1]]
+        return coeffs
 
 if __name__ == "__main__":
     # Print results for validation
+    from airplane_dynamics import deg2rad
     print(f"""C_D_0: {C_D_0}
 K_C_D: {K_C_D}
 C_L_0: {C_L_0}
-C_L_alpha: {C_L_alpha}
-C_L_delta_el: {C_L_delta_el}
+C_L_alpha: {deg2rad(C_L_alpha)}
+C_L_delta_el: {deg2rad(C_L_delta_el)}
 C_M_0: {C_M_0}
-C_M_alpha: {C_M_alpha}
+C_M_alpha: {deg2rad(C_M_alpha)}
 C_M_delta_el: {C_M_delta_el}""")
     # plot results for validation
     fig,axs = plt.subplots(3,2)

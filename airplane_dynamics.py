@@ -9,21 +9,21 @@ All angles in radians
 """
 
 import math
-
+import numpy as np
 from env import gravity, air_density
 from vehicle import Sref, cbar, acMass, inertia_yy
 # eventually replace these with curve-fit values
 from curve_fit import C_D_0, C_L_0, C_L_alpha, C_L_delta_el, C_M_0, C_M_alpha, C_M_delta_el, K_C_D
 
-def degrees(alpha):
-    """ Convert degrees to radians """
+def rad2deg(alpha):
+    """ Convert radians to degrees """
     return 180 / math.pi * alpha
 
-def radians(alpha):
-    """ Convert radians to degrees """
+def deg2rad(alpha):
+    """ Convert degrees to radians """
     return alpha * math.pi / 180
 
-def get_angle_of_attack(u_B, w_B):
+def find_angle_of_attack(u_B, w_B):
     """
     Given body-relative x and z velocities, calculates the angle of attack
     Input:
@@ -44,6 +44,23 @@ def get_velocity(u_B, w_B):
     V: total velocity
     """
     return math.sqrt(u_B**2 + w_B**2)
+
+def get_body_velocities(V, alpha):
+    u_B = V * math.cos(alpha)
+    w_B = V * math.sin(alpha)
+    return {"u_B": u_B, "w_B": w_B}
+
+def earth2body(x_E, z_E, theta):
+    "Rotates global x and z coordinates to a body-relative frame"
+    x_B = x_E * math.cos(theta) - z_E * math.sin(theta)
+    z_B = x_E * math.sin(theta) + z_E * math.cos(theta)
+    return {"x": x_B, "z": z_B}
+
+def body2earth(x_B, z_B, theta):
+    "Rotates body-relative x and z coordinates to a global frame"
+    x_E =  x_B * math.cos(theta) + z_B * math.sin(theta)
+    z_E = -x_B * math.sin(theta) + z_B * math.cos(theta)
+    return {"x": x_E, "z": z_E}
 
 def find_C_L(alpha, delta_el, C_L_0=C_L_0, C_L_alpha=C_L_alpha, 
 C_L_delta_el=C_L_delta_el):
@@ -112,7 +129,7 @@ def find_weight(m=acMass, g=gravity):
     """
     return m*g
 
-def dU_b_dt(L,D,alpha,T,q,w_B, m=acMass):
+def dU_b_dt(L,D,alpha,T,q,w_B, theta, m=acMass):
     """
     Given flight parameters, returns the body-relative x acceleration.
     """
@@ -120,13 +137,13 @@ def dU_b_dt(L,D,alpha,T,q,w_B, m=acMass):
     # Force components
     lift = (L * math.sin(alpha))/m
     drag = -(D * math.cos(alpha))/m
-    weight = -(W * sin(theta))/m
+    weight = -(W * math.sin(theta))/m
     thrust = T/m # thrust is aligned with the body x-axis
     # Accelerations
     euler_acceleration = -q * w_B
     return lift + drag + weight + thrust + euler_acceleration
 
-def dW_b_dt(L,D,alpha,q,u_B, m=acMass):
+def dW_b_dt(L,D,alpha,q,u_B, theta, m=acMass):
     """
     Given flight parameters, returns the body-relative z acceleration.
     """
@@ -134,7 +151,7 @@ def dW_b_dt(L,D,alpha,q,u_B, m=acMass):
     # Force components
     lift = (L * math.cos(alpha))/m
     drag = -(D * math.sin(alpha))/m
-    weight = W * cos(theta)/m
+    weight = W * math.cos(theta)/m
     # Accelerations
     euler_acceleration = q * u_B
     return lift + drag + weight + euler_acceleration
@@ -170,10 +187,10 @@ def dU_dt(U, X, _t):
     # Identity relations
     xdot_B = u_B
     zdot_B = w_B
-    thetadot_B = q
+    thetadot = q
     # Calculate angle of attack and velocity
-    alpha = angle_of_attack(u_B, w_B)
-    V = velocity(u_B, w_B)
+    alpha = find_angle_of_attack(u_B, w_B)
+    V = get_velocity(u_B, w_B)
     # Find flight coefficients
     C_L = find_C_L(alpha, delta_el)
     C_D = find_C_D(C_L)
@@ -183,8 +200,48 @@ def dU_dt(U, X, _t):
     drag = find_drag(V, C_D)
     moment = find_moment(V, C_M)
     # Find accelerations
-    udot_B = dU_b_dt(lift, drag, alpha, thrust, q, w_B)
-    wdot_B = dW_b_dt(lift, drag, alpha, q, u_B)
-    qdot = dq_dt(M)
+    udot_B = dU_b_dt(lift, drag, alpha, thrust, q, w_B, theta)
+    wdot_B = dW_b_dt(lift, drag, alpha, q, u_B, theta)
+    qdot = dq_dt(moment)
     # dU_dt
-    return [xdot_B, udot_B, zdot_B, wdot_B, thetadot_B, qdot_B]
+    return np.array([xdot_B, udot_B, zdot_B, wdot_B, thetadot, qdot])
+
+def find_U_0(system, altitude):
+    """ Find the state array U given an altitude and the system """
+    body_velocities = get_body_velocities(system["V"], system["alpha"])
+    theta = system["alpha"] + system["gamma"]
+    z_E = -altitude # earth-relative z-position
+    x_E = 0 # earth-relative x-position
+    body_frame = earth2body(x_E, z_E, theta)
+    q = 0
+    return np.array([
+        body_frame["x"],
+        body_velocities["u_B"],
+        body_frame["z"],
+        body_velocities["w_B"],
+        theta,
+        q
+    ])
+
+def find_system_parameters(U):
+    [x_B, u_B, z_B, w_B, theta, q] = U
+    earth_frame = body2earth(x_B, z_B, theta)
+    alpha = find_angle_of_attack(u_B, w_B)
+    earth_velocities = body2earth(u_B, w_B, theta)
+    return {
+        "x_B": x_B,
+        "u_B": u_B,
+        "z_B": z_B,
+        "w_B": w_B,
+        "theta": theta,
+        "alpha": alpha,
+        "alpha (deg)": rad2deg(alpha),
+        "gamma": theta - alpha,
+        "gamma (deg)": rad2deg(theta - alpha),
+        "q": q,
+        "x_E": earth_frame["x"],
+        "u_E": earth_velocities["x"],
+        "z_E": earth_frame["z"],
+        "w_E": earth_velocities["z"],
+        "altitude": -earth_frame["z"],
+    }
