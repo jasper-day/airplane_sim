@@ -15,12 +15,15 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
     QGridLayout,
     QStackedLayout,
+    QFormLayout,
     QStackedWidget,
     QWidget,
     QTableWidget,
     QTableWidgetItem,
     QLabel,
     QSizePolicy,
+    QComboBox,
+    
 )
 from aero_table import alpha, delta_el, CD, CL, CM, CL_el, CM_el
 from matplotlib.backends.backend_qtagg import FigureCanvas
@@ -29,6 +32,7 @@ import numpy as np
 
 alpha_table = np.array([alpha, CD, CL, CM])
 delta_el_table = np.array([delta_el, CL_el, CM_el])
+
 
 class AlphaTable(QTableWidget):
     # QTableWidget presents tabular data in a spreadsheet-like fashion.
@@ -104,10 +108,8 @@ class DeltaGraph(QWidget):
  
 class Widget1(QWidget):
     def __init__(self, parent=None):
-        super().__init__(parent)
-
-        # QWidget.startmenu(self)
-        self.setWindowTitle("SimuPlane™ 0.1.0")
+        super(Widget1, self).__init__(parent)
+        self.resize(1200,800)
         # Define a label for displaying GIF
         self.label = QtWidgets.QLabel(self)
 
@@ -120,7 +122,7 @@ class Widget1(QWidget):
         self.label.setStyleSheet("QLabel {background-color: white;}")
 
         self.button = QPushButton("Start", self)
-        self.button.clicked.connect(self.switch_widget)
+        # self.button.clicked.connect(self.switch_widget)
         self.button1 = QPushButton("Quit",self)
 
         self.layout = QGridLayout()
@@ -130,21 +132,13 @@ class Widget1(QWidget):
 
         self.setLayout(self.layout)
  
-    def switch_widget(self):
-        stacked_widget.setCurrentIndex(1)
+    # def switch_widget(self):
+    #     stacked_widget.setCurrentIndex(1)
  
  
 class Widget2(QWidget):
     def __init__(self, parent=None):
-        super().__init__(parent)
-        # layout = QVBoxLayout()
-        # label = QLabel("Welcome to Widget 2!")
-        # layout.addWidget(label)
-        # button = QPushButton("Switch to Widget 1")
-        # button.clicked.connect(self.switch_widget)
-        # layout.addWidget(button)
-        # self.setLayout(layout)
-
+        super(Widget2, self).__init__(parent)
         self.setWindowTitle("QTabWidget Example")
         self.resize(1440, 900)
         # Create a top-level layout
@@ -156,16 +150,13 @@ class Widget2(QWidget):
         tabs.addTab(self.delta_elTabUI(), "Delta_el")
         layout.addWidget(tabs)
 
-        # self.button = QPushButton("Back to Menu", self)
-        # self.button.clicked.connect(self.switch_widget)
-
 
     def alphaTabUI(self):
         """Create the alpha page UI."""
         self.alpha_graph = AlphaGraph()
         self.alpha_table = AlphaTable()
         self.button = QPushButton("Back to Menu", self)
-        self.button.clicked.connect(self.switch_widget)
+        # self.button.clicked.connect(self.switch_widget)
         alphaTab = QWidget()
         layout = QGridLayout()
         layout.addWidget(self.alpha_graph,0,0)
@@ -179,7 +170,7 @@ class Widget2(QWidget):
         self.delta_table = DeltaTable()
         self.delta_graph = DeltaGraph()
         self.button = QPushButton("Back to Menu", self)
-        self.button.clicked.connect(self.switch_widget)
+        # self.button.clicked.connect(self.switch_widget)
         delta_elTab = QWidget()
         layout = QGridLayout()
         layout.addWidget(self.delta_graph,0,0)
@@ -189,22 +180,70 @@ class Widget2(QWidget):
         return delta_elTab
         
  
-    def switch_widget(self):
-        stacked_widget.setCurrentIndex(0)
- 
- 
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
- 
-    # Create the QStackedWidget and add the two widgets to it
-    stacked_widget = QStackedWidget()
-    widget1 = Widget1()
-    widget2 = Widget2()
-    stacked_widget.addWidget(widget1)
-    stacked_widget.addWidget(widget2)
+    # def switch_widget(self):
+    #     stacked_widget.setCurrentIndex(0)
+
+
+class MainWindow(QMainWindow):
+    def __init__(self, parent=None):
+        super(MainWindow, self).__init__(parent)
+        self.setWindowTitle("SimuPlane™ 0.1.0")
+        self.resize(1200, 800)
+        # Create a top level layout
+        layout = QVBoxLayout()
+        self.setLayout(layout)
+        
+        
+        # self.layout = QGridLayout()
+        # self.layout.addWidget(Widget2(self))
+        # self.layout.addWidget(Widget1(self))
+        
+        # Create and connect the combo box to switch between pages
+        self.pageCombo = QComboBox()
+        self.pageCombo.addItems(['Page 1','Page 2'])
+        self.pageCombo.activated.connect(self.switchPage)
+        
+        # Create the stacked layout
+        self.stackedLayout = QStackedLayout()
+        
+        # Create the first page
+        self.page1 = QWidget()
+        self.page1Layout = QVBoxLayout()
+        self.page1Layout.addWidget(Widget1(self))
+        self.page1.setLayout(self.page1Layout)
+        self.stackedLayout.addWidget(self.page1)
+        
+        # Create the second page
+        self.page2 = QWidget()
+        self.page2Layout = QVBoxLayout()
+        self.page2Layout.addWidget(Widget2(self))
+        self.page2.setLayout(self.page1Layout)
+        self.stackedLayout.addWidget(self.page2)
+        
+        # Add the combo box and the stacked layout to the top-level layout
+        layout.addWidget(self.pageCombo)
+        layout.addLayout(self.stackedLayout)
+        
+    def switchPage(self):
+        self.stackedLayout.setCurrentIndex(self.pageCombo.currentIndex())
+
+
+
+if __name__ == "__main__":
+    app = QtWidgets.QApplication(sys.argv)
+    window = MainWindow()
+    window.show()
+    sys.exit(app.exec())
+
+    # widget1 = Widget1()
+    # widget2 = Widget2()
+    # stacked_widget.addWidget(widget1)
+    # stacked_widget.addWidget(widget2)
  
     # Show the first widget
-    stacked_widget.setCurrentIndex(0)
-    stacked_widget.show()
- 
-    sys.exit(app.exec())
+    # stacked_widget.setCurrentIndex(0)
+    # mainWin = MainWindow()
+    # mainWin.show()
+    # sys.exit(app.exec())
+    
+    
