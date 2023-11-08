@@ -73,13 +73,14 @@ def fit_curve(xdata, ydata, degree):
 
 if __name__ == "__main__":
     # Print results for validation
+    from airplane_dynamics import deg2rad
     print(f"""C_D_0: {C_D_0}
 K_C_D: {K_C_D}
 C_L_0: {C_L_0}
-C_L_alpha: {C_L_alpha}
-C_L_delta_el: {C_L_delta_el}
+C_L_alpha: {deg2rad(C_L_alpha)}
+C_L_delta_el: {deg2rad(C_L_delta_el)}
 C_M_0: {C_M_0}
-C_M_alpha: {C_M_alpha}
+C_M_alpha: {deg2rad(C_M_alpha)}
 C_M_delta_el: {C_M_delta_el}""")
     # plot results for validation
     fig,axs = plt.subplots(3,2)

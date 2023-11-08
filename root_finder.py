@@ -107,8 +107,15 @@ def find_system(V, gamma):
     W = find_weight()
     T = D * math.cos(alpha) + W * math.sin(alpha + gamma) - L * math.sin(alpha)
     delta_el = find_delta_el(alpha)
-    return {"alpha": alpha, "delta_el": delta_el, "Thrust": T}
-    
+    return {
+        "alpha": alpha, 
+        "delta_el": delta_el, 
+        "Thrust": T, 
+        "V": V, 
+        "gamma": gamma
+    }
+
+
 
 def plot_thrust_vs_velocity(gamma_values, V_range):
     thrust_values = []
