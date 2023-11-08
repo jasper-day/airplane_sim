@@ -115,18 +115,23 @@ import numpy as np
 import math
 
 from aero_table import CD, CL, CM, CL_el, CM_el, alpha, delta_el
-
+#redefine the varibles to fit the functions
+CD_wing = CD
+CL_wing = CL
+CM_wing = CM
+#change the degree to rad
 alpha = np.array([-16, -12, -8, -4, -2, 0, 2, 4, 8, 12]) * np.pi / 180
 delta_el = np.array([-20, -10, 0, 10, 20]) * np.pi / 180
 
 # solve by np.polyfit
-CL_alpha, CL_0 = np.polyfit(alpha, CL, 1)
+CL_alpha, CL_0 = np.polyfit(alpha, CL_wing, 1)
 CL_delta_E, _ = np.polyfit(delta_el, CL_el, 1)
-CM_alpha, CM_0 = np.polyfit(alpha, CM, 1)
+CM_alpha, CM_0 = np.polyfit(alpha, CM_wing, 1)
 CM_delta_E, _ = np.polyfit(delta_el, CM_el, 1)
-CL = CL  # CL_el almost 0
-K, _, CD_0 = np.polyfit(CL, CD, 2)
+CL = CL_wing  # CL_el almost 0
+K, _, CD_0 = np.polyfit(CL, CD_wing, 2)
 
+#print coefficients
 if __name__ == '__main__':
     print("CL_aplha, CL_0: {}, {}".format(CL_alpha, CL_0))
     print("CL_delta_E: {}".format(CL_delta_E))
