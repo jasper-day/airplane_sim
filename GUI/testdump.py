@@ -1,11 +1,11 @@
 import sys
-from PyQt6 import QtGui
-from PyQt6 import QtWidgets
-from PyQt6 import QtCore
-from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QPalette, QColor, QMovie
+from PySide6 import QtGui
+from PySide6 import QtWidgets
+from PySide6 import QtCore
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QPalette, QColor, QMovie
 from Page_1 import AlphaGraph, AlphaTable, Page_Alpha
-from PyQt6.QtWidgets import (
+from PySide6.QtWidgets import (
     QApplication,
     QPushButton,
     QMainWindow,
