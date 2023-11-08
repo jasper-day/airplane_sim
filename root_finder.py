@@ -151,7 +151,7 @@ def plot_delta_el_vs_velocity(gamma_values, V_range):
   
     
     plt.xlabel('Velocity (V)')
-    plt.ylabel('Elevator Deflection (delta_el)')
+    plt.ylabel('Elevator Deflection (rad)')
     plt.legend()
     plt.title('Elevator Deflection vs. Velocity for Different Gamma Values')
     plt.grid(True)
@@ -160,17 +160,18 @@ def plot_delta_el_vs_velocity(gamma_values, V_range):
 
 if __name__ == "__main__":
     from pprint import pprint
-    pprint(find_system(100, 0.05))
+    pprint(find_system(70, 0.00))
 
-    V = 100
-    gamma = 0.05
+#is this unnecessary
+    #V = 80
+    #gamma = 0.05
 
-    f = minimizing_function(V, gamma)
+    #f = minimizing_function(V, gamma)
 
     # Example: Plot thrust vs. velocity for different gamma values
     V_range = np.linspace(75, 150, 400)
     n = 5
-    gamma_values = np.linspace(0.01, 1, 10)
+    gamma_values = np.linspace(0, 1, 10)
 
     plot_thrust_vs_velocity(gamma_values, V_range)  # Add this line to plot thrust vs. velocity
     plot_delta_el_vs_velocity(gamma_values, V_range)
