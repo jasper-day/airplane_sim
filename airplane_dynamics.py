@@ -12,7 +12,6 @@ import math
 import numpy as np
 from env import gravity, air_density
 from vehicle import Sref, cbar, acMass, inertia_yy
-# eventually replace these with curve-fit values
 from curve_fit import C_D_0, C_L_0, C_L_alpha, C_L_delta_el, C_M_0, C_M_alpha, C_M_delta_el, K_C_D
 
 def rad2deg(alpha):
@@ -24,74 +23,60 @@ def deg2rad(alpha):
     return alpha * math.pi / 180
 
 def find_angle_of_attack(u_B, w_B):
-    """
-    Given body-relative x and z velocities, calculates the angle of attack
+    """Given body-relative x and z velocities, calculates the angle of attack
     Input:
     u_B: body-relative x velocity (m/s)
     w_B: body-relative z velocity (m/s)
     Output:
-    alpha: Angle of attack (rad)
-    """
+    alpha: Angle of attack (rad)"""
     return math.atan2(w_B, u_B)
 
-def get_velocity(u_B, w_B):
-    """
-    Given body-relative x and z velocities, calculates the velocity
-    Input:
-    u_B: body-relative x velocity
-    w_B: body-relative z velocity
-    Output:
-    V: total velocity
-    """
-    return math.sqrt(u_B**2 + w_B**2)
+def get_speed(u, w):
+    """Given x and z velocities, calculates the speed"""
+    return math.sqrt(u**2 + w**2)
 
-def get_body_velocities(V, alpha):
-    u_B = V * math.cos(alpha)
-    w_B = V * math.sin(alpha)
-    return {"u_B": u_B, "w_B": w_B}
+def get_body_velocities(speed, alpha):
+    u_B = speed * math.cos(alpha)
+    w_B = speed * math.sin(alpha)
+    return np.array([u_B, w_B])
 
-def earth2body(x_E, z_E, theta):
+def earth2body(x_E: float, z_E: float, theta):
     "Rotates global x and z coordinates to a body-relative frame"
-    x_B = x_E * math.cos(theta) - z_E * math.sin(theta)
-    z_B = x_E * math.sin(theta) + z_E * math.cos(theta)
-    return {"x": x_B, "z": z_B}
+    rot_arr = np.array([[np.cos(theta), np.sin(theta)],
+                        [-np.sin(theta), np.cos(theta)]])
+    return rot_arr @ np.array([x_E, z_E])
 
-def body2earth(x_B, z_B, theta):
+def body2earth(x_B: float, z_B: float, theta):
     "Rotates body-relative x and z coordinates to a global frame"
-    x_E =  x_B * math.cos(theta) + z_B * math.sin(theta)
-    z_E = -x_B * math.sin(theta) + z_B * math.cos(theta)
-    return {"x": x_E, "z": z_E}
+    rot_arr = np.array([[np.cos(theta), -np.sin(theta)],
+                        [np.sin(theta), np.cos(theta)]])
+    return rot_arr @ np.array([x_B, z_B])
 
 def find_C_L(alpha, delta_el, C_L_0=C_L_0, C_L_alpha=C_L_alpha, 
 C_L_delta_el=C_L_delta_el):
-    """
-    Finds the coefficient of lift, given the inputs:
+    """Finds the coefficient of lift, given angle of attack and elevators
     Input:
-    delta_el: Elevator angle
-    alpha: Angle of attack
+    delta_el: Elevator angle (rad)
+    alpha: Angle of attack (rad)
     Default:
     C_L_0: coefficient of lift at zero angle of attack, zero elevator
     C_L_alpha: linear approximation to increase in lift with angle of attack
     C_L_delta_el: linear approximation to increase in lift with elevator angle
     Output:
-    C_L: total coefficient of lift
-    """
+    C_L: total coefficient of lift"""
     return C_L_0 + C_L_alpha*alpha + C_L_delta_el*delta_el
 
 def find_C_D(C_L, C_D_0 = C_D_0, K = K_C_D):
-    """
-    Finds the coefficient of drag.
+    """Finds the coefficient of drag, given the lift coefficient
     Input:
     C_L: Coefficient of lift
     Default:
     C_D_0: Zero-lift coefficient of drag
-    K: Quadratic factor relating lift and drag
-    """
+    K: Quadratic factor relating lift and drag"""
     return C_D_0 + K*C_L**2
 
 def find_C_M(alpha, delta_el, C_M_0=C_M_0, C_M_alpha=C_M_alpha, C_M_delta_el=C_M_delta_el):
-    """
-    Finds the moment coefficient.
+    """Finds the moment coefficient.
     Input:
     alpha: Angle of attack (rad)
     delta_el: Elevator angle (rad)
@@ -100,39 +85,29 @@ def find_C_M(alpha, delta_el, C_M_0=C_M_0, C_M_alpha=C_M_alpha, C_M_delta_el=C_M
     C_M_alpha: Linear approximation to increase in moment with aoa
     C_M_delta_el: Linear approximation to increase in moment with delta_el
     Output:
-    C_M: Total moment coefficient
-    """
+    C_M: Total moment coefficient"""
     return C_M_0 + C_M_alpha * alpha + C_M_delta_el * delta_el
 
 
-def find_lift(V, C_L, Sref=Sref, rho=air_density):
-    """
-    Finds the lift given the velocity and coefficient of lift
-    """
-    return 1/2 * rho * V**2 * Sref * C_L
+def find_lift(speed, C_L, Sref=Sref, rho=air_density):
+    """Finds the lift given the velocity and coefficient of lift"""
+    return 1/2 * rho * speed**2 * Sref * C_L
 
-def find_drag(V, C_D, Sref=Sref, rho=air_density):
-    """
-    Finds the drag given the velocity and coefficient of drag
-    """
-    return 1/2 * rho * V**2 * Sref * C_D
+def find_drag(speed, C_D, Sref=Sref, rho=air_density):
+    """Finds the drag given the velocity and coefficient of drag"""
+    return 1/2 * rho * speed**2 * Sref * C_D
 
-def find_moment(V, C_M, Sref=Sref, rho=air_density, chord=cbar):
-    """
-    Finds the moment given the velocity and moment coefficient
-    """
-    return 1/2 * rho * V**2 * Sref * chord * C_M
+def find_moment(speed, C_M, Sref=Sref, rho=air_density, chord=cbar):
+    """Finds the moment given the velocity and moment coefficient"""
+    return 1/2 * rho * speed**2 * Sref * chord * C_M
 
 def find_weight(m=acMass, g=gravity):
-    """
-    Finds the weight given the mass and gravity
-    """
+    """Finds the weight given the mass and gravity"""
     return m*g
 
-def dU_b_dt(L,D,alpha,T,q,w_B, theta, m=acMass):
-    """
-    Given flight parameters, returns the body-relative x acceleration.
-    """
+def du_B_dt(L,D,alpha,T,q,w_B, theta, m=acMass):
+    """Given flight parameters, returns the body-relative x acceleration."""
+    # See pdf, page 4
     W = find_weight()
     # Force components
     lift = (L * math.sin(alpha))/m
@@ -143,13 +118,11 @@ def dU_b_dt(L,D,alpha,T,q,w_B, theta, m=acMass):
     euler_acceleration = -q * w_B
     return lift + drag + weight + thrust + euler_acceleration
 
-def dW_b_dt(L,D,alpha,q,u_B, theta, m=acMass):
-    """
-    Given flight parameters, returns the body-relative z acceleration.
-    """
+def dw_B_dt(L,D,alpha,q,u_B, theta, m=acMass):
+    """Given flight parameters, returns the body-relative z acceleration."""
     W = find_weight()
     # Force components
-    lift = (L * math.cos(alpha))/m
+    lift = -(L * math.cos(alpha))/m
     drag = -(D * math.sin(alpha))/m
     weight = W * math.cos(theta)/m
     # Accelerations
@@ -157,13 +130,11 @@ def dW_b_dt(L,D,alpha,q,u_B, theta, m=acMass):
     return lift + drag + weight + euler_acceleration
 
 def dq_dt(M, I_yy=inertia_yy):
-    """
-    Given flight parameters, returns the angular acceleration.
-    """
+    """Given flight parameters, returns the angular acceleration."""
     return M/I_yy
 
-def dU_dt(U, X, _t):
-    """
+def dU_dt(t, U, X):
+    """Find rate of change of the state array.
     Input:
     U: state array   
     U = [x_B, u_B, z_B, w_B, theta, q]
@@ -180,34 +151,51 @@ def dU_dt(U, X, _t):
     U[2] = z_B (body-relative downward location)
     U[3] = w_B (body-relative downward velocity)
     U[4] = theta (angle to the ground)
-    U[5] = q (angular velocity, d(theta)/dt)
-    """
+    U[5] = q (angular velocity, d(theta)/dt)"""
     [x_B, u_B, z_B, w_B, theta, q] = U
-    [delta_el, thrust] = X
+    [delta_el, thrust] = X(t)
     # Identity relations
     xdot_B = u_B
     zdot_B = w_B
     thetadot = q
     # Calculate angle of attack and velocity
     alpha = find_angle_of_attack(u_B, w_B)
-    V = get_velocity(u_B, w_B)
+    speed = get_speed(u_B, w_B)
     # Find flight coefficients
     C_L = find_C_L(alpha, delta_el)
     C_D = find_C_D(C_L)
     C_M = find_C_M(alpha, delta_el)
     # Find forces
-    lift = find_lift(V, C_L)
-    drag = find_drag(V, C_D)
-    moment = find_moment(V, C_M)
+    lift = find_lift(speed, C_L)
+    drag = find_drag(speed, C_D)
+    moment = find_moment(speed, C_M)
     # Find accelerations
-    udot_B = dU_b_dt(lift, drag, alpha, thrust, q, w_B, theta)
-    wdot_B = dW_b_dt(lift, drag, alpha, q, u_B, theta)
+    udot_B = du_B_dt(lift, drag, alpha, thrust, q, w_B, theta)
+    wdot_B = dw_B_dt(lift, drag, alpha, q, u_B, theta)
     qdot = dq_dt(moment)
     # dU_dt
     return np.array([xdot_B, udot_B, zdot_B, wdot_B, thetadot, qdot])
 
+def dU_dt_X_fn(t, U, X_fn, m=acMass, I_yy=inertia_yy):
+    [x_B, u_B, z_B, w_B, theta, q] = U
+    [delta_el, thrust] = X_fn(t)
+    V = np.sqrt(u_B**2 + w_B**2)
+    alpha = math.atan2(w_B,u_B)
+    gamma = theta - alpha
+    CL = find_C_L(alpha, delta_el)
+    L = find_lift(V, CL)
+    CD = find_C_D(CL)
+    D = find_drag(V, CD)
+    CM = find_C_M(alpha, delta_el)
+    M = find_moment(V, CM)
+    W = find_weight()
+    x_accel = du_B_dt(L, D, alpha, thrust, q, w_B, theta)
+    z_accel = dw_B_dt(L, D, alpha, q, u_B, theta)
+    theta_accel = M/I_yy
+    return np.array([u_B, x_accel, w_B, z_accel, q, theta_accel])
+
 def find_U_0(system, altitude):
-    """ Find the state array U given an altitude and the system """
+    """ Find the state array U given an altitude and the system"""
     body_velocities = get_body_velocities(system["V"], system["alpha"])
     theta = system["alpha"] + system["gamma"]
     z_E = -altitude # earth-relative z-position
@@ -215,33 +203,74 @@ def find_U_0(system, altitude):
     body_frame = earth2body(x_E, z_E, theta)
     q = 0
     return np.array([
-        body_frame["x"],
-        body_velocities["u_B"],
-        body_frame["z"],
-        body_velocities["w_B"],
+        body_frame[0],
+        body_velocities[0],
+        body_frame[1],
+        body_velocities[1],
         theta,
         q
     ])
 
 def find_system_parameters(U):
+    "Given a state U, extracts all useful information about the state."
     [x_B, u_B, z_B, w_B, theta, q] = U
-    earth_frame = body2earth(x_B, z_B, theta)
+    [x_E, z_E] = body2earth(x_B, z_B, theta)
     alpha = find_angle_of_attack(u_B, w_B)
-    earth_velocities = body2earth(u_B, w_B, theta)
+    [u_E, w_E] = body2earth(u_B, w_B, theta)
     return {
         "x_B": x_B,
         "u_B": u_B,
         "z_B": z_B,
         "w_B": w_B,
+        "speed": get_speed(u_B, w_B),
         "theta": theta,
+        "theta (deg)": rad2deg(theta),
         "alpha": alpha,
         "alpha (deg)": rad2deg(alpha),
         "gamma": theta - alpha,
         "gamma (deg)": rad2deg(theta - alpha),
         "q": q,
-        "x_E": earth_frame["x"],
-        "u_E": earth_velocities["x"],
-        "z_E": earth_frame["z"],
-        "w_E": earth_velocities["z"],
-        "altitude": -earth_frame["z"],
+        "q (deg/s)": rad2deg(q),
+        "x_E": x_E,
+        "u_E": u_E,
+        "z_E": z_E,
+        "w_E": w_E,
+        "altitude": -z_E,
     }
+
+if __name__ == "__main__":
+    import matplotlib.pyplot as plt
+    from root_finder import find_system
+    from scipy.integrate import solve_ivp
+    from pprint import pprint
+    X1 = [-0.0520, 2755.17]
+    X2 = [-0.0572, 2755.17]
+    X = lambda t: X1 if t < 100 else X2
+    U_0 = find_U_0(find_system(100, 0), 2000)
+    print("initial conditions")
+    pprint(find_system_parameters(U_0))
+    res = solve_ivp(dU_dt,(0,300), U_0, max_step=0.01, args=(X,))
+    pprint(res)
+    t = res['t']
+    Us = res['y'].T
+    params = [find_system_parameters(U) for U in Us]
+    find_param = lambda name: [param[name] for param in params]
+    fig,axs = plt.subplots(4,2)
+    axs[0,0].plot(t, Us[:,1])
+    axs[0,0].set_ylabel("uB")
+    axs[0,1].plot(t, Us[:,3])
+    axs[0,1].set_ylabel("wB")
+    axs[1,0].plot(t[:-2], (np.diff(Us[:,0]) / np.diff(t))[:-1])
+    axs[1,0].set_ylabel("uB (diff)")
+    axs[1,1].plot(t[:-2], (np.diff(Us[:,2]) / np.diff(t))[:-1])
+    axs[1,1].set_ylabel("wb (diff)")
+    axs[2,0].plot(t, find_param("x_B"))
+    axs[2,0].set_ylabel("xB")
+    axs[2,1].plot(t, find_param("z_E"))
+    axs[2,1].set_ylabel("z_E")
+    axs[3,0].plot(t, find_param("z_B"))
+    axs[3,0].set_ylabel("zB")
+    axs[3,1].plot(t, - Us[:,0] * np.sin(Us[:,5]) + Us[:,2] * np.cos(Us[:, 5]))
+    axs[3,1].set_ylabel("altitude")
+    fig.tight_layout()
+    plt.show()

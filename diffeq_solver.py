@@ -4,8 +4,6 @@
 # Method: Runge-Kutta
 
 import numpy as np
-from pprint import pprint
-from airplane_dynamics import find_system_parameters
 
 def rk4_integrate(f, U_0, X, t):
     # Write code that integrates U through the time
@@ -28,39 +26,13 @@ def rk4_integrate(f, U_0, X, t):
     # loop rk4_step for every time value
     for i in range(len(dt)):
         U[i+1] = rk4_step(f,U[i],X[i],t[i],dt[i])
-        pprint(find_system_parameters(U[i + 1]))
     return U
-
-def rk4_generator(U_0, f, dt):
-    # might be useful for some real-time simulations?
-    # I think that we have to put in better control options than having f explicitly depend on time, if we want real-time control.
-    # Not sure how to incorporate live commands, 
-    # and honestly I think that a generator isn't really the way to go here for this situation, but it might be useful for testing
-    """
-    Given initial conditions U_0 and a timestep dt, returns a generator (iterator) of future conditions.
-    Input:
-    U_0: Array of initial conditions
-    f: function such that dU_dt = f(U, t)
-    dt: desired timestep
-    Output:
-    Iterator that continually returns the next state of the system
-    """
-    # Initial conditions
-    t = 0
-    U_curr = U_0
-    while True:
-        yield U_curr
-        # Take one step forward in time
-        t += dt
-        U_next = rk4_step(f, U_curr, [0,0], t, dt)
-        U_curr = U_next
-
 
 def rk4_step(f, U_n, X_n, t, dt):
     # RK4 algorithm (programming for computations, p. 254)
     # We have dU_dt = f(U, t) as our differential equation
     # We want to find U_n_1
-    """
+    """ Take one step forward in time via runge-kutta 4 integration
     Given: 
     U_n (state array)
     X_n (array of commands)
