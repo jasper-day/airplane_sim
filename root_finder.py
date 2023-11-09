@@ -99,6 +99,13 @@ def bisection(f,a,b,N):
         return {"solution": (a_n + b_n)/2, "success": True, "error": ea}
 
 def find_system(V, gamma):
+    """Given velocity and flight path angle, calculates the angle of attack
+    Output:
+    {'alpha': angle of attack
+     'delta_el': elevator inclination
+     'Thrust': Thrust force
+     'V': Airspeed
+     'gamma': flight path angle}"""
     f = minimizing_function(V, gamma)
     res = bisection(f, -math.pi/2 + 0.5, math.pi/2, 1000)
     alpha = res["solution"] if res["success"] else None
