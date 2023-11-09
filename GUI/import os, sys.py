@@ -1,69 +1,113 @@
-import os, sys
-from PySide6.QtWidgets import (QMessageBox, QStackedWidget, 
-QMainWindow, QWidget, QHBoxLayout, QPushButton, QLabel)
-from PySide6 import QtCore, QtGui, QtWidgets
+import sys
+from PySide6 import QtWidgets
+from PySide6 import QtCore
+from PySide6.QtGui import QMovie
+from PySide6.QtWidgets import (
+    QApplication,
+    QComboBox,
+    QFormLayout,
+    QLineEdit,
+    QStackedLayout,
+    QVBoxLayout,
+    QGridLayout,
+    QWidget,
+    QPushButton,
+)
 
 
-class MainWindow(QMainWindow):
+class Widget1(QWidget):
     def __init__(self, parent=None):
-        super(MainWindow, self).__init__(parent)
-        self.central_widget = QStackedWidget()
-        self.setCentralWidget(self.central_widget)
-        login_widget = LoginWidget(self)
-        login_widget.button.clicked.connect(self.login)
-        self.central_widget.addWidget(login_widget)
+        super(Widget1, self).__init__(parent)
+        self.resize(1200,800)
+        # Define a label for displaying GIF
+        self.label = QtWidgets.QLabel(self)
 
-        search_widget = searchWidget(self)
-        search_widget.returnButton.clicked.connect(self.returning) #The returnButton from searchWidget(self) connects to the function returning(self), but the returning function does not return to the home menu.
-        self.central_widget.addWidget(search_widget)
-    def login(self):
-        layout = QHBoxLayout()
-        self.button = QPushButton('Login')
-        layout.addWidget(self.button)
-        self.setLayout(layout)
-        logged_in_widget = searchWidget(self)
-        search_widget = searchWidget(self)
-        self.central_widget.addWidget(logged_in_widget) # This part is key
-        self.central_widget.setCurrentWidget(logged_in_widget)
-    def returning(self):
-      # Here what im doing is restoring everything like it was before in the home menu, that's why I put the "Login" button again (in line 31).
-      # This is not very optimized but i put it all again so that its more understandable. I can also, instead of all this code (from line 30 to 37), put a call to the login function like this: login(self) but I prefer the first way.
-        layout = QHBoxLayout()
-        self.button = QPushButton('Login')
-        layout.addWidget(self.button)
-        self.setLayout(layout)
-        logged_in_widget = searchWidget(self)
-        search_widget = searchWidget(self)
-        self.central_widget.addWidget(logged_in_widget)
-        self.central_widget.setCurrentWidget(logged_in_widget)
-      # So, i got the buttons there they look fine, but the return button doesn't do anything, while the "login" button (that switchs to the searchWidget) does work.
-       
+        # Integrate QMovie to the label and initiate the GIF
+        self.movie = QMovie("p51_3d.gif")
+        self.label.setMovie(self.movie)
+        self.movie.start()
+
+        self.label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter | QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.label.setStyleSheet("QLabel {background-color: white;}")
+
+        self.button = QPushButton("Start", self)
+        # self.button.clicked.connect(self.switch_widget)
+        self.button1 = QPushButton("Quit",self)
+
+        self.layout = QGridLayout()
+        self.layout.addWidget(self.label, 0, 0)
+        self.layout.addWidget(self.button, 1, 0)
+        self.layout.addWidget(self.button1, 2, 0)
+
+        self.setLayout(self.layout)
 
 
-class LoginWidget(QWidget):
-    def __init__(self, parent=None):
-        super(LoginWidget, self).__init__(parent)
-        layout = QHBoxLayout()
-        self.button = QPushButton('Login')
-        self.label = QLabel('You are on the menu now')
-        layout.addWidget(self.button)
+
+class Window(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("QStackedLayout Example")
+        # Create a top-level layout
+        layout = QVBoxLayout(self)
+        # Create and connect the combo box to switch between pages
+        # self.pageCombo = QComboBox()
+        # self.pageCombo.addItems(["Page 1", "Page 2"])
+        # self.pageCombo.activated.connect(self.switchPage)
+        
+        self.label = QtWidgets.QLabel(self)
+
+        # Integrate QMovie to the label and initiate the GIF
+        self.movie = QMovie("p51_3d.gif")
+        self.label.setMovie(self.movie)
+        self.movie.start()
+
+        self.label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter | QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.label.setStyleSheet("QLabel {background-color: white;}")
+        
+        self.button1 = QPushButton("Start", self)
+        self.button1.clicked.connect(self.switchtoPage1)
+        self.button2 = QPushButton("Home",self)
+        self.button2.clicked.connect(self.switchtoPage0)
+        
         layout.addWidget(self.label)
+        layout.addWidget(self.button1)
+        layout.addWidget(self.button2)
         self.setLayout(layout)
-        # you might want to do self.button.click.connect(self.parent().login) here
+        
+        # Create the stacked layout
+        self.stackedLayout = QStackedLayout()
+        
+        
+        
+        # Create the first page
+        self.page1 = QWidget()
+        self.page1Layout = QFormLayout()
+        self.page1Layout.addRow("Name:", QLineEdit())
+        self.page1Layout.addRow("Address:", QLineEdit())
+        self.page1.setLayout(self.page1Layout)
+        self.stackedLayout.addWidget(self.page1)
+        
+        
+        
+        # Create the second page
+        self.page2 = QWidget()
+        self.page2Layout = QFormLayout()
+        self.page2Layout.addRow("Job:", QLineEdit())
+        self.page2Layout.addRow("Department:", QLineEdit())
+        self.page2.setLayout(self.page2Layout)
+        self.stackedLayout.addWidget(self.page2)
+        # Add the combo box and the stacked layout to the top-level layout
+        # layout.addWidget(self.pageCombo)
+        layout.addLayout(self.stackedLayout)
 
-class searchWidget(QWidget):
-    def __init__(self, parent=None):
-        super(searchWidget, self).__init__(parent)
-        layout = QHBoxLayout()
-        self.returnButton = QPushButton('Return')
-        layout.addWidget(self.returnButton)
-        self.label = QLabel('logged in in searchwidget!!!!')
-        layout.addWidget(self.label)
-        self.setLayout(layout)
+    def switchtoPage0(self):
+        self.stackedLayout.setCurrentIndex(0)
 
+    def switchtoPage1(self):
+        self.stackedLayout.setCurrentIndex(1)
 
-if __name__ == '__main__':
-    app = QtWidgets.QApplication(sys.argv)
-    window = MainWindow()
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    window = Window()
     window.show()
-    app.exec()
+    sys.exit(app.exec_())
