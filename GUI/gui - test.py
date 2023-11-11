@@ -15,6 +15,7 @@ from PySide6.QtWidgets import (
     QTableWidgetItem,
     QPushButton,
     QLineEdit,
+    QLabel,
 )
 from aero_table import alpha, delta_el, CD, CL, CM, CL_el, CM_el
 from displaytable import Velocity, Gamma, Alpha, dE, Thrust, Duration
@@ -79,16 +80,19 @@ class TestTable(QWidget):
         self.tableWidget.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         self.tableWidget.setSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
 
+        self.velo_label = QLabel('Velocity (ms<sup>−1</sup>)')
         self.velo_input = QLineEdit()
         self.velo_input.setPlaceholderText('Please enter the velocity')
+        self.gamma_label = QLabel('Gamma (°)')
         self.gamma_input = QLineEdit()
         self.gamma_input.setPlaceholderText('Please enter the flight path angle')
+        self.dur_label = QLabel('Duration (s)')
         self.dur_input = QLineEdit()
         self.dur_input.setPlaceholderText('Please enter the duration')
 
-        self.addbutton = QPushButton('Add Condition', self)
-        self.addbutton.clicked.connect(self.addData)
-        self.addbutton.clicked.connect(self.refreshTable)
+        self.inputbutton = QPushButton('Add Condition', self)
+        self.inputbutton.clicked.connect(self.addData)
+        self.inputbutton.clicked.connect(self.refreshTable)
         self.clearbutton = QPushButton('Clear', self)
         self.clearbutton.setFixedHeight(54)
         self.clearbutton.clicked.connect(self.clearTable)
@@ -96,13 +100,16 @@ class TestTable(QWidget):
         self.runbutton.setFixedHeight(54)
         
         layout = QGridLayout(self)
-        layout.addWidget(self.tableWidget,0,0,1,2)
-        layout.addWidget(self.velo_input,1,0)
-        layout.addWidget(self.runbutton,1,1,2,1)
-        layout.addWidget(self.gamma_input,2,0)
-        layout.addWidget(self.dur_input,3,0)
-        layout.addWidget(self.clearbutton,3,1,2,1)
-        layout.addWidget(self.addbutton,4,0)
+        layout.addWidget(self.tableWidget,0,0,1,3)
+        layout.addWidget(self.velo_label,1,0)
+        layout.addWidget(self.velo_input,1,1)
+        layout.addWidget(self.runbutton,1,2,2,1)
+        layout.addWidget(self.gamma_label,2,0)
+        layout.addWidget(self.gamma_input,2,1)
+        layout.addWidget(self.dur_label,3,0)
+        layout.addWidget(self.dur_input,3,1)
+        layout.addWidget(self.clearbutton,3,2,2,1)
+        layout.addWidget(self.inputbutton,4,0,1,2)
 
     def setupTable(self):
         self.tableWidget.setRowCount(len(data))
