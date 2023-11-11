@@ -21,7 +21,7 @@ K_C_D = CD_coeffs[2]
 
 def dU_dt(t, U, X):
     [delta_el, thrust] = X(t)
-    [x, u, z, w, theta, q] = U
+    [x_e, u, z_e, w, theta, q] = U
     alpha = math.atan2(w, u)
     CL = C_L_0 + C_L_alpha * alpha + C_L_delta_el * delta_el
     CD = C_D_0 + K_C_D * CL**2
@@ -36,7 +36,9 @@ def dU_dt(t, U, X):
     du_dt = L/m * np.sin(alpha) - D/m * np.cos(alpha) - q*w - W/m * np.sin(theta) + thrust/m
     dw_dt = -L/m * np.cos(alpha) - D/m * np.sin(alpha) + q*u + W/m * np.cos(theta)
     dq_dt = M/inertia_yy
-    return np.array([u, du_dt, w, dw_dt, q, dq_dt])
+    dxe_dt = u * np.cos(theta) + w * np.sin(theta)
+    dze_dt = -u * np.sin(theta) + w * np.cos(theta)
+    return np.array([dxe_dt, du_dt, dze_dt, dw_dt, q, dq_dt])
 
 
 # find initial conditions
@@ -66,7 +68,7 @@ U_0 = np.array([body_coords[0], u_body, body_coords[1], w_body, theta, q])
 X_0 = np.array([initial_conditions["delta_el"], initial_conditions["Thrust"]])
 X_1 = np.array([initial_conditions["delta_el"] * 1.1, initial_conditions["Thrust"]])
 X_0p = np.array([-0.0520, 2755.17])
-X_1p = np.array([-0.0572, 2755.17])
+X_1p = np.array([-0.0407, 3914.65])
 
 X = lambda t: X_0p if t < 100 else X_1p
 
@@ -74,27 +76,31 @@ X = lambda t: X_0p if t < 100 else X_1p
 
 # U = rk4_integrate(dU_dt, U_0, X, t)
 import scipy.integrate as integrate
-res = integrate.solve_ivp(dU_dt,(0,300), U_0, max_step=0.01, args=(X,))
+res = integrate.solve_ivp(dU_dt,(0,300), U_0, max_step=1, args=(X,))
 U = res["y"].T
 t = res["t"]
 
-x_B = U[:, 0]
-z_B = U[:, 2]
+x_E = U[:, 0]
+u_B = U[:, 1]
+z_E = U[:, 2]
+w_B = U[:, 3]
 theta = U[:, 4]
+q = U[:, 5]
 
-x_E = [np.cos(theta[i]) * x_B[i] + np.sin(theta[i]) * z_B[i] for i in range(len(theta))]
-z_E = [np.cos(theta[i]) * z_B[i] + -np.sin(theta[i]) * x_B[i] for i in range(len(theta))]
+alpha = [math.atan2(w_B[i], u_B[i]) for i in range(len(w_B))]
 
 import matplotlib.pyplot as plt
 
-fig, axs = plt.subplots(3,2)
+fig, axs = plt.subplots(4,2)
 
-# axs[0,0].plot(t, x_E, label='xpos', color='C0')
-axs[0,0].plot(t[:-2], (np.diff(U[:,0])/ np.diff(t))[:-1], label='uB (finite diff)', color='C0')
+axs[0,0].plot(t, x_E, label='xpos', color='C0')
+# axs[0,0].plot(t[:-2], (np.diff(U[:,0])/ np.diff(t))[:-1], label='uB (finite diff)', color='C0')
 axs[0,1].plot(t, U[:, 1], label='uB', color='C1')
 axs[1,0].plot(t, z_E, label='zpos', color='C2')
 axs[1,1].plot(t, U[:, 3], label='wB', color='C3')
 axs[2,0].plot(t, np.degrees(U[:, 4]), label='theta (deg)', color='C4')
 axs[2,1].plot(t, U[:, 5], label='q', color='C5')
+axs[3,0].plot(t, np.degrees(alpha), label='alpha (deg)', color = 'C6')
+axs[3,1].plot(t, np.degrees(theta - alpha), label='path angle (deg)', color='C7')
 fig.legend()
 plt.show()
