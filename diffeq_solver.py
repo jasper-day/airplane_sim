@@ -40,22 +40,22 @@ def rk4_step(f, U_n, X_n, t, dt):
     Given: 
     U_n (state array)
     X_n (array of commands)
-    f such that DU_dt = f(U, X, t)
+    f such that DU_dt = f(t, U, X)
     t: current time
     dt: desired time step
     Returns:
     Next value of U (state array)
     """
-    f_n = f(U_n, X_n, t)
+    f_n = f(t, U_n, X_n)
     # Forward Euler
     U_hat_midpoint = U_n + 1/2 * dt * f_n
-    f_hat_midpoint = f(U_hat_midpoint, X_n, t + 1/2 * dt)
+    f_hat_midpoint = f(t + 1/2 * dt, U_hat_midpoint, X_n)
     # Backward Euler
     U_twiddle_midpoint = U_n + 1/2 * dt * f_hat_midpoint
-    f_twiddle_midpoint = f(U_twiddle_midpoint, X_n, t + 1/2 * dt)
+    f_twiddle_midpoint = f(t + 1/2 * dt, U_twiddle_midpoint, X_n)
     # Crank-nicolson
     U_bar_n_1 = U_n + dt * f_hat_midpoint
-    f_bar_n_1 = f(U_bar_n_1, X_n, t + dt)
+    f_bar_n_1 = f(t + dt, U_bar_n_1, X_n)
     # Simpson's rule
     return U_n + dt/6 * (f_n + 2 * f_hat_midpoint + 2 * f_twiddle_midpoint + f_bar_n_1)
 
