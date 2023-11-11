@@ -124,12 +124,15 @@ def plot_thrust_vs_velocity(gamma_values, V_range):
 
     for i, gamma in enumerate(gamma_values):
         plt.subplot(121)
-        plt.plot(V_range, thrust_values[i], label=f'Gamma = {gamma}')
+        plt.plot(V_range, thrust_values[i], label=f'Gamma = {round(gamma, 1):.1f}')
     
-    
+        # Round the legend labels to one significant figure
+
+
     plt.xlabel('Velocity (V)')
     plt.ylabel('Thrust')
-    plt.legend()
+    # Apply the rounded labels to the legend
+    plt.legend(loc='upper left')
     plt.title('Thrust vs. Velocity for Different Gamma Values')
     plt.grid(True)
 
@@ -142,16 +145,16 @@ def plot_delta_el_vs_velocity(gamma_values, V_range):
         for V in V_range:
             result = find_system(V, gamma)
             if -0.27925 < result["alpha"] < 0.2094395 :
-                delta_el_data.append(result["delta_el"])
+                delta_el_data.append(result["delta_el"] * 180/(np.pi))
         delta_el_values.append(delta_el_data)
 
     for i, gamma in enumerate(gamma_values):
         plt.subplot(122)
-        plt.plot(V_range, delta_el_values[i], label=f'Gamma = {gamma}')
+        plt.plot(V_range, delta_el_values[i], label=f'Gamma = {round(gamma, 1):.1f}')
   
     
     plt.xlabel('Velocity (V)')
-    plt.ylabel('Elevator Deflection (rad)')
+    plt.ylabel('Elevator Deflection (degrees)')
     plt.legend()
     plt.title('Elevator Deflection vs. Velocity for Different Gamma Values')
     plt.grid(True)
@@ -171,7 +174,7 @@ if __name__ == "__main__":
     # Example: Plot thrust vs. velocity for different gamma values
     V_range = np.linspace(75, 150, 400)
     n = 5
-    gamma_values = np.linspace(0, 1, 10)
+    gamma_values = np.linspace(0, 1, 11)
 
     plot_thrust_vs_velocity(gamma_values, V_range)  # Add this line to plot thrust vs. velocity
     plot_delta_el_vs_velocity(gamma_values, V_range)
