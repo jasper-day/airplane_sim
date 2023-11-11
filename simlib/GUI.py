@@ -17,8 +17,8 @@ from PySide6.QtWidgets import (
     QLineEdit,
     QLabel,
 )
-from aero_table import alpha, delta_el, CD, CL, CM, CL_el, CM_el
-from displaytable import Velocity, Gamma, Alpha, dE, Thrust, Duration
+from source.aero_table import alpha, delta_el, CD, CL, CM, CL_el, CM_el
+from source.displaytable import Velocity, Gamma, Alpha, dE, Thrust, Duration
 from matplotlib.backends.backend_qtagg import FigureCanvas
 from matplotlib.figure import Figure
 
