@@ -1,4 +1,4 @@
-from userinput import V, G, t
+from source.userinput import V, G, t
 
 Velocity = V
 Gamma = G

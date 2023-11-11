@@ -148,7 +148,7 @@ class plane(QWidget):
         self.label = QtWidgets.QLabel(self)
 
         # Integrate QMovie to the label and initiate the GIF
-        self.movie = QMovie("p51_3d.gif")
+        self.movie = QMovie("P51_3d.gif")
         self.movie.setScaledSize(QSize(400,400))
         self.resize(QSize(600,400))
         self.movie.start()
