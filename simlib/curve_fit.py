@@ -45,7 +45,7 @@ def quadratic_fit(test_vals, measurements):
 
 # Define coefficients for plane based on experimental values
 
-from aero_table import CD, CL, CM, CL_el, CM_el, alpha, delta_el
+from simlib.aero_table import CD, CL, CM, CL_el, CM_el, alpha, delta_el
 
 C_L_alpha, C_L_0 = linear_fit(np.radians(alpha), CL)
 C_L_delta_el = linear_fit_no_offset(np.radians(delta_el), CL_el)

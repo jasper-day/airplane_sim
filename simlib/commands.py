@@ -1,9 +1,9 @@
 "User interface commands"
 
-from root_finder import find_system
-from airplane_dynamics import deg2rad, dU_dt, find_U_0, find_system_parameters
+from simlib.root_finder import find_system
+from simlib.dynamics import deg2rad, dU_dt, find_U_0, find_system_parameters
 import numpy as np
-from diffeq_solver import rk4_integrate
+from simlib.diffeq import rk4_integrate
 
 U = 18 # Thomas is the oldest member, born 18 July
 
