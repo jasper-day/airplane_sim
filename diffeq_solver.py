@@ -4,6 +4,7 @@
 # Method: Runge-Kutta
 
 import numpy as np
+import inspect
 
 def rk4_integrate(f, U_0, X, t):
     # Write code that integrates U through the time
@@ -25,7 +26,10 @@ def rk4_integrate(f, U_0, X, t):
     U[0] = U_0 # fill in with initial conditions given by root finding
     # loop rk4_step for every time value
     for i in range(len(dt)):
-        U[i+1] = rk4_step(f,U[i],X[i],t[i],dt[i])
+        if inspect.isfunction(X):
+            U[i + 1] = rk4_step(f, U[i], X, t[i], dt[i])
+        else:
+            U[i+1] = rk4_step(f,U[i],X[i],t[i],dt[i])
     return U
 
 def rk4_step(f, U_n, X_n, t, dt):

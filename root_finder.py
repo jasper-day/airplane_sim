@@ -174,7 +174,7 @@ def plot_delta_el_vs_velocity(gamma_values, V_range):
 
 if __name__ == "__main__":
     from pprint import pprint
-    pprint(find_system(70, 0.00))
+    pprint(find_system(100, 0.05))
 
 #is this unnecessary
     #V = 80
@@ -183,12 +183,12 @@ if __name__ == "__main__":
     #f = minimizing_function(V, gamma)
 
     # Example: Plot thrust vs. velocity for different gamma values
-    V_range = np.linspace(75, 150, 400)
-    n = 5
-    gamma_values = np.linspace(0, 1, 10)
+    # V_range = np.linspace(75, 150, 400)
+    # n = 5
+    # gamma_values = np.linspace(0, 1, 10)
 
-    plot_thrust_vs_velocity(gamma_values, V_range)  # Add this line to plot thrust vs. velocity
-    plot_delta_el_vs_velocity(gamma_values, V_range)
+    # plot_thrust_vs_velocity(gamma_values, V_range)  # Add this line to plot thrust vs. velocity
+    # plot_delta_el_vs_velocity(gamma_values, V_range)
     
 
-    plt.show()
+    # plt.show()

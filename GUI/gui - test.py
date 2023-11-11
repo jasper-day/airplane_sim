@@ -79,6 +79,7 @@ class TestTable(QWidget):
         self.tableWidget.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         self.tableWidget.setSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
 
+        self.velo_label = QLabel("Velocity: ")
         self.velo_input = QLineEdit()
         self.velo_input.setPlaceholderText('Please enter the velocity')
         self.gamma_input = QLineEdit()
@@ -97,7 +98,8 @@ class TestTable(QWidget):
         
         layout = QGridLayout(self)
         layout.addWidget(self.tableWidget,0,0,1,2)
-        layout.addWidget(self.velo_input,1,0)
+        layout.addWidget(self.velo_label,1,0)
+        layout.addWidget(self.velo_input,1,1)
         layout.addWidget(self.runbutton,1,1,2,1)
         layout.addWidget(self.gamma_input,2,0)
         layout.addWidget(self.dur_input,3,0)

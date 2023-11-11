@@ -13,6 +13,7 @@ import numpy as np
 from env import gravity, air_density
 from vehicle import Sref, cbar, acMass, inertia_yy
 from curve_fit import C_D_0, C_L_0, C_L_alpha, C_L_delta_el, C_M_0, C_M_alpha, C_M_delta_el, K_C_D
+import inspect
 
 def rad2deg(alpha):
     """ Convert radians to degrees """
@@ -22,34 +23,46 @@ def deg2rad(alpha):
     """ Convert degrees to radians """
     return alpha * math.pi / 180
 
-def find_angle_of_attack(u_B, w_B):
+def find_angle_of_attack(u, w):
     """Given body-relative x and z velocities, calculates the angle of attack
     Input:
     u_B: body-relative x velocity (m/s)
     w_B: body-relative z velocity (m/s)
     Output:
     alpha: Angle of attack (rad)"""
-    return math.atan2(w_B, u_B)
+    # if u == 0:
+    #     return math.pi/2 * np.sign(w)
+    # else:
+    return math.atan2(w, u)
 
 def get_speed(u, w):
     """Given x and z velocities, calculates the speed"""
     return math.sqrt(u**2 + w**2)
 
-def get_body_velocities(speed, alpha):
-    u_B = speed * math.cos(alpha)
-    w_B = speed * math.sin(alpha)
+def get_body_velocities(speed, angle_of_att):
+    u_B = speed * math.cos(angle_of_att)
+    w_B = speed * math.sin(angle_of_att)
     return np.array([u_B, w_B])
 
+def test_velocity_conversion():
+    us = ws = np.arange(-100,100,10)
+    testlist = [np.array([u, w]) for u in us for w in ws]
+    speeds = [get_speed(u, w) for u in us for w in ws]
+    alphas = [find_angle_of_attack(u, w) for u in us for w in ws]
+    testoutput = [get_body_velocities(speeds[i], alphas[i]) for i in range(len(alphas))]
+    assert np.all([np.isclose(testlist[i], testoutput[i]) for i in range(len(testlist))])
+    
+
 def earth2body(x_E: float, z_E: float, theta):
-    "Rotates global x and z coordinates to a body-relative frame"
-    rot_arr = np.array([[np.cos(theta), np.sin(theta)],
-                        [-np.sin(theta), np.cos(theta)]])
+    "Rotates a point in global x and z coordinates to a body-relative frame"
+    rot_arr = np.array([[np.cos(theta), -np.sin(theta)],
+                        [np.sin(theta), np.cos(theta)]])
     return rot_arr @ np.array([x_E, z_E])
 
 def body2earth(x_B: float, z_B: float, theta):
-    "Rotates body-relative x and z coordinates to a global frame"
-    rot_arr = np.array([[np.cos(theta), -np.sin(theta)],
-                        [np.sin(theta), np.cos(theta)]])
+    "Rotates a point in body-relative x and z coordinates to a global frame"
+    rot_arr = np.array([[np.cos(theta), np.sin(theta)],
+                        [-np.sin(theta), np.cos(theta)]])
     return rot_arr @ np.array([x_B, z_B])
 
 def find_C_L(alpha, delta_el, C_L_0=C_L_0, C_L_alpha=C_L_alpha, 
@@ -66,7 +79,7 @@ C_L_delta_el=C_L_delta_el):
     C_L: total coefficient of lift"""
     return C_L_0 + C_L_alpha*alpha + C_L_delta_el*delta_el
 
-def find_C_D(C_L, C_D_0 = C_D_0, K = K_C_D):
+def find_C_D(C_L, C_D_0=C_D_0, K=K_C_D):
     """Finds the coefficient of drag, given the lift coefficient
     Input:
     C_L: Coefficient of lift
@@ -153,11 +166,10 @@ def dU_dt(t, U, X):
     U[4] = theta (angle to the ground)
     U[5] = q (angular velocity, d(theta)/dt)"""
     [x_B, u_B, z_B, w_B, theta, q] = U
-    [delta_el, thrust] = X(t)
-    # Identity relations
-    xdot_B = u_B
-    zdot_B = w_B
-    thetadot = q
+    if inspect.isfunction(X):
+        [delta_el, thrust] = X(t)
+    else:
+        [delta_el, thrust] = X
     # Calculate angle of attack and velocity
     alpha = find_angle_of_attack(u_B, w_B)
     speed = get_speed(u_B, w_B)
@@ -174,25 +186,7 @@ def dU_dt(t, U, X):
     wdot_B = dw_B_dt(lift, drag, alpha, q, u_B, theta)
     qdot = dq_dt(moment)
     # dU_dt
-    return np.array([xdot_B, udot_B, zdot_B, wdot_B, thetadot, qdot])
-
-def dU_dt_X_fn(t, U, X_fn, m=acMass, I_yy=inertia_yy):
-    [x_B, u_B, z_B, w_B, theta, q] = U
-    [delta_el, thrust] = X_fn(t)
-    V = np.sqrt(u_B**2 + w_B**2)
-    alpha = math.atan2(w_B,u_B)
-    gamma = theta - alpha
-    CL = find_C_L(alpha, delta_el)
-    L = find_lift(V, CL)
-    CD = find_C_D(CL)
-    D = find_drag(V, CD)
-    CM = find_C_M(alpha, delta_el)
-    M = find_moment(V, CM)
-    W = find_weight()
-    x_accel = du_B_dt(L, D, alpha, thrust, q, w_B, theta)
-    z_accel = dw_B_dt(L, D, alpha, q, u_B, theta)
-    theta_accel = M/I_yy
-    return np.array([u_B, x_accel, w_B, z_accel, q, theta_accel])
+    return np.array([u_B, udot_B, w_B, wdot_B, q, qdot])
 
 def find_U_0(system, altitude):
     """ Find the state array U given an altitude and the system"""
