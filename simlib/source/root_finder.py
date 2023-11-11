@@ -3,9 +3,9 @@
 # Output: Roots of that function
 # Method: Newton's method of some kind
 
-from simlib.dynamics import find_lift, find_drag, find_moment, find_weight, \
+from source.dynamics import find_lift, find_drag, find_moment, find_weight, \
     find_C_L, find_C_D, find_C_M
-from curve_fit import C_M_0, C_M_alpha, C_M_delta_el
+from source.curve_fit import C_M_0, C_M_alpha, C_M_delta_el
 import math
 import numpy as np
 import matplotlib.pyplot as plt
