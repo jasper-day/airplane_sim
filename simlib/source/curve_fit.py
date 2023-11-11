@@ -6,6 +6,7 @@ import numpy as np
 import math
 # import data to fit curves
 import matplotlib.pyplot as plt
+from source.aero_table import CD, CL, CM, CL_el, CM_el, alpha, delta_el
 
 def linear_fit(test_vals, measurements):
     """
@@ -44,8 +45,6 @@ def quadratic_fit(test_vals, measurements):
     return x
 
 # Define coefficients for plane based on experimental values
-
-from source.aero_table import CD, CL, CM, CL_el, CM_el, alpha, delta_el
 
 C_L_alpha, C_L_0 = linear_fit(np.radians(alpha), CL)
 C_L_delta_el = linear_fit_no_offset(np.radians(delta_el), CL_el)
