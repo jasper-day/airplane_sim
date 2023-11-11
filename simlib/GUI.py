@@ -1,5 +1,4 @@
 import sys
-sys.path.append(r'C:\Users\thoma\OneDrive - University of Edinburgh\Year 3\Computational Methods and Modelling 3\airplane_sim')
 from PySide6 import QtWidgets
 from PySide6 import QtCore
 from PySide6.QtCore import QSize, Qt
