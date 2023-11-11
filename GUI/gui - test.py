@@ -2,7 +2,7 @@ import sys
 sys.path.append(r'C:\Users\thoma\OneDrive - University of Edinburgh\Year 3\Computational Methods and Modelling 3\airplane_sim')
 from PySide6 import QtWidgets
 from PySide6 import QtCore
-from PySide6.QtCore import QSize
+from PySide6.QtCore import QSize, Qt
 from PySide6.QtGui import QMovie
 from PySide6.QtWidgets import (
     QApplication,
@@ -77,6 +77,7 @@ class TestTable(QWidget):
         super().__init__()
         self.tableWidget = QTableWidget(self)
         self.setupTable()
+        self.setMaximumWidth(600)
         self.tableWidget.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         self.tableWidget.setSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
 
@@ -148,22 +149,23 @@ class plane(QWidget):
 
         # Integrate QMovie to the label and initiate the GIF
         self.movie = QMovie("p51_3d.gif")
-        self.movie.setScaledSize(QSize(600,200))
+        self.movie.setScaledSize(QSize(400,400))
+        self.resize(QSize(600,400))
         self.movie.start()
 
         self.label.setMovie(self.movie)
-        # self.label.setMinimumSize(self.movie.scaledSize()
+        self.label.setMinimumSize(self.movie.scaledSize())
         self.label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.label.setStyleSheet("QLabel {background-color: white;}")
+        self.label.setStyleSheet("QLabel {background-color: white}")
 
 
 class Window2(QMainWindow):                           
     def __init__(self, parent = None):
         super(Window2, self).__init__(parent)
         self.setWindowTitle("SimuPlane™ 0.1.0")
-        self.resize(1200,800)
+        self.resize(1400,800)
         self.w2_mainwidget = QWidget(self)
-        self.w2_mainlayout = QHBoxLayout()
+        self.w2_mainlayout = QGridLayout()
         self.w2_Llayout = QGridLayout()
         self.w2_Rlayout = QGridLayout()
         
@@ -187,8 +189,8 @@ class Window2(QMainWindow):
         self.w2_Rlayout.addWidget(self.table,3,0,2,1)
 
         #Adding sublayouts to main layout
-        self.w2_mainlayout.addLayout(self.w2_Llayout)
-        self.w2_mainlayout.addLayout(self.w2_Rlayout)
+        self.w2_mainlayout.addLayout(self.w2_Llayout,0,0)
+        self.w2_mainlayout.addLayout(self.w2_Rlayout,0,1)
 
         #Setting main layout
         self.w2_mainwidget.setLayout(self.w2_mainlayout)
@@ -238,3 +240,4 @@ if __name__ == "__main__":
 
     window = MainWindow()
     window.show()
+    sys.exit(app.exec())
