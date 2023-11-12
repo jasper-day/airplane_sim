@@ -1,4 +1,5 @@
 import sys
+import matplotlib.pyplot as plt
 from PySide6 import QtWidgets
 from PySide6 import QtCore
 from PySide6.QtCore import QSize, Qt
@@ -16,6 +17,7 @@ from PySide6.QtWidgets import (
     QLineEdit,
     QLabel,
 )
+from Controller import find_command_fn, integrate_system, make_sample_plot
 from source.aero_table import alpha, delta_el, CD, CL, CM, CL_el, CM_el
 from source.displaytable import Velocity, Gamma, Alpha, dE, Thrust, Duration
 from matplotlib.backends.backend_qtagg import FigureCanvas
@@ -25,50 +27,62 @@ data = [Velocity, Gamma, Alpha, dE, Thrust, Duration]
 
 class TestGraph(QWidget):
     # Matplotlib graphs can be widgets too.
+    # def __init__(self, parent=None):
+    #     super(TestGraph, self).__init__(parent)
+        # self.figure = Figure()
+        # self.canvas = FigureCanvas(self.figure)
+        # self.ax1 = self.figure.add_subplot(421)
+        # self.ax2 = self.figure.add_subplot(422)
+        # self.ax3 = self.figure.add_subplot(423)
+        # self.ax4 = self.figure.add_subplot(424)
+        # self.ax5 = self.figure.add_subplot(425)
+        # self.ax6 = self.figure.add_subplot(426)
+        # self.ax7 = self.figure.add_subplot(427)
+        # self.ax8 = self.figure.add_subplot(428)
+        # # Plot the desired data
+        # self.ax1.scatter(delta_el, CL_el, label="CL_el", color="C4")
+        # self.ax2.scatter(delta_el, CM_el, label="CM_el", color="C5")
+        # self.ax3.scatter(delta_el, CL_el, label="CL_el", color="C4")
+        # self.ax4.scatter(delta_el, CM_el, label="CM_el", color="C5")
+        # self.ax5.scatter(delta_el, CL_el, label="CL_el", color="C4")
+        # self.ax6.scatter(delta_el, CM_el, label="CM_el", color="C5")
+        # self.ax7.scatter(delta_el, CL_el, label="CL_el", color="C4")
+        # self.ax8.scatter(delta_el, CM_el, label="CM_el", color="C5")
+
+        # self.ax1.set_xlabel("Elevator Deflection")
+        # self.ax2.set_xlabel("Elevator Deflection")
+        # self.ax3.set_xlabel("Elevator Deflection")
+        # self.ax4.set_xlabel("Elevator Deflection")
+        # self.ax5.set_xlabel("Elevator Deflection")
+        # self.ax6.set_xlabel("Elevator Deflection")
+        # self.ax7.set_xlabel("Elevator Deflection")
+        # self.ax8.set_xlabel("Elevator Deflection")
+
+        # self.ax1.legend()
+        # self.ax2.legend()
+        # self.ax3.legend()
+        # self.ax4.legend()
+        # self.ax5.legend()
+        # self.ax6.legend()
+        # self.ax7.legend()
+        # self.ax8.legend()
+
+        # # Figure.tight_layout(self.figure)
+        # Figure.tight_layout(self.figure,h_pad=-1)
+        # self.layout = QVBoxLayout(self)
+        # self.layout.addWidget(self.canvas)
+    
     def __init__(self, parent=None):
         super(TestGraph, self).__init__(parent)
-        self.figure = Figure()
+        fig, axs = plt.subplots(4,2) 
+        self.figure = make_sample_plot(fig,axs)
         self.canvas = FigureCanvas(self.figure)
-        self.ax1 = self.figure.add_subplot(421)
-        self.ax2 = self.figure.add_subplot(422)
-        self.ax3 = self.figure.add_subplot(423)
-        self.ax4 = self.figure.add_subplot(424)
-        self.ax5 = self.figure.add_subplot(425)
-        self.ax6 = self.figure.add_subplot(426)
-        self.ax7 = self.figure.add_subplot(427)
-        self.ax8 = self.figure.add_subplot(428)
-        # Plot the desired data
-        self.ax1.scatter(delta_el, CL_el, label="CL_el", color="C4")
-        self.ax2.scatter(delta_el, CM_el, label="CM_el", color="C5")
-        self.ax3.scatter(delta_el, CL_el, label="CL_el", color="C4")
-        self.ax4.scatter(delta_el, CM_el, label="CM_el", color="C5")
-        self.ax5.scatter(delta_el, CL_el, label="CL_el", color="C4")
-        self.ax6.scatter(delta_el, CM_el, label="CM_el", color="C5")
-        self.ax7.scatter(delta_el, CL_el, label="CL_el", color="C4")
-        self.ax8.scatter(delta_el, CM_el, label="CM_el", color="C5")
-
-        self.ax1.set_xlabel("Elevator Deflection")
-        self.ax2.set_xlabel("Elevator Deflection")
-        self.ax3.set_xlabel("Elevator Deflection")
-        self.ax4.set_xlabel("Elevator Deflection")
-        self.ax5.set_xlabel("Elevator Deflection")
-        self.ax6.set_xlabel("Elevator Deflection")
-        self.ax7.set_xlabel("Elevator Deflection")
-        self.ax8.set_xlabel("Elevator Deflection")
-
-        self.ax1.legend()
-        self.ax2.legend()
-        self.ax3.legend()
-        self.ax4.legend()
-        self.ax5.legend()
-        self.ax6.legend()
-        self.ax7.legend()
-        self.ax8.legend()
-
-        # Figure.tight_layout(self.figure)
-        Figure.tight_layout(self.figure,h_pad=-1)
+        Figure.tight_layout(self.figure)
+        # Figure.tight_layout(self.figure,h_pad=-1)
         self.layout = QVBoxLayout(self)
         self.layout.addWidget(self.canvas)
+        
+
 
 
 class TestTable(QWidget):
@@ -147,7 +161,7 @@ class plane(QWidget):
         self.label = QtWidgets.QLabel(self)
 
         # Integrate QMovie to the label and initiate the GIF
-        self.movie = QMovie("P51_3d.gif")
+        self.movie = QMovie("simlib/p51_3d.gif")
         self.movie.setScaledSize(QSize(400,400))
         self.resize(QSize(600,400))
         self.movie.start()
@@ -201,7 +215,6 @@ class Window2(QMainWindow):
         self.hide()
 
 
-
 class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
@@ -211,7 +224,7 @@ class MainWindow(QWidget):
         self.label = QtWidgets.QLabel(self)
 
         # Integrate QMovie to the label and initiate the GIF
-        self.movie = QMovie("p51_3d.gif")
+        self.movie = QMovie("simlib/p51_3d.gif")
         self.label.setMovie(self.movie)
         self.movie.start()
 
