@@ -6,7 +6,7 @@ from pprint import pprint
 from matplotlib.backends.backend_qtagg import FigureCanvas
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
-from PySide6.QtWidgets import QWidget
+from PySide6.QtWidgets import QWidget, QVBoxLayout
 from dynamics import find_system_parameters
 from command import integrate_system
 from root_finder import find_system
