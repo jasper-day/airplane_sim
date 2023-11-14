@@ -1,18 +1,8 @@
 "User interface commands"
 
-from source.root_finder import find_system
-from source.dynamics import deg2rad, dU_dt, find_U_0, find_system_parameters
+from dynamics import deg2rad, dU_dt, find_U_0, find_system_parameters
 import numpy as np
-from source.diffeq import rk4_integrate
-
-
-U = 18 # Thomas is the oldest member, born 18 July
-
-trim_conditions = [
-    find_system(100 + U, 0), # steady level flight
-    find_system(100 + U, deg2rad(2)), # climbing flight
-    find_system(100 + U, 0), # steady level flight
-]
+from diffeq import rk4_integrate
 
 def find_command_fn(trim_list, time_starts, total_time):
     """Returns a function that gives the correct command at a given time t.
@@ -34,9 +24,13 @@ def find_command_fn(trim_list, time_starts, total_time):
         raise RuntimeError(f"Out of bounds access at t={t}")
     return find_trim
 
-def integrate_system(trim_conditions, time_starts, total_time, dt, starting_altitude=1000):
+def integrate_system(trim_conditions, time_starts, total_time, dt=0.1, starting_altitude=1000):
+    """Integrate a system with step changes in commands.
+    Returns:
+    {"X": Command function, "U_0": Initial conditions, "U": Integrated state, "t": time step}
+    """
     X = find_command_fn(trim_conditions, time_starts, total_time)
-    t = np.arange(time_starts[0], total_time, 0.1)
+    t = np.arange(time_starts[0], total_time, dt)
     U_0 = find_U_0(trim_conditions[0], starting_altitude)
     U_integrated = rk4_integrate(dU_dt, U_0, X, t)
     return {"X": X, "U_0": U_0, "U": U_integrated, "t": t}
@@ -64,8 +58,6 @@ def make_sample_plot(fig, axs):
     axs[3,1].set_ylabel("altitude")
     fig.tight_layout()
     return fig
-
-
 
 if __name__=="__main__":
     print("Comparison: page 14 of project.pdf")
