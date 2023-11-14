@@ -19,7 +19,8 @@ from PySide6.QtWidgets import (
     QLineEdit,
     QLabel,
 )
-from source.command import find_command_fn, integrate_system, make_sample_plot
+from source.command import find_command_fn, integrate_system
+from source.plot import make_sample_plot 
 import source.env
 from source.dynamics import deg2rad, dU_dt, find_U_0, find_system_parameters 
 from source.root_finder import find_system

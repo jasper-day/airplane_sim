@@ -23,6 +23,8 @@ from PySide6.QtWidgets import (
 
 from GUI import TestGraph
 from source.plot import GraphWidget, plot_parameter
+from root_finder import find_system
+from source.command import integrate_system
 
 
 class SimWindow(QMainWindow, Ui_MainWindow):                           
@@ -33,10 +35,33 @@ class SimWindow(QMainWindow, Ui_MainWindow):
         self.graph_layout = QHBoxLayout()
         self.graph_layout.addWidget(self.graph)
         self.graph_output.setLayout(self.graph_layout)
-        self.commands = {} # data for commands
+        self.trim_list = [] # data for commands
         self.initial_conditions = {} # data for initial conditions
-    def add_command():
-        self.commands
+    def add_trim():
+        if self.trim_vel == 0:
+            return
+        system = find_system(self.trim_vel, self.trim_gamma)
+        system['t_start'] = self.trim_time_start
+        self.trim_list.append(system)
+    def clear_trims():
+        self.trim_list = []
+    def remove_last_trim():
+        self.trim_list.pop()
+    def update_initial_conditions():
+        if self.init_vel == 0:
+            return
+        if self.simulation_time == 0:
+            return
+        self.initial_conditions = find_system(self.init_vel, self.init_gamma)
+        self.initial_conditions["altitude"] = self.init_altitude
+        self.initial_conditions["q"] = self.init_angvel
+        self.initial_conditions["t_total"] = self.init_total_time
+    def run_simulation():
+        self.sim_result = integrate_system(self.initial_conditions, self.trim_list)
+    def mainwindow(self):
+        self.mw = MainWindow()
+        self.mw.show()
+        self.hide()
 
 
 class MainWindow(QWidget):
