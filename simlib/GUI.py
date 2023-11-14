@@ -22,7 +22,7 @@ from PySide6.QtWidgets import (
 from source.command import find_command_fn, integrate_system
 from source.plot import make_sample_plot 
 import source.env
-from source.dynamics import deg2rad, dU_dt, find_U_0, find_system_parameters 
+from source.dynamics import deg2rad, dU_dt, find_U_0, find_state_parameters 
 from source.root_finder import find_system
 from source.aero_table import alpha, delta_el, CD, CL, CM, CL_el, CM_el
 from source.userinput import Tstart, Velocity, Gamma, Duration
@@ -173,7 +173,6 @@ class TestTable(QWidget):
         self.tableWidget2.setRowCount(len(output))
         self.tableWidget2.setColumnCount(len(output[0]))
         self.tableWidget2.setVerticalHeaderLabels(['Alpha', 'dE', 'Thrust'])
-
         for i, row in enumerate(output):
             for j, item in enumerate(row):
                 self.tableWidget2.setItem(i, j, QTableWidgetItem(str(item)))
@@ -223,7 +222,7 @@ class TestTable(QWidget):
         U_i = integrate_system(self.trimcond, input[0], self.total_time(), self.timestep())
         from pprint import pformat
         print(f"""
-        Initial system: {pformat(find_system_parameters(U_i['U'][0]))}
+        Initial system: {pformat(find_state_parameters(U_i['U'][0]))}
         Initial commands: {pformat(self.trimcond['1'])}
         """)
 

@@ -19,12 +19,13 @@ from PySide6.QtWidgets import (
     QPushButton,
     QLineEdit,
     QLabel,
+    
 )
 
-from GUI import TestGraph
-from source.plot import GraphWidget, plot_parameter
-from root_finder import find_system
+from source.plot import GraphWidget, plot_parameter, find_state_parameters
+from source.root_finder import find_system
 from source.command import integrate_system
+from source.dynamics import find_U_0
 
 
 class SimWindow(QMainWindow, Ui_MainWindow):                           
@@ -37,31 +38,64 @@ class SimWindow(QMainWindow, Ui_MainWindow):
         self.graph_output.setLayout(self.graph_layout)
         self.trim_list = [] # data for commands
         self.initial_conditions = {} # data for initial conditions
-    def add_trim():
-        if self.trim_vel == 0:
+        self.add_trim_btn.clicked.connect(self.add_trim)
+        self.del_prev_trim_btn.clicked.connect(self.remove_last_trim)
+        self.clear_trims_btn.clicked.connect(self.clear_trims)
+        self.run_simulation_btn.clicked.connect(self.run_simulation)
+        self.update_plot_btn.clicked.connect(self.update_plot)
+        self.exit_btn.clicked.connect(self.mainwindow)
+    def add_trim(self):
+        if self.trim_vel.value() == 0:
             return
-        system = find_system(self.trim_vel, self.trim_gamma)
-        system['t_start'] = self.trim_time_start
+        system = find_system(self.trim_vel.value(), np.radians(self.trim_gamma.value()))
+        system['t_start'] = self.trim_time_start.value()
         self.trim_list.append(system)
-    def clear_trims():
+        self.trim_list.sort(key=lambda x: x["t_start"])
+        self.updateTable()
+    def clear_trims(self):
         self.trim_list = []
-    def remove_last_trim():
+        self.updateTable()
+    def remove_last_trim(self):
         self.trim_list.pop()
-    def update_initial_conditions():
-        if self.init_vel == 0:
-            return
-        if self.simulation_time == 0:
-            return
-        self.initial_conditions = find_system(self.init_vel, self.init_gamma)
-        self.initial_conditions["altitude"] = self.init_altitude
-        self.initial_conditions["q"] = self.init_angvel
-        self.initial_conditions["t_total"] = self.init_total_time
-    def run_simulation():
+        self.updateTable()
+    def update_initial_conditions(self):
+        if self.init_vel.value() == 0:
+            raise ValueError("Must have nonzero starting velocity")
+        if self.total_time.value() == 0:
+            raise ValueError("Must have nonzero simulation time")
+        self.initial_conditions = find_system(self.init_vel.value(), np.radians(self.init_gamma.value()))
+        self.initial_conditions["altitude"] = self.init_altitude.value()
+        self.initial_conditions["q"] = np.radians(self.init_angvel.value())
+        self.initial_conditions["t_total"] = self.total_time.value()
+        self.initial_conditions["U_0"] = find_U_0(self.initial_conditions)
+    def run_simulation(self):
+        self.update_initial_conditions()
         self.sim_result = integrate_system(self.initial_conditions, self.trim_list)
+        self.graph_selector.clear()
+        self.graph_selector.addItems(list(find_state_parameters(self.sim_result["U"][0]).keys()))
+        self.update_plot()
+    def update_plot(self):
+        self.graph.ax.clear()
+        plot_parameter(self.graph, self.graph_selector.currentText(), self.sim_result["U"], self.sim_result["t"])
+        self.graph.view.draw()
     def mainwindow(self):
         self.mw = MainWindow()
         self.mw.show()
         self.hide()
+    def updateTable(self):
+        from pprint import pprint
+        pprint(self.trim_list)
+        if len(self.trim_list) == 0:
+            self.trim_table.clear()
+            return
+        keys = list(self.trim_list[0].keys())
+        keys.sort()
+        self.trim_table.setRowCount(len(keys))
+        self.trim_table.setColumnCount(len(self.trim_list))
+        self.trim_table.setVerticalHeaderLabels(keys)
+        for i in range(len(keys)):
+            for j in range(len(self.trim_list)):
+                self.trim_table.setItem(i, j, QTableWidgetItem("{:.3f}".format(self.trim_list[j][keys[i]])))
 
 
 class MainWindow(QWidget):

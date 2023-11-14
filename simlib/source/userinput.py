@@ -4,5 +4,3 @@ Tstart = []
 Velocity = []
 Gamma = []
 Duration = []
-
-
