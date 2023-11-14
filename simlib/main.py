@@ -1,4 +1,5 @@
 import sys
+sys.path.append('simlib/source/')
 from gui.simulator_mwc import Ui_MainWindow
 import matplotlib.pyplot as plt
 import numpy as np
@@ -26,7 +27,7 @@ from source.plot import GraphWidget, plot_parameter
 
 class SimWindow(QMainWindow, Ui_MainWindow):                           
     def __init__(self, parent = None):
-        super(Window2, self).__init__(parent)
+        super(SimWindow, self).__init__(parent)
         self.setupUi(self)
         self.graph = GraphWidget()
         self.graph_layout = QHBoxLayout()
@@ -34,6 +35,8 @@ class SimWindow(QMainWindow, Ui_MainWindow):
         self.graph_output.setLayout(self.graph_layout)
         self.commands = {} # data for commands
         self.initial_conditions = {} # data for initial conditions
+    def add_command():
+        self.commands
 
 
 class MainWindow(QWidget):
