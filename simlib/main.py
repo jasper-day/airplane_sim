@@ -44,6 +44,7 @@ class SimWindow(QMainWindow, Ui_MainWindow):
         self.run_simulation_btn.clicked.connect(self.run_simulation)
         self.update_plot_btn.clicked.connect(self.update_plot)
         self.exit_btn.clicked.connect(self.mainwindow)
+        self.graph_selector.currentIndexChanged.connect(self.update_plot)
     def add_trim(self):
         if self.trim_vel.value() == 0:
             return
@@ -72,7 +73,9 @@ class SimWindow(QMainWindow, Ui_MainWindow):
         self.update_initial_conditions()
         self.sim_result = integrate_system(self.initial_conditions, self.trim_list)
         self.graph_selector.clear()
-        self.graph_selector.addItems(list(find_state_parameters(self.sim_result["U"][0]).keys()))
+        graph_selector_keys = list(find_state_parameters(self.sim_result["U"][0]).keys())
+        graph_selector_keys.sort()
+        self.graph_selector.addItems(graph_selector_keys)
         self.update_plot()
     def update_plot(self):
         self.graph.ax.clear()
