@@ -4,7 +4,7 @@ from dynamics import deg2rad, dU_dt, find_U_0, find_system_parameters
 import numpy as np
 from diffeq import rk4_integrate
 
-def find_command_fn(trim_list, time_starts, total_time):
+def find_command_fn(initial_condition, trim_list):
     """Returns a function that gives the correct command at a given time t.
     Input:
     trim_list: list of trim conditions (dictionary with at least "delta_el" and "Thrust")
@@ -12,10 +12,10 @@ def find_command_fn(trim_list, time_starts, total_time):
     total_time: the time the simulation should run for
     Output:
     X: X(t) = [delta_el, Thrust] at time t"""
-    assert(len(trim_list) == len(time_starts))
+    time_starts = [trim["t_start"] for trim in trim_list]
+    time_starts.append(initial_condition["t_total"])
     # time_starts is monotonically increasing
     assert(np.all(np.sign(np.diff(time_starts))))
-    time_starts.append(total_time)
     X_commands = []
     def find_trim(t):
         for i in range(len(trim_list)):
@@ -24,42 +24,23 @@ def find_command_fn(trim_list, time_starts, total_time):
         raise RuntimeError(f"Out of bounds access at t={t}")
     return find_trim
 
-def integrate_system(trim_conditions, time_starts, total_time, dt=0.1, starting_altitude=1000):
+def integrate_system(initial_condition, trim_conditions, dt=0.1, starting_altitude=1000):
     """Integrate a system with step changes in commands.
     Returns:
     {"X": Command function, "U_0": Initial conditions, "U": Integrated state, "t": time step}
     """
-    X = find_command_fn(trim_conditions, time_starts, total_time)
+    X = find_command_fn(initial_condition, trim_list)
     t = np.arange(time_starts[0], total_time, dt)
-    U_0 = find_U_0(trim_conditions[0], starting_altitude)
+    U_0 = find_U_0(initial_condition, starting_altitude)
     U_integrated = rk4_integrate(dU_dt, U_0, X, t)
     return {"X": X, "U_0": U_0, "U": U_integrated, "t": t}
 
 extract_param = lambda name: [find_system_parameters(U)[name] for U in U_i["U"]]
 extract_command = lambda name: [X[0] if name=="delta_el" else X[1] for X in U_i["X"]]
 
-def make_sample_plot(fig, axs):
-    "Plot system results on a 4x2 subplot"
-    axs[0,0].plot(U_i["t"], extract_param("u_B"))
-    axs[0,0].set_ylabel("$u_B$")
-    axs[0,1].plot(U_i["t"], extract_param("w_B"))
-    axs[0,1].set_ylabel("$w_B$")
-    axs[1,0].plot(U_i["t"], extract_param("q"))
-    axs[1,0].set_ylabel("q")
-    axs[1,1].plot(U_i["t"], extract_param("theta (deg)"))
-    axs[1,1].set_ylabel(r'$\theta$')
-    axs[2,0].plot(U_i["t"], extract_param("gamma (deg)"))
-    axs[2,0].set_ylabel(r"$\gamma$")
-    axs[2,1].plot(U_i["t"], extract_param("z_E"))
-    axs[2,1].set_ylabel(r"$z_E$")
-    axs[3,0].plot(U_i["t"], extract_param("alpha (deg)"))
-    axs[3,0].set_ylabel(r"$\alpha$")
-    axs[3,1].plot(U_i["t"], extract_param("altitude"))
-    axs[3,1].set_ylabel("altitude")
-    fig.tight_layout()
-    return fig
 
 if __name__=="__main__":
+    from plot import make_sample_plot
     print("Comparison: page 14 of project.pdf")
     import matplotlib.pyplot as plt
     trim_conditions = [

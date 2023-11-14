@@ -51,6 +51,27 @@ def plot_curve_fit_output(fig, ax):
     # fig, axs must be a 2x4 subplot
     pass
 
+def make_sample_plot(fig, axs):
+    "Plot system results on a 4x2 subplot"
+    axs[0,0].plot(U_i["t"], extract_param("u_B"))
+    axs[0,0].set_ylabel("$u_B$")
+    axs[0,1].plot(U_i["t"], extract_param("w_B"))
+    axs[0,1].set_ylabel("$w_B$")
+    axs[1,0].plot(U_i["t"], extract_param("q"))
+    axs[1,0].set_ylabel("q")
+    axs[1,1].plot(U_i["t"], extract_param("theta (deg)"))
+    axs[1,1].set_ylabel(r'$\theta$')
+    axs[2,0].plot(U_i["t"], extract_param("gamma (deg)"))
+    axs[2,0].set_ylabel(r"$\gamma$")
+    axs[2,1].plot(U_i["t"], extract_param("z_E"))
+    axs[2,1].set_ylabel(r"$z_E$")
+    axs[3,0].plot(U_i["t"], extract_param("alpha (deg)"))
+    axs[3,0].set_ylabel(r"$\alpha$")
+    axs[3,1].plot(U_i["t"], extract_param("altitude"))
+    axs[3,1].set_ylabel("altitude")
+    fig.tight_layout()
+    return fig
+
 if __name__ == "__main__":
     gw = TestGraph()
     plot_b2_answer(gw)
