@@ -155,20 +155,25 @@ def dU_dt(t, U, X):
     # dU_dt
     return np.array([xdot, zdot, udot, wdot, q, qdot])
 
-def find_U_0(system, altitude):
+def find_U_0(system, altitude=None):
     """ Find the state array U given an altitude and the system"""
+    if altitude == None:
+        altitude = system["altitude"]
     body_velocities = get_body_velocities(system["V"], system["alpha"])
     theta = system["alpha"] + system["gamma"]
     z_E = -altitude # earth-relative z-position
     x_E = 0 # earth-relative x-position
-    q = 0
+    try:
+        q = system["q"]
+    except KeyError:
+        q = 0
     return np.array([
         x_E, z_E,
         body_velocities[0], body_velocities[1],
         theta, q
     ])
 
-def find_system_parameters(U):
+def find_state_parameters(U):
     "Given a state U, extracts all useful information about the state."
     [x_E, z_E, u_B, w_B, theta, q] = U
     alpha = find_angle_of_attack(u_B, w_B)
@@ -203,12 +208,12 @@ if __name__ == "__main__":
     X = lambda t: X1 if t < 100 else X2
     U_0 = find_U_0(find_system(100, 0), 2000)
     print("initial conditions")
-    pprint(find_system_parameters(U_0))
+    pprint(find_state_parameters(U_0))
     res = solve_ivp(dU_dt,(0,300), U_0, max_step=1, args=(X,))
     pprint(res)
     t = res['t']
     Us = res['y'].T
-    params = [find_system_parameters(U) for U in Us]
+    params = [find_state_parameters(U) for U in Us]
     find_param = lambda name: [param[name] for param in params]
     fig,axs = plt.subplots(4,2)
     axs[0,0].plot(t, Us[:,2])

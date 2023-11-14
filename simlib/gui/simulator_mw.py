@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'simulator_mw.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.6.0
+## Created by: Qt User Interface Compiler version 6.5.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -17,9 +17,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QComboBox, QDoubleSpinBox, QGridLayout,
     QGroupBox, QHBoxLayout, QHeaderView, QLabel,
-    QLineEdit, QMainWindow, QPushButton, QSizePolicy,
-    QSpacerItem, QStatusBar, QTableView, QVBoxLayout,
-    QWidget)
+    QMainWindow, QPushButton, QSizePolicy, QSpacerItem,
+    QStatusBar, QTableView, QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -66,15 +65,10 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_3 = QVBoxLayout()
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.trim_input_table = QTableView(self.centralwidget)
-        self.trim_input_table.setObjectName(u"trim_input_table")
+        self.trim_table = QTableView(self.centralwidget)
+        self.trim_table.setObjectName(u"trim_table")
 
-        self.verticalLayout_3.addWidget(self.trim_input_table)
-
-        self.trim_output_table = QTableView(self.centralwidget)
-        self.trim_output_table.setObjectName(u"trim_output_table")
-
-        self.verticalLayout_3.addWidget(self.trim_output_table)
+        self.verticalLayout_3.addWidget(self.trim_table)
 
 
         self.verticalLayout_4.addLayout(self.verticalLayout_3)
@@ -139,7 +133,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_7.addWidget(self.label_7)
 
-        self.init_altitude = QLineEdit(self.groupBox_3)
+        self.init_altitude = QDoubleSpinBox(self.groupBox_3)
         self.init_altitude.setObjectName(u"init_altitude")
 
         self.horizontalLayout_7.addWidget(self.init_altitude)
@@ -154,10 +148,10 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_8.addWidget(self.label_8)
 
-        self.init_ttime = QLineEdit(self.groupBox_3)
-        self.init_ttime.setObjectName(u"init_ttime")
+        self.init_total_time = QDoubleSpinBox(self.groupBox_3)
+        self.init_total_time.setObjectName(u"init_total_time")
 
-        self.horizontalLayout_8.addWidget(self.init_ttime)
+        self.horizontalLayout_8.addWidget(self.init_total_time)
 
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_8)
@@ -211,10 +205,10 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_3.addWidget(self.label_3)
 
-        self.trim_tstart = QLineEdit(self.groupBox)
-        self.trim_tstart.setObjectName(u"trim_tstart")
+        self.trim_time_start = QDoubleSpinBox(self.groupBox)
+        self.trim_time_start.setObjectName(u"trim_time_start")
 
-        self.horizontalLayout_3.addWidget(self.trim_tstart)
+        self.horizontalLayout_3.addWidget(self.trim_time_start)
 
 
         self.verticalLayout.addLayout(self.horizontalLayout_3)
@@ -223,22 +217,22 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addItem(self.verticalSpacer)
 
-        self.add_trim = QPushButton(self.groupBox)
-        self.add_trim.setObjectName(u"add_trim")
+        self.add_trim_btn = QPushButton(self.groupBox)
+        self.add_trim_btn.setObjectName(u"add_trim_btn")
 
-        self.verticalLayout.addWidget(self.add_trim)
+        self.verticalLayout.addWidget(self.add_trim_btn)
 
         self.horizontalLayout_9 = QHBoxLayout()
         self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
-        self.del_prev_trim = QPushButton(self.groupBox)
-        self.del_prev_trim.setObjectName(u"del_prev_trim")
+        self.del_prev_trim_btn = QPushButton(self.groupBox)
+        self.del_prev_trim_btn.setObjectName(u"del_prev_trim_btn")
 
-        self.horizontalLayout_9.addWidget(self.del_prev_trim)
+        self.horizontalLayout_9.addWidget(self.del_prev_trim_btn)
 
-        self.clear_trims = QPushButton(self.groupBox)
-        self.clear_trims.setObjectName(u"clear_trims")
+        self.clear_trims_btn = QPushButton(self.groupBox)
+        self.clear_trims_btn.setObjectName(u"clear_trims_btn")
 
-        self.horizontalLayout_9.addWidget(self.clear_trims)
+        self.horizontalLayout_9.addWidget(self.clear_trims_btn)
 
 
         self.verticalLayout.addLayout(self.horizontalLayout_9)
@@ -252,10 +246,10 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_4.addLayout(self.horizontalLayout_10)
 
-        self.run_simulation = QPushButton(self.centralwidget)
-        self.run_simulation.setObjectName(u"run_simulation")
+        self.run_simulation_btn = QPushButton(self.centralwidget)
+        self.run_simulation_btn.setObjectName(u"run_simulation_btn")
 
-        self.verticalLayout_4.addWidget(self.run_simulation)
+        self.verticalLayout_4.addWidget(self.run_simulation_btn)
 
 
         self.gridLayout.addLayout(self.verticalLayout_4, 0, 1, 1, 1)
@@ -284,9 +278,9 @@ class Ui_MainWindow(object):
         self.label.setText(QCoreApplication.translate("MainWindow", u"Velocity (m/s)", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Flight Path Angle (\u00b0)", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Starting Time (s)", None))
-        self.add_trim.setText(QCoreApplication.translate("MainWindow", u"Add Trim", None))
-        self.del_prev_trim.setText(QCoreApplication.translate("MainWindow", u"Delete Prev", None))
-        self.clear_trims.setText(QCoreApplication.translate("MainWindow", u"Clear All", None))
-        self.run_simulation.setText(QCoreApplication.translate("MainWindow", u"Run Simulation", None))
+        self.add_trim_btn.setText(QCoreApplication.translate("MainWindow", u"Add Trim", None))
+        self.del_prev_trim_btn.setText(QCoreApplication.translate("MainWindow", u"Delete Prev", None))
+        self.clear_trims_btn.setText(QCoreApplication.translate("MainWindow", u"Clear All", None))
+        self.run_simulation_btn.setText(QCoreApplication.translate("MainWindow", u"Run Simulation", None))
     # retranslateUi
 

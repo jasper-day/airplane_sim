@@ -4,30 +4,34 @@
 
 from pprint import pprint
 from matplotlib.backends.backend_qtagg import FigureCanvas
+from matplotlib.backends.backend_qtagg import NavigationToolbar2QT
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 from PySide6.QtWidgets import QWidget, QVBoxLayout
-from dynamics import find_system_parameters
-from command import integrate_system
+from dynamics import find_state_parameters
+from command import integrate_system, extract_param
 from root_finder import find_system
 import numpy as np
 
 class GraphWidget(QWidget):
     # Matplotlib graphs can be widgets too.
-    def __init__(self, parent=QWidget):
-        super(TestGraph, self).__init__(parent)
-        self.figure = Figure()
-        self.canvas = FigureCanvas(self.figure)
-        self.ax = self.figure.add_subplot(111)
-        self.layout = QVBoxLayout(self)
-        self.layout.addWidget(self.canvas)
-
-class TestGraph():
     def __init__(self, parent=None):
-        self.fig, self.ax = plt.subplots()
+        super(GraphWidget, self).__init__(parent)
+        self.view = FigureCanvas(Figure(figsize=(3,5)))
+        self.ax = self.view.figure.subplots()
+        self.toolbar = NavigationToolbar2QT(self.view, self)
+        vlayout = QVBoxLayout()
+        vlayout.addWidget(self.toolbar)
+        vlayout.addWidget(self.view)
+        self.setLayout(vlayout)
+
+# class PltGraph():
+#    def __init__(self, parent=None):
+    #    super(PltGraph, self).__init__(parent)
+    #    self.fig, self.ax = plt.subplots()
 
 def plot_parameter(graphWidget, param, U_integrated, time):
-    param_list = [find_system_parameters(U)[param] for U in U_integrated]
+    param_list = [find_state_parameters(U)[param] for U in U_integrated]
     graphWidget.ax.plot(time, param_list)
     graphWidget.ax.set_ylabel(param)
     graphWidget.ax.set_xlabel("time (s)")
@@ -51,28 +55,28 @@ def plot_curve_fit_output(fig, ax):
     # fig, axs must be a 2x4 subplot
     pass
 
-def make_sample_plot(fig, axs):
+def make_sample_plot(fig, axs, U):
     "Plot system results on a 4x2 subplot"
-    axs[0,0].plot(U_i["t"], extract_param("u_B"))
+    axs[0,0].plot(U["t"], extract_param(U, "u_B"))
     axs[0,0].set_ylabel("$u_B$")
-    axs[0,1].plot(U_i["t"], extract_param("w_B"))
+    axs[0,1].plot(U["t"], extract_param(U, "w_B"))
     axs[0,1].set_ylabel("$w_B$")
-    axs[1,0].plot(U_i["t"], extract_param("q"))
+    axs[1,0].plot(U["t"], extract_param(U, "q"))
     axs[1,0].set_ylabel("q")
-    axs[1,1].plot(U_i["t"], extract_param("theta (deg)"))
+    axs[1,1].plot(U["t"], extract_param(U, "theta (deg)"))
     axs[1,1].set_ylabel(r'$\theta$')
-    axs[2,0].plot(U_i["t"], extract_param("gamma (deg)"))
+    axs[2,0].plot(U["t"], extract_param(U, "gamma (deg)"))
     axs[2,0].set_ylabel(r"$\gamma$")
-    axs[2,1].plot(U_i["t"], extract_param("z_E"))
+    axs[2,1].plot(U["t"], extract_param(U, "z_E"))
     axs[2,1].set_ylabel(r"$z_E$")
-    axs[3,0].plot(U_i["t"], extract_param("alpha (deg)"))
+    axs[3,0].plot(U["t"], extract_param(U, "alpha (deg)"))
     axs[3,0].set_ylabel(r"$\alpha$")
-    axs[3,1].plot(U_i["t"], extract_param("altitude"))
+    axs[3,1].plot(U["t"], extract_param(U, "altitude"))
     axs[3,1].set_ylabel("altitude")
     fig.tight_layout()
     return fig
 
 if __name__ == "__main__":
-    gw = TestGraph()
+    gw = PltGraph()
     plot_b2_answer(gw)
     plt.show()

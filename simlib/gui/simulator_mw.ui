@@ -32,7 +32,14 @@
         <widget class="QComboBox" name="graph_selector"/>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton">
+        <widget class="QPushButton" name="update_plot_btn">
+         <property name="text">
+          <string>Update Plot</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="exit_btn">
          <property name="text">
           <string>Back to Menu</string>
          </property>
@@ -49,7 +56,7 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
-         <widget class="QTableView" name="trim_table"/>
+         <widget class="QTableWidget" name="trim_table"/>
         </item>
        </layout>
       </item>
@@ -73,7 +80,17 @@
                 </widget>
                </item>
                <item>
-                <widget class="QDoubleSpinBox" name="init_vel"/>
+                <widget class="QDoubleSpinBox" name="init_vel">
+                 <property name="maximum">
+                  <double>400.000000000000000</double>
+                 </property>
+                 <property name="singleStep">
+                  <double>10.000000000000000</double>
+                 </property>
+                 <property name="value">
+                  <double>100.000000000000000</double>
+                 </property>
+                </widget>
                </item>
               </layout>
              </item>
@@ -87,7 +104,14 @@
                 </widget>
                </item>
                <item>
-                <widget class="QDoubleSpinBox" name="init_gamma"/>
+                <widget class="QDoubleSpinBox" name="init_gamma">
+                 <property name="minimum">
+                  <double>-30.000000000000000</double>
+                 </property>
+                 <property name="maximum">
+                  <double>30.000000000000000</double>
+                 </property>
+                </widget>
                </item>
               </layout>
              </item>
@@ -101,7 +125,14 @@
                 </widget>
                </item>
                <item>
-                <widget class="QDoubleSpinBox" name="init_angvel"/>
+                <widget class="QDoubleSpinBox" name="init_angvel">
+                 <property name="minimum">
+                  <double>-100.000000000000000</double>
+                 </property>
+                 <property name="maximum">
+                  <double>100.000000000000000</double>
+                 </property>
+                </widget>
                </item>
               </layout>
              </item>
@@ -115,7 +146,17 @@
                 </widget>
                </item>
                <item>
-                <widget class="QDoubleSpinBox" name="init_altitude"/>
+                <widget class="QDoubleSpinBox" name="init_altitude">
+                 <property name="maximum">
+                  <double>100000.000000000000000</double>
+                 </property>
+                 <property name="singleStep">
+                  <double>200.000000000000000</double>
+                 </property>
+                 <property name="value">
+                  <double>1000.000000000000000</double>
+                 </property>
+                </widget>
                </item>
               </layout>
              </item>
@@ -124,12 +165,22 @@
                <item>
                 <widget class="QLabel" name="label_8">
                  <property name="text">
-                  <string>Simulation time (s)</string>
+                  <string>Total Simulation Time (s)</string>
                  </property>
                 </widget>
                </item>
                <item>
-                <widget class="QDoubleSpinBox" name="init_total_time"/>
+                <widget class="QDoubleSpinBox" name="total_time">
+                 <property name="maximum">
+                  <double>10000.000000000000000</double>
+                 </property>
+                 <property name="singleStep">
+                  <double>20.000000000000000</double>
+                 </property>
+                 <property name="value">
+                  <double>200.000000000000000</double>
+                 </property>
+                </widget>
                </item>
               </layout>
              </item>
@@ -156,7 +207,17 @@
                 </widget>
                </item>
                <item>
-                <widget class="QDoubleSpinBox" name="trim_vel"/>
+                <widget class="QDoubleSpinBox" name="trim_vel">
+                 <property name="maximum">
+                  <double>400.000000000000000</double>
+                 </property>
+                 <property name="singleStep">
+                  <double>10.000000000000000</double>
+                 </property>
+                 <property name="value">
+                  <double>100.000000000000000</double>
+                 </property>
+                </widget>
                </item>
               </layout>
              </item>
@@ -170,7 +231,14 @@
                 </widget>
                </item>
                <item>
-                <widget class="QDoubleSpinBox" name="trim_gamma"/>
+                <widget class="QDoubleSpinBox" name="trim_gamma">
+                 <property name="minimum">
+                  <double>-30.000000000000000</double>
+                 </property>
+                 <property name="maximum">
+                  <double>30.000000000000000</double>
+                 </property>
+                </widget>
                </item>
               </layout>
              </item>
@@ -184,7 +252,17 @@
                 </widget>
                </item>
                <item>
-                <widget class="QDoubleSpinBox" name="trim_time_start"/>
+                <widget class="QDoubleSpinBox" name="trim_time_start">
+                 <property name="maximum">
+                  <double>10000.000000000000000</double>
+                 </property>
+                 <property name="singleStep">
+                  <double>20.000000000000000</double>
+                 </property>
+                 <property name="value">
+                  <double>20.000000000000000</double>
+                 </property>
+                </widget>
                </item>
               </layout>
              </item>
@@ -202,7 +280,7 @@
               </spacer>
              </item>
              <item>
-              <widget class="QPushButton" name="add_trim">
+              <widget class="QPushButton" name="add_trim_btn">
                <property name="text">
                 <string>Add Trim</string>
                </property>
@@ -211,14 +289,14 @@
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_9">
                <item>
-                <widget class="QPushButton" name="del_prev_trim">
+                <widget class="QPushButton" name="del_prev_trim_btn">
                  <property name="text">
                   <string>Delete Prev</string>
                  </property>
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="clear_trims">
+                <widget class="QPushButton" name="clear_trims_btn">
                  <property name="text">
                   <string>Clear All</string>
                  </property>
@@ -234,7 +312,7 @@
        </layout>
       </item>
       <item>
-       <widget class="QPushButton" name="run_simulation">
+       <widget class="QPushButton" name="run_simulation_btn">
         <property name="text">
          <string>Run Simulation</string>
         </property>
