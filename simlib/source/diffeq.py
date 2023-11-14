@@ -61,12 +61,15 @@ def rk4_step(f, U_n, X_n, t, dt):
 
 if __name__=="__main__":
     # test with simple harmonic oscillator
-    def f(U, _X, _t):
+    def dU_dt(_t, U, _X,):
+        # x'' = -x
+        # x' = U[1]
+        # x = U[0]
         return np.array([U[1], -U[0]])
     U_0 = np.array([1,0])
-    t = np.linspace(0, 10, 100)
-    X = np.zeros_like(t)
-    U = rk4_integrate(f, U_0, X, t)
+    t = np.linspace(0, 2*np.pi, 100)
+    X = lambda t: None
+    U = rk4_integrate(dU_dt, U_0, X, t)
     import matplotlib.pyplot as plt
     plt.plot(t, U)
     plt.show()

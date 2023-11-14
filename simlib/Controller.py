@@ -8,27 +8,34 @@ from source.diffeq import rk4_integrate
 
 U = 18 # Thomas is the oldest member, born 18 July
 
-trim_conditions = {
-    "1": find_system(100 + U, 0), # steady level flight
-    "2": find_system(100 + U, deg2rad(2)), # climbing flight
-    "3": find_system(100 + U, 0), # steady level flight
-}
+trim_conditions = [
+    find_system(100 + U, 0), # steady level flight
+    find_system(100 + U, deg2rad(2)), # climbing flight
+    find_system(100 + U, 0), # steady level flight
+]
 
-def find_command_fn(trim_conditions, time_starts, total_time, dt):
-    # assert(len(trim_conditions) == len(time_starts))
+def find_command_fn(trim_list, time_starts, total_time):
+    """Returns a function that gives the correct command at a given time t.
+    Input:
+    trim_list: list of trim conditions (dictionary with at least "delta_el" and "Thrust")
+    time_starts: the time each successive trim condition starts
+    total_time: the time the simulation should run for
+    Output:
+    X: X(t) = [delta_el, Thrust] at time t"""
+    assert(len(trim_list) == len(time_starts))
     # time_starts is monotonically increasing
     assert(np.all(np.sign(np.diff(time_starts))))
     time_starts.append(total_time)
     X_commands = []
     def find_trim(t):
-        for i in range(len(trim_conditions)):
+        for i in range(len(trim_list)):
             if time_starts[i] <= t < time_starts[i + 1]:
-                return [trim_conditions[i]["delta_el"], trim_conditions[i]["Thrust"]]
+                return [trim_list[i]["delta_el"], trim_list[i]["Thrust"]]
         raise RuntimeError(f"Out of bounds access at t={t}")
     return find_trim
 
 def integrate_system(trim_conditions, time_starts, total_time, dt, starting_altitude=1000):
-    X = find_command_fn(trim_conditions, time_starts, total_time, dt)
+    X = find_command_fn(trim_conditions, time_starts, total_time)
     t = np.arange(time_starts[0], total_time, 0.1)
     U_0 = find_U_0(trim_conditions[0], starting_altitude)
     U_integrated = rk4_integrate(dU_dt, U_0, X, t)
@@ -63,13 +70,16 @@ def make_sample_plot(fig, axs):
 if __name__=="__main__":
     print("Comparison: page 14 of project.pdf")
     import matplotlib.pyplot as plt
-    U_i = integrate_system([
-        trim_conditions['1'], 
-        {"Thrust": 2755.17, "delta_el": -0.0572}], [0, 100], 300, 0.1, starting_altitude=2000)
+    trim_conditions = [
+        {"Thrust": 2755.17, "delta_el": -0.0520, "V": 100, "alpha": 0.0164, "gamma": 0},
+        {"Thrust": 2755.17, "delta_el": -0.0572},
+    ]
+
+    U_i = integrate_system(trim_conditions , [0, 100], 300, 0.1, starting_altitude=2000)
     from pprint import pformat
     print(f"""
     Initial system: {pformat(find_system_parameters(U_i['U'][0]))}
-    Initial commands: {pformat(trim_conditions['1'])}
+    Initial commands: {pformat(trim_conditions[0])}
     """)
     fig, axs = plt.subplots(4,2)
     make_sample_plot(fig,axs)
