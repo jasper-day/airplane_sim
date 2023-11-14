@@ -3,9 +3,9 @@
 # Output: Roots of that function
 # Method: Newton's method of some kind
 
-from airplane_dynamics import find_lift, find_drag, find_moment, find_weight, \
+from source.dynamics import find_lift, find_drag, find_moment, find_weight, \
     find_C_L, find_C_D, find_C_M
-from curve_fit import C_M_0, C_M_alpha, C_M_delta_el
+from source.curve_fit import C_M_0, C_M_alpha, C_M_delta_el
 import math
 import numpy as np
 import matplotlib.pyplot as plt
@@ -50,7 +50,7 @@ def minimizing_function(V, gamma):
 
 
 def bisection(f,a,b,N):
-        '''Approximate solution of f(x)=0 on interval [a,b] by the secant method.
+        '''Approximate solution of f(x)=0 on interval [a,b] by the bisection method.
 
         Parameters
         ----------
@@ -99,6 +99,13 @@ def bisection(f,a,b,N):
         return {"solution": (a_n + b_n)/2, "success": True, "error": ea}
 
 def find_system(V, gamma):
+    """Given velocity and flight path angle, calculates the angle of attack
+    Output:
+    {'alpha': angle of attack
+     'delta_el': elevator inclination
+     'Thrust': Thrust force
+     'V': Airspeed
+     'gamma': flight path angle}"""
     f = minimizing_function(V, gamma)
     res = bisection(f, -math.pi/2 + 0.5, math.pi/2, 1000)
     alpha = res["solution"] if res["success"] else None
@@ -117,7 +124,7 @@ def find_system(V, gamma):
 
 
 
-def plot_thrust_vs_velocity(gamma_values, V_range):
+def plot_thrust_vs_velocity(ax, gamma_values, V_range):
     thrust_values = []
     alpha_values = [] 
     for gamma in gamma_values:
@@ -133,16 +140,13 @@ def plot_thrust_vs_velocity(gamma_values, V_range):
         plt.subplot(121)
         plt.plot(V_range, thrust_values[i], label=f'Gamma = {gamma}')
     
-    
-    plt.xlabel('Velocity (V)')
-    plt.ylabel('Thrust')
-    plt.legend()
-    plt.title('Thrust vs. Velocity for Different Gamma Values')
-    plt.grid(True)
+    ax.set_xlabel('Velocity (V)')
+    ax.set_ylabel('Thrust')
+    ax.legend()
+    ax.set_title('Thrust vs. Velocity for Different Gamma Values')
+    ax.grid(True)
 
-    
-
-def plot_delta_el_vs_velocity(gamma_values, V_range):
+def plot_delta_el_vs_velocity(ax, gamma_values, V_range):
     delta_el_values = []
     for gamma in gamma_values:
         delta_el_data = []
@@ -157,31 +161,26 @@ def plot_delta_el_vs_velocity(gamma_values, V_range):
         plt.plot(V_range, delta_el_values[i], label=f'Gamma = {gamma}')
   
     
-    plt.xlabel('Velocity (V)')
-    plt.ylabel('Elevator Deflection (rad)')
-    plt.legend()
-    plt.title('Elevator Deflection vs. Velocity for Different Gamma Values')
-    plt.grid(True)
+    ax.set_xlabel('Velocity (V)')
+    ax.set_ylabel('Elevator Deflection (rad)')
+    ax.legend()
+    ax.set_title('Elevator Deflection vs. Velocity for Different Gamma Values')
+    ax.grid(True)
     
     
 
 if __name__ == "__main__":
     from pprint import pprint
-    pprint(find_system(70, 0.00))
-
-#is this unnecessary
-    #V = 80
-    #gamma = 0.05
-
-    #f = minimizing_function(V, gamma)
+    pprint(find_system(100, 0.05))
 
     # Example: Plot thrust vs. velocity for different gamma values
     V_range = np.linspace(75, 150, 400)
     n = 5
     gamma_values = np.linspace(0, 1, 10)
 
-    plot_thrust_vs_velocity(gamma_values, V_range)  # Add this line to plot thrust vs. velocity
-    plot_delta_el_vs_velocity(gamma_values, V_range)
+    fig, axs = plt.subplots(2)
+    plot_thrust_vs_velocity(axs[0], gamma_values, V_range)  # Add this line to plot thrust vs. velocity
+    plot_delta_el_vs_velocity(axs[1], gamma_values, V_range)
     
 
     plt.show()
