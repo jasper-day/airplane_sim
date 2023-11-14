@@ -50,7 +50,7 @@ def minimizing_function(V, gamma):
 
 
 def bisection(f,a,b,N):
-        '''Approximate solution of f(x)=0 on interval [a,b] by the secant method.
+        '''Approximate solution of f(x)=0 on interval [a,b] by the bisection method.
 
         Parameters
         ----------
