@@ -2,7 +2,6 @@
 
 # Plot results of integrated systems
 
-import root_finder
 from pprint import pprint
 from matplotlib.backends.backend_qtagg import FigureCanvas
 from matplotlib.figure import Figure
