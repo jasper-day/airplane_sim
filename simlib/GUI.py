@@ -112,7 +112,7 @@ class TestTable(QWidget):
         self.table_label = QLabel('User inputs')
         self.table2_label = QLabel('Output Parameters')
 
-        self.tstart_label = QLabel('Condition Start n/ time')
+        self.tstart_label = QLabel('Condition \nstart time (s)')
         self.tstart_input = QLineEdit()
         self.tstart_input.setPlaceholderText('Please enter the condition start time')
         self.velo_label = QLabel('Velocity (ms<sup>−1</sup>)')
