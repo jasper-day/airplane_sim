@@ -23,7 +23,8 @@ from PySide6.QtWidgets import (
 from GUI import TestGraph
 from source.plot import GraphWidget, plot_parameter
 
-class Window2(QMainWindow, Ui_MainWindow):                           
+
+class SimWindow(QMainWindow, Ui_MainWindow):                           
     def __init__(self, parent = None):
         super(Window2, self).__init__(parent)
         self.setupUi(self)
@@ -31,10 +32,8 @@ class Window2(QMainWindow, Ui_MainWindow):
         self.graph_layout = QHBoxLayout()
         self.graph_layout.addWidget(self.graph)
         self.graph_output.setLayout(self.graph_layout)
-        plot_parameter("alpha (deg)", self.graph, )
-
-commands = {}
-initial_conditions = {}
+        self.commands = {} # data for commands
+        self.initial_conditions = {} # data for initial conditions
 
 
 class MainWindow(QWidget):
@@ -54,7 +53,7 @@ class MainWindow(QWidget):
         self.label.setStyleSheet("QLabel {background-color: white;}")
         
         self.button1 = QPushButton("Start", self)
-        self.button1.clicked.connect(self.window2)
+        self.button1.clicked.connect(self.simwin)
         self.button2 = QPushButton("Quit",self)
         self.button2.clicked.connect(sys.exit)
         
@@ -63,9 +62,9 @@ class MainWindow(QWidget):
         layout.addWidget(self.button2,2,0)
         self.setLayout(layout)
 
-    def window2(self):
-        self.w2 = Window2()
-        self.w2.show()
+    def simwin(self):
+        self.simwin = SimWindow()
+        self.simwin.show()
         self.hide()
 
 if __name__ == "__main__":
