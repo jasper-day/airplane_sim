@@ -10,9 +10,9 @@ All angles in radians
 
 import math
 import numpy as np
-from env import gravity, air_density
-from vehicle import Sref, cbar, acMass, inertia_yy
-from curve_fit import C_D_0, C_L_0, C_L_alpha, C_L_delta_el, C_M_0, C_M_alpha, C_M_delta_el, K_C_D
+from source.env import gravity, air_density
+from source.vehicle import Sref, cbar, acMass, inertia_yy
+from source.curve_fit import C_D_0, C_L_0, C_L_alpha, C_L_delta_el, C_M_0, C_M_alpha, C_M_delta_el, K_C_D
 import inspect
 
 def rad2deg(alpha):

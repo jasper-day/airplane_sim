@@ -15,7 +15,7 @@ trim_conditions = {
 }
 
 def find_command_fn(trim_conditions, time_starts, total_time, dt):
-    assert(len(trim_conditions) == len(time_starts))
+    # assert(len(trim_conditions) == len(time_starts))
     # time_starts is monotonically increasing
     assert(np.all(np.sign(np.diff(time_starts))))
     time_starts.append(total_time)
@@ -56,6 +56,7 @@ def make_sample_plot(fig, axs):
     axs[3,1].plot(U_i["t"], extract_param("altitude"))
     axs[3,1].set_ylabel("altitude")
     fig.tight_layout()
+    return fig
 
 
 
@@ -73,3 +74,4 @@ if __name__=="__main__":
     fig, axs = plt.subplots(4,2)
     make_sample_plot(fig,axs)
     plt.show()
+    print(trim_conditions[0])

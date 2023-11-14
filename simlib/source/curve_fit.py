@@ -6,7 +6,7 @@ import numpy as np
 import math
 # import data to fit curves
 import matplotlib.pyplot as plt
-from aero_table import CD, CL, CM, CL_el, CM_el, alpha, delta_el
+from source.aero_table import CD, CL, CM, CL_el, CM_el, alpha, delta_el
 
 def linear_fit(test_vals, measurements):
     """

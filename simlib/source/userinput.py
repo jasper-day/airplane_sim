@@ -1,7 +1,8 @@
 import numpy as np
 
-V = []
-G = []
-t = []
+Tstart = []
+Velocity = []
+Gamma = []
+Duration = []
 
 
