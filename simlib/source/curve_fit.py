@@ -94,3 +94,4 @@ C_M_delta_el: {C_M_delta_el}""")
     plot_curve_fit(axs[1,1], delta_el, CM_el, 1, xlabel=r"\delta_{el}", ylabel=r"CM_{el}")
     fig.tight_layout(pad=0.5,w_pad=0.5)
     plt.show()
+#recommit test
