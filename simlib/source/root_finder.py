@@ -119,7 +119,9 @@ def find_system(V, gamma):
         "delta_el": delta_el, 
         "Thrust": T, 
         "V": V, 
-        "gamma": gamma
+        "gamma": gamma,
+        "pitch": alpha + gamma,
+    
     }
 
 
