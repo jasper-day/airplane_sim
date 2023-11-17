@@ -333,7 +333,7 @@
             <string>Run Simulation</string>
            </property>
            <property name="shortcut">
-            <string>Space</string>
+            <string>Shift+Return</string>
            </property>
           </widget>
          </item>
@@ -489,7 +489,7 @@
                 <string>Delete Prev</string>
                </property>
                <property name="shortcut">
-                <string>Backspace</string>
+                <string>Ctrl+Del</string>
                </property>
               </widget>
              </item>
@@ -508,7 +508,7 @@
                 <string>Clear All</string>
                </property>
                <property name="shortcut">
-                <string>Del</string>
+                <string>Alt+Del</string>
                </property>
               </widget>
              </item>

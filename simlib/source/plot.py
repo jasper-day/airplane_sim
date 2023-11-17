@@ -25,11 +25,6 @@ class GraphWidget(QWidget):
         vlayout.addWidget(self.view)
         self.setLayout(vlayout)
 
-# class PltGraph():
-#    def __init__(self, parent=None):
-    #    super(PltGraph, self).__init__(parent)
-    #    self.fig, self.ax = plt.subplots()
-
 def plot_parameter(graphWidget, param, U_integrated, time):
     param_list = [find_state_parameters(U)[param] for U in U_integrated]
     graphWidget.ax.plot(time, param_list)
@@ -75,8 +70,3 @@ def make_sample_plot(fig, axs, U):
     axs[3,1].set_ylabel("altitude")
     fig.tight_layout()
     return fig
-
-# if __name__ == "__main__":
-#     gw = PltGraph()
-#     plot_b2_answer(gw)
-#     plt.show()
