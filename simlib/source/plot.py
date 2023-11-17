@@ -29,7 +29,7 @@ def plot_parameter(graphWidget, param, U_integrated, time):
     param_list = [find_state_parameters(U)[param] for U in U_integrated]
     graphWidget.ax.plot(time, param_list)
     graphWidget.ax.set_ylabel(param)
-    graphWidget.ax.set_xlabel("time (s)")
+    graphWidget.ax.set_xlabel("Time (s)")
 
 def plot_b2_answer(graphWidget):
     U = 18 # Thomas is the oldest member, born 18 July
