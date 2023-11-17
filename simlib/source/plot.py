@@ -51,9 +51,9 @@ def plot_b2_answer(graphWidget, velocity=118, climb_angle=np.radians(2), startin
             find_trim_conditions(velocity, gamma=0, t_start=100 + t_climb)
         ]
         res = integrate_system(initial_condition, trim_conditions)
-        plot_parameter(graphWidget, "altitude", res["U"], res["t"], color="black")
+        plot_parameter(graphWidget, "Altitude", res["U"], res["t"], color="black")
         # return average of last 50 altitude readings
-        return np.average([find_state_parameters(U)["altitude"] for U in res["U"][-50:]])
+        return np.average([find_state_parameters(U)["Altitude"] for U in res["U"][-50:]])
     
     graphWidget.ax.set_ylabel("Altitude")
     graphWidget.ax.axvline(100, color="red",linestyle='--')
