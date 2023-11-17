@@ -339,13 +339,6 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_5.addWidget(self.graph_selector)
 
-        self.update_plot_btn = QPushButton(self.widget)
-        self.update_plot_btn.setObjectName(u"update_plot_btn")
-        self.update_plot_btn.setFont(font4)
-        self.update_plot_btn.setCursor(QCursor(Qt.PointingHandCursor))
-
-        self.verticalLayout_5.addWidget(self.update_plot_btn)
-
         self.exit_btn = QPushButton(self.widget)
         self.exit_btn.setObjectName(u"exit_btn")
         self.exit_btn.setFont(font4)
@@ -395,7 +388,6 @@ class Ui_MainWindow(object):
         self.clear_trims_btn.setShortcut(QCoreApplication.translate("MainWindow", u"Del", None))
 #endif // QT_CONFIG(shortcut)
         self.label_9.setText(QCoreApplication.translate("MainWindow", u"Output", None))
-        self.update_plot_btn.setText(QCoreApplication.translate("MainWindow", u"Update Plot", None))
         self.exit_btn.setText(QCoreApplication.translate("MainWindow", u"Back to Menu", None))
     # retranslateUi
 
