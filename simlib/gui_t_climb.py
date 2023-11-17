@@ -42,6 +42,7 @@ class TClimbMW(QMainWindow, Ui_MainWindow):
             final_alt=self.final_alt.value(),
             climb_angle=np.radians(self.climb_angle.value()),
         )
+        self.graph.view.figure.tight_layout()
         self.graph.view.draw()
         self.t_climb_output.setText("{:.2f}".format(res["t_climb"]))
         self.altitude_output.setText("{:.2f}".format(res["final_alt"]))
