@@ -1,12 +1,12 @@
 import sys
 sys.path.append('simlib/source/')
-from gui.simulator_mwc import Ui_MainWindow
+from gui.simulator_mw_testc import Ui_MainWindow
 import matplotlib.pyplot as plt
 import numpy as np
 from PySide6 import QtWidgets
 from PySide6 import QtCore
 from PySide6.QtCore import QSize, Qt
-from PySide6.QtGui import QMovie
+from PySide6.QtGui import QMovie, QFont
 from PySide6.QtWidgets import (
     QApplication,
     QMainWindow,
@@ -42,7 +42,6 @@ class SimWindow(QMainWindow, Ui_MainWindow):
         self.del_prev_trim_btn.clicked.connect(self.remove_last_trim)
         self.clear_trims_btn.clicked.connect(self.clear_trims)
         self.run_simulation_btn.clicked.connect(self.run_simulation)
-        self.update_plot_btn.clicked.connect(self.update_plot)
         self.exit_btn.clicked.connect(self.mainwindow)
         self.graph_selector.currentIndexChanged.connect(self.update_plot)
     def add_trim(self):
@@ -80,6 +79,7 @@ class SimWindow(QMainWindow, Ui_MainWindow):
     def update_plot(self):
         self.graph.ax.clear()
         plot_parameter(self.graph, self.graph_selector.currentText(), self.sim_result["U"], self.sim_result["t"])
+        self.graph.view.figure.tight_layout()
         self.graph.view.draw()
     def mainwindow(self):
         self.mw = MainWindow()
@@ -118,8 +118,10 @@ class MainWindow(QWidget):
         self.label.setStyleSheet("QLabel {background-color: white;}")
         
         self.button1 = QPushButton("Start", self)
+        self.button1.setFont(QFont('ISOCP_IV50', 16))
         self.button1.clicked.connect(self.simwin)
         self.button2 = QPushButton("Quit",self)
+        self.button2.setFont(QFont('ISOCP_IV50', 16))
         self.button2.clicked.connect(sys.exit)
         
         layout.addWidget(self.label, 0,0)
