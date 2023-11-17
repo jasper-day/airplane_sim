@@ -73,7 +73,7 @@ def make_sample_plot(fig, axs, U):
     axs[3,0].set_ylabel(r"$\alpha$")
     axs[3,1].plot(U["t"], extract_param(U, "altitude"))
     axs[3,1].set_ylabel("altitude")
-    fig.tight_layout()
+    fig.tight_layout(hpad=1)
     return fig
 
 if __name__ == "__main__":
