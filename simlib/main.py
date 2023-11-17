@@ -34,7 +34,7 @@ class SimWindow(QMainWindow, Ui_MainWindow):
         # add the graph widget to the graph_output widget
         graph_layout = QHBoxLayout()
         graph_layout.addWidget(self.graph)
-        self.graph_output.setLayout(self.graph_layout)
+        self.graph_output.setLayout(graph_layout)
         # trim commands are a list(dict)
         self.trim_list = [] 
         # initial conditions are a dict
