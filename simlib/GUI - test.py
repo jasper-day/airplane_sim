@@ -42,7 +42,6 @@ class SimWindow(QMainWindow, Ui_MainWindow):
         self.del_prev_trim_btn.clicked.connect(self.remove_last_trim)
         self.clear_trims_btn.clicked.connect(self.clear_trims)
         self.run_simulation_btn.clicked.connect(self.run_simulation)
-        # self.update_plot_btn.clicked.connect(self.update_plot)
         self.exit_btn.clicked.connect(self.mainwindow)
         self.graph_selector.currentIndexChanged.connect(self.update_plot)
     def add_trim(self):
