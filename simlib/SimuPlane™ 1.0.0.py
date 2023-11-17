@@ -1,25 +1,20 @@
 import sys
 sys.path.append('simlib/source/')
-from gui.simulator_mw_testc import Ui_MainWindow
-import matplotlib.pyplot as plt
+from gui.simulator_mwc import Ui_MainWindow
+# import matplotlib.pyplot as plt
 import numpy as np
 from PySide6 import QtWidgets
 from PySide6 import QtCore
-from PySide6.QtCore import QSize, Qt
+from PySide6.QtCore import QCoreApplication
 from PySide6.QtGui import QMovie, QFont
 from PySide6.QtWidgets import (
     QApplication,
     QMainWindow,
     QHBoxLayout,
-    QVBoxLayout,
     QGridLayout,
     QWidget,
-    QTableWidget,
     QTableWidgetItem,
-    QPushButton,
-    QLineEdit,
-    QLabel,
-    
+    QPushButton,    
 )
 
 from source.plot import GraphWidget, plot_parameter, find_state_parameters
@@ -104,13 +99,13 @@ class SimWindow(QMainWindow, Ui_MainWindow):
 class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("SimuPlane™ 0.1.0")
+        self.setWindowTitle("SimuPlane™ 1.0.0")
         layout = QGridLayout(self)
         
         self.label = QtWidgets.QLabel(self)
 
         # Integrate QMovie to the label and initiate the GIF
-        self.movie = QMovie("simlib/p51_3d.gif")
+        self.movie = QMovie("simlib/p51.gif")
         self.label.setMovie(self.movie)
         self.movie.start()
 
@@ -120,9 +115,11 @@ class MainWindow(QWidget):
         self.button1 = QPushButton("Start", self)
         self.button1.setFont(QFont('ISOCP_IV50', 16))
         self.button1.clicked.connect(self.simwin)
+        self.button1.setShortcut(QCoreApplication.translate("MainWindow", u"Return", None))
         self.button2 = QPushButton("Quit",self)
         self.button2.setFont(QFont('ISOCP_IV50', 16))
         self.button2.clicked.connect(sys.exit)
+        self.button2.setShortcut(QCoreApplication.translate("MainWindow", u"Esc", None))
         
         layout.addWidget(self.label, 0,0)
         layout.addWidget(self.button1,1,0)

@@ -1,7 +1,7 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'simulator_mw_test.ui'
+## Form generated from reading UI file 'simulator_mw.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.6.0
 ##
@@ -360,7 +360,7 @@ class Ui_MainWindow(object):
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"SimuPlane\u2122 0.1.0", None))
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"SimuPlane\u2122 1.0.0", None))
         self.groupBox_3.setTitle(QCoreApplication.translate("MainWindow", u"Initial Conditions", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"Velocity (m/s)", None))
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"Flight Path Angle (\u00b0)", None))
@@ -389,5 +389,8 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(shortcut)
         self.label_9.setText(QCoreApplication.translate("MainWindow", u"Output", None))
         self.exit_btn.setText(QCoreApplication.translate("MainWindow", u"Back to Menu", None))
+#if QT_CONFIG(shortcut)
+        self.exit_btn.setShortcut(QCoreApplication.translate("MainWindow", u"Esc", None))
+#endif // QT_CONFIG(shortcut)
     # retranslateUi
 

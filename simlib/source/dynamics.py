@@ -182,20 +182,20 @@ def find_state_parameters(U):
     return {
         "u_B": u_B,
         "w_B": w_B,
-        "speed": get_speed(u_B, w_B),
-        "theta": theta,
-        "theta (deg)": rad2deg(theta),
-        "alpha": alpha,
-        "alpha (deg)": rad2deg(alpha),
-        "gamma": theta - alpha,
-        "gamma (deg)": rad2deg(theta - alpha),
+        "Speed": get_speed(u_B, w_B),
+        "Theta": theta,
+        "Theta (deg)": rad2deg(theta),
+        "Alpha": alpha,
+        "Alpha (deg)": rad2deg(alpha),
+        "Gamma": theta - alpha,
+        "Gamma (deg)": rad2deg(theta - alpha),
         "q": q,
         "q (deg/s)": rad2deg(q),
         "x_E": x_E,
         "u_E": u_E,
         "z_E": z_E,
         "w_E": w_E,
-        "altitude": -z_E,
+        "Altitude": -z_E,
     }
 
 if __name__ == "__main__":
