@@ -149,7 +149,7 @@ class MainWindow(QWidget):
         self.simwin.show()
         self.hide()
     def t_climb_win(self):
-        from gui_t_climb import TClimbMW
+        from source.gui_t_climb import TClimbMW
         self.tcw = TClimbMW()
         self.tcw.show()
         self.hide()
