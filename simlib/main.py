@@ -60,6 +60,7 @@ class SimWindow(QMainWindow, Ui_MainWindow):
         self.trim_time_start.stepUp()
     def clear_trims(self):
         self.trim_list = []
+        self.trim_time_start.setValue(20)
         self.updateTable()
     def remove_last_trim(self):
         self.trim_list.pop()
@@ -124,19 +125,22 @@ class MainWindow(QWidget):
         self.movie.start()
         self.label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.label.setStyleSheet("QLabel {background-color: white;}")
-        self.button1 = QPushButton("Start", self)
+        self.button1 = QPushButton("Start Simulation", self)
         self.button1.setFont(QFont('ISOCP_IV50', 16))
         self.button1.clicked.connect(self.simwin)
         self.button1.setShortcut(QCoreApplication.translate("MainWindow", u"Return", None))
-        self.button2 = QPushButton("Quit",self)
+        self.button2 = QPushButton("Find Climb Time", self)
         self.button2.setFont(QFont('ISOCP_IV50', 16))
-        self.button2.clicked.connect(sys.exit)
-        self.button3 = QPushButton("Find Climb Time", self)
-        self.button3.clicked.connect(self.t_climb_win)
+        self.button2.clicked.connect(self.t_climb_win)
+        self.button2.setShortcut(QCoreApplication.translate("MainWindow", u"Ctrl+F", None))
+        self.button3 = QPushButton("Quit",self)
+        self.button3.setFont(QFont('ISOCP_IV50', 16))
+        self.button3.clicked.connect(sys.exit)
+        self.button3.setShortcut(QCoreApplication.translate("MainWindow", u"Esc", None))
         layout.addWidget(self.label, 0,0)
         layout.addWidget(self.button1,1,0)
-        layout.addWidget(self.button2,3,0)
-        layout.addWidget(self.button3,2,0)
+        layout.addWidget(self.button2,2,0)
+        layout.addWidget(self.button3,3,0)
         self.setLayout(layout)
 
     def simwin(self):
