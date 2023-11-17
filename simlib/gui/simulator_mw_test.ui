@@ -583,22 +583,6 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="update_plot_btn">
-         <property name="font">
-          <font>
-           <family>ISOCP_IV50</family>
-           <pointsize>12</pointsize>
-          </font>
-         </property>
-         <property name="cursor">
-          <cursorShape>PointingHandCursor</cursorShape>
-         </property>
-         <property name="text">
-          <string>Update Plot</string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="QPushButton" name="exit_btn">
          <property name="font">
           <font>
