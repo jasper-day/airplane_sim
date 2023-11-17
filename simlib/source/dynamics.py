@@ -172,6 +172,25 @@ def find_U_0(system, altitude=None):
         body_velocities[0], body_velocities[1],
         theta, q
     ])
+    
+from root_finder import find_system
+
+def find_initial_conditions(velocity, gamma, altitude, q, total_time):
+    if velocity == 0:
+        raise ValueError("Must have nonzero starting velocity")
+    if total_time == 0:
+        raise ValueError("Must have nonzero simulation time")
+    initial_conditions = find_system(velocity, gamma)
+    initial_conditions["altitude"] = altitude
+    initial_conditions["q"] = q
+    initial_conditions["U_0"] = find_U_0(initial_conditions)
+    initial_conditions["t_total"] = total_time
+    return initial_conditions
+
+def find_trim_conditions(velocity, gamma, t_start):
+    trim_conditions = find_system(velocity, gamma)
+    trim_conditions["t_start"] = t_start
+    return trim_conditions
 
 def find_state_parameters(U):
     "Given a state U, extracts all useful information about the state."
