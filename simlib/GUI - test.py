@@ -80,6 +80,7 @@ class SimWindow(QMainWindow, Ui_MainWindow):
     def update_plot(self):
         self.graph.ax.clear()
         plot_parameter(self.graph, self.graph_selector.currentText(), self.sim_result["U"], self.sim_result["t"])
+        self.graph.view.figure.tight_layout()
         self.graph.view.draw()
     def mainwindow(self):
         self.mw = MainWindow()
