@@ -73,10 +73,10 @@ def make_sample_plot(fig, axs, U):
     axs[3,0].set_ylabel(r"$\alpha$")
     axs[3,1].plot(U["t"], extract_param(U, "altitude"))
     axs[3,1].set_ylabel("altitude")
-    fig.tight_layout(hpad=1)
+    fig.tight_layout()
     return fig
 
-if __name__ == "__main__":
-    gw = PltGraph()
-    plot_b2_answer(gw)
-    plt.show()
+# if __name__ == "__main__":
+#     gw = PltGraph()
+#     plot_b2_answer(gw)
+#     plt.show()

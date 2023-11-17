@@ -17,9 +17,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QComboBox, QDoubleSpinBox, QGridLayout,
     QGroupBox, QHBoxLayout, QHeaderView, QLabel,
-    QMainWindow, QPushButton, QSizePolicy, QStatusBar,
-    QTabWidget, QTableWidget, QTableWidgetItem, QVBoxLayout,
-    QWidget)
+    QLayout, QMainWindow, QPushButton, QSizePolicy,
+    QStatusBar, QTabWidget, QTableWidget, QTableWidgetItem,
+    QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -41,13 +41,15 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName(u"centralwidget")
         self.gridLayout = QGridLayout(self.centralwidget)
         self.gridLayout.setObjectName(u"gridLayout")
+        self.gridLayout.setContentsMargins(-1, -1, -1, 0)
         self.verticalLayout_4 = QVBoxLayout()
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.verticalLayout_3 = QVBoxLayout()
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.verticalLayout_3.setSizeConstraint(QLayout.SetMinimumSize)
         self.trim_table = QTableWidget(self.centralwidget)
         self.trim_table.setObjectName(u"trim_table")
-        self.trim_table.setMinimumSize(QSize(0, 210))
+        self.trim_table.setMinimumSize(QSize(0, 260))
         self.trim_table.setMaximumSize(QSize(16777215, 16777215))
 
         self.verticalLayout_3.addWidget(self.trim_table)
@@ -186,6 +188,7 @@ class Ui_MainWindow(object):
         self.groupBox.setCursor(QCursor(Qt.ArrowCursor))
         self.gridLayout_2 = QGridLayout(self.groupBox)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
+        self.gridLayout_2.setContentsMargins(-1, -1, -1, 0)
         self.run_simulation_btn = QPushButton(self.groupBox)
         self.run_simulation_btn.setObjectName(u"run_simulation_btn")
         font3 = QFont()
@@ -307,6 +310,7 @@ class Ui_MainWindow(object):
         self.widget.setObjectName(u"widget")
         self.verticalLayout_5 = QVBoxLayout(self.widget)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
+        self.verticalLayout_5.setContentsMargins(-1, 0, -1, 0)
         self.label_9 = QLabel(self.widget)
         self.label_9.setObjectName(u"label_9")
         self.label_9.setMaximumSize(QSize(16777215, 45))
