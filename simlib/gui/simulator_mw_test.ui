@@ -62,6 +62,12 @@
             <height>16777215</height>
            </size>
           </property>
+          <property name="font">
+           <font>
+            <family>ISOCP_IV50</family>
+            <pointsize>11</pointsize>
+           </font>
+          </property>
          </widget>
         </item>
        </layout>
