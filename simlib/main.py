@@ -18,9 +18,8 @@ from PySide6.QtWidgets import (
 )
 
 from source.plot import GraphWidget, plot_parameter, find_state_parameters
-from source.root_finder import find_system
 from source.command import integrate_system
-from source.dynamics import find_U_0
+from source.dynamics import find_initial_conditions, find_trim_conditions
 
 
 class SimWindow(QMainWindow, Ui_MainWindow):
@@ -50,11 +49,15 @@ class SimWindow(QMainWindow, Ui_MainWindow):
         # get trim commands
         if self.trim_vel.value() == 0:
             return
-        system = find_system(self.trim_vel.value(), np.radians(self.trim_gamma.value()))
-        system['t_start'] = self.trim_time_start.value()
-        self.trim_list.append(system)
+        trim_conditions = find_trim_conditions(
+            velocity=self.trim_vel.value(), 
+            gamma=np.radians(self.trim_gamma.value()),
+            t_start=self.trim_time_start.value())
+        self.trim_list.append(trim_conditions)
         self.trim_list.sort(key=lambda x: x["t_start"])
         self.updateTable()
+        # increase time
+        self.trim_time_start.stepUp()
     def clear_trims(self):
         self.trim_list = []
         self.updateTable()
@@ -62,18 +65,13 @@ class SimWindow(QMainWindow, Ui_MainWindow):
         self.trim_list.pop()
         self.updateTable()
     def update_initial_conditions(self):
-        # fail early for impossible simulations
-        if self.init_vel.value() == 0:
-            raise ValueError("Must have nonzero starting velocity")
-        if self.total_time.value() == 0:
-            raise ValueError("Must have nonzero simulation time")
         # find_system adds delta_el and thrust
-        self.initial_conditions = find_system(self.init_vel.value(), np.radians(self.init_gamma.value()))
-        # add user-defined parameters to the initial_conditions
-        self.initial_conditions["altitude"] = self.init_altitude.value()
-        self.initial_conditions["q"] = np.radians(self.init_angvel.value())
-        self.initial_conditions["t_total"] = self.total_time.value()
-        self.initial_conditions["U_0"] = find_U_0(self.initial_conditions)
+        self.initial_conditions = find_initial_conditions(
+            velocity=self.init_vel.value(), 
+            gamma=np.radians(self.init_gamma.value()),
+            altitude=self.init_altitude.value(),
+            q=np.radians(self.init_angvel.value()),
+            total_time=self.total_time.value())
     def run_simulation(self):
         # get initial conditions from ui
         self.update_initial_conditions()
@@ -133,17 +131,23 @@ class MainWindow(QWidget):
         self.button2 = QPushButton("Quit",self)
         self.button2.setFont(QFont('ISOCP_IV50', 16))
         self.button2.clicked.connect(sys.exit)
-        self.button2.setShortcut(QCoreApplication.translate("MainWindow", u"Esc", None))
-        
+        self.button3 = QPushButton("Find Climb Time", self)
+        self.button3.clicked.connect(self.t_climb_win)
         layout.addWidget(self.label, 0,0)
         layout.addWidget(self.button1,1,0)
-        layout.addWidget(self.button2,2,0)
+        layout.addWidget(self.button2,3,0)
+        layout.addWidget(self.button3,2,0)
         self.setLayout(layout)
 
     def simwin(self):
         # go to main simulation window
         self.simwin = SimWindow()
         self.simwin.show()
+        self.hide()
+    def t_climb_win(self):
+        from gui_t_climb import TClimbMW
+        self.tcw = TClimbMW()
+        self.tcw.show()
         self.hide()
 
 if __name__ == "__main__":
