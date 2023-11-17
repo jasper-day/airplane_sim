@@ -64,16 +64,16 @@ def bisection(f,a,b,N):
 
         Returns
         -------
-        m_N : number
+        (a_n + b_n)/2 : number
             The estimate of the root determined by:
-                m_n = (a_n + b_n)/2
+                (a_n + b_n)/2
                 where a_n is the lower bound, and b_n is the higher bound.
             The initial interval [a_0,b_0] is given by [a,b]. If f(m_n) == 0
             for some intercept m_n then the function returns this solution.
             If all signs of values f(a_n), f(b_n) and f(m_n) are the same at any
             iterations, the bisection method fails and return None. '''
-# Check if a and b bound a root
         ea = 0
+        # Check if a and b bound a root
         if f(a)*f(b) >= 0:
             raise ValueError("a and b do not bound a root")
         a_n = a
@@ -82,6 +82,7 @@ def bisection(f,a,b,N):
 
         for n in range(1,N+1):
             m_n = (a_n + b_n)/2
+            #calculate approximate error of the root found
             ea = abs((m_n - m_n_old )/(m_n))
             f_m_n = f(m_n)
             if f(a_n)*f_m_n < 0:
@@ -105,7 +106,8 @@ def find_system(V, gamma):
      'delta_el': elevator inclination
      'Thrust': Thrust force
      'V': Airspeed
-     'gamma': flight path angle}"""
+     'gamma': flight path angle
+     'pitch': pitch angle}"""
     f = minimizing_function(V, gamma)
     res = bisection(f, -math.pi/2 + 0.5, math.pi/2, 1000)
     alpha = res["solution"] if res["success"] else None
@@ -120,13 +122,14 @@ def find_system(V, gamma):
         "Thrust": T, 
         "V": V, 
         "gamma": gamma,
-        "pitch": alpha + gamma,
-    
+        "pitch": alpha + gamma,  
     }
 
 
 
 def plot_thrust_vs_velocity(ax, gamma_values, V_range):
+    """Plots a graph for the thrust vs velocity for a range of velocities
+      and flight path angles"""
     thrust_values = []
     alpha_values = [] 
     for gamma in gamma_values:
@@ -149,6 +152,8 @@ def plot_thrust_vs_velocity(ax, gamma_values, V_range):
     ax.grid(True)
 
 def plot_delta_el_vs_velocity(ax, gamma_values, V_range):
+    """Plots a graph for the elevator angle vs velocity for a range of velocities
+      and flight path angles"""
     delta_el_values = []
     for gamma in gamma_values:
         delta_el_data = []
@@ -175,14 +180,12 @@ if __name__ == "__main__":
     from pprint import pprint
     pprint(find_system(100, 0.05))
 
-    # Example: Plot thrust vs. velocity for different gamma values
+    #definine the range of velocities and flight path angles that need to be plotted
     V_range = np.linspace(75, 150, 400)
-    n = 5
-    gamma_values = np.linspace(0, 1, 10)
+    gamma_values = np.linspace(0, 1, 11)
 
+    #outputs both of the plots in the same figure
     fig, axs = plt.subplots(2)
     plot_thrust_vs_velocity(axs[0], gamma_values, V_range)  # Add this line to plot thrust vs. velocity
     plot_delta_el_vs_velocity(axs[1], gamma_values, V_range)
-    
-
     plt.show()
