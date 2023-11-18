@@ -33,7 +33,7 @@ class Rf_MW(Ui_MainWindow, QMainWindow):
         self.fix_gamma.toggled.connect(self.update_slider)
         for spinBox in [self.gamma_max, self.gamma_min, self.vel_max, self.vel_min]:
             spinBox.valueChanged.connect(self.update_slider)
-        self.horizontalSlider.sliderReleased.connect(self.update_graph)
+        self.horizontalSlider.valueChanged.connect(self.update_graph)
         self.return_btn.clicked.connect(self.mainwindow)
         self.graph_selector.currentIndexChanged.connect(self.update_graph)
         self.err_selector.currentIndexChanged.connect(self.reset_error)
