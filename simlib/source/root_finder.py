@@ -96,7 +96,7 @@ def bisection(f,a,b,N):
             elif f_m_n == 0:
                 return {"solution": m_n, "success": True, "error": 0}
             else:
-                return {"solution": None, "success": False}
+                return {"solution": None, "success": False, "error": math.huge}
         return {"solution": (a_n + b_n)/2, "success": True, "error": ea}
 
 def find_system(V, gamma):
@@ -109,8 +109,13 @@ def find_system(V, gamma):
      'gamma': flight path angle
      'pitch': pitch angle}"""
     f = minimizing_function(V, gamma)
-    res = bisection(f, -math.pi/2 + 0.5, math.pi/2, 1000)
+    res = bisection(f, -math.pi/2 + 0.1, math.pi/2, 1000)
     alpha = res["solution"] if res["success"] else None
+    system = get_system_parameters(V, gamma, alpha)
+    system["alpha_error"] = res["error"]
+    return system
+
+def get_system_parameters(V, gamma, alpha):
     L = find_lift(V, _C_L(alpha))
     D = find_drag(V, _C_D(alpha))
     W = find_weight()
@@ -122,7 +127,7 @@ def find_system(V, gamma):
         "Thrust": T, 
         "V": V, 
         "gamma": gamma,
-        "pitch": alpha + gamma,  
+        "pitch": alpha + gamma, 
     }
 
 
@@ -167,7 +172,7 @@ def plot_delta_el_vs_velocity(ax, gamma_values, V_range):
         plt.subplot(122)
         plt.plot(V_range, delta_el_values[i], label=f'Gamma = {gamma}')
   
-    
+
     ax.set_xlabel('Velocity (V)')
     ax.set_ylabel('Elevator Deflection (rad)')
     ax.legend()

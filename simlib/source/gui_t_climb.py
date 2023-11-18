@@ -1,6 +1,7 @@
-import sys
+"Code for t_climb (question B2)"
 
-sys.path.append("simlib/source/")
+import sys
+sys.path.append('simlib')
 import matplotlib.pyplot as plt
 import numpy as np
 from PySide6.QtWidgets import (
