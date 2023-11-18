@@ -77,7 +77,7 @@ def find_system_plot(vel, gamma, method, err_type, e):
 
 system_keys = [
     "Angle of Attack (deg)",
-    "Thrust (N)",
+    "Thrust (kN)",
     "Flight Path Angle (deg)",
     "Velocity (m/s)",
     "Pitch Angle (deg)",
@@ -93,11 +93,10 @@ def param_fix_gamma(graphWidget, param, gamma, vel_min, vel_max, method, err_typ
     graphWidget.ax.set_ylabel(param)
 
 
-def param_fix_vel(graphWidget, param,  vel, gamma_min, gamma_max, method, err_type, e):
+def param_fix_vel(graphWidget, param, vel, gamma_min, gamma_max, method, err_type, e):
     gamma_vals = np.linspace(gamma_min, gamma_max, 64)
-    rs = map(partial(find_system_plot, vel=vel, method=method, err_type=err_type, e=e), gamma_vals)
+    rs = map(partial(find_system_plot, vel, method=method, err_type=err_type, e=e), gamma_vals)
     params = [r[param] for r in rs]
-    errors = [r["alpha_error"] for r in rs]
     graphWidget.ax.plot(np.degrees(gamma_vals), params)
     graphWidget.ax.set_xlabel("Flight Path Angle (deg)")
     graphWidget.ax.set_ylabel(param)

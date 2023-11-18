@@ -59,17 +59,37 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="groupBox_2">
+        <widget class="QGroupBox" name="groupBox_3">
          <property name="title">
-          <string>Inputs</string>
+          <string>Simulation Options</string>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout_3">
+         <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
-           <widget class="QComboBox" name="method_selector"/>
+           <widget class="QWidget" name="widget_4" native="true">
+            <layout class="QHBoxLayout" name="horizontalLayout_5">
+             <item>
+              <widget class="QLabel" name="label_6">
+               <property name="text">
+                <string>Root Finding Method:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="method_selector"/>
+             </item>
+            </layout>
+           </widget>
           </item>
           <item>
            <widget class="QWidget" name="widget_2" native="true">
             <layout class="QHBoxLayout" name="horizontalLayout_4">
+             <item>
+              <widget class="QLabel" name="label_5">
+               <property name="text">
+                <string>Convergence criteria:</string>
+               </property>
+              </widget>
+             </item>
              <item>
               <widget class="QComboBox" name="err_selector"/>
              </item>
@@ -79,6 +99,15 @@ li.checked::marker { content: &quot;\2612&quot;; }
             </layout>
            </widget>
           </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="title">
+          <string>Inputs</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
           <item>
            <layout class="QGridLayout" name="gridLayout_2">
             <item row="2" column="1">

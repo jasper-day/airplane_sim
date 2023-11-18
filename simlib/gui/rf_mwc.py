@@ -62,19 +62,36 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_2.addWidget(self.textBrowser)
 
-        self.groupBox_2 = QGroupBox(self.widget_3)
-        self.groupBox_2.setObjectName(u"groupBox_2")
-        self.verticalLayout_3 = QVBoxLayout(self.groupBox_2)
-        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.method_selector = QComboBox(self.groupBox_2)
+        self.groupBox_3 = QGroupBox(self.widget_3)
+        self.groupBox_3.setObjectName(u"groupBox_3")
+        self.verticalLayout_4 = QVBoxLayout(self.groupBox_3)
+        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.widget_4 = QWidget(self.groupBox_3)
+        self.widget_4.setObjectName(u"widget_4")
+        self.horizontalLayout_5 = QHBoxLayout(self.widget_4)
+        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
+        self.label_6 = QLabel(self.widget_4)
+        self.label_6.setObjectName(u"label_6")
+
+        self.horizontalLayout_5.addWidget(self.label_6)
+
+        self.method_selector = QComboBox(self.widget_4)
         self.method_selector.setObjectName(u"method_selector")
 
-        self.verticalLayout_3.addWidget(self.method_selector)
+        self.horizontalLayout_5.addWidget(self.method_selector)
 
-        self.widget_2 = QWidget(self.groupBox_2)
+
+        self.verticalLayout_4.addWidget(self.widget_4)
+
+        self.widget_2 = QWidget(self.groupBox_3)
         self.widget_2.setObjectName(u"widget_2")
         self.horizontalLayout_4 = QHBoxLayout(self.widget_2)
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.label_5 = QLabel(self.widget_2)
+        self.label_5.setObjectName(u"label_5")
+
+        self.horizontalLayout_4.addWidget(self.label_5)
+
         self.err_selector = QComboBox(self.widget_2)
         self.err_selector.setObjectName(u"err_selector")
 
@@ -86,8 +103,15 @@ class Ui_MainWindow(object):
         self.horizontalLayout_4.addWidget(self.err_amt)
 
 
-        self.verticalLayout_3.addWidget(self.widget_2)
+        self.verticalLayout_4.addWidget(self.widget_2)
 
+
+        self.verticalLayout_2.addWidget(self.groupBox_3)
+
+        self.groupBox_2 = QGroupBox(self.widget_3)
+        self.groupBox_2.setObjectName(u"groupBox_2")
+        self.verticalLayout_3 = QVBoxLayout(self.groupBox_2)
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.gridLayout_2 = QGridLayout()
         self.gridLayout_2.setObjectName(u"gridLayout_2")
         self.label_3 = QLabel(self.groupBox_2)
@@ -248,6 +272,9 @@ class Ui_MainWindow(object):
                         " which option to fix, then drag the slider.</p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">You can also play with the maximum and minimum values for velocity and pitch angle.</p></body></html>", None))
+        self.groupBox_3.setTitle(QCoreApplication.translate("MainWindow", u"Simulation Options", None))
+        self.label_6.setText(QCoreApplication.translate("MainWindow", u"Root Finding Method:", None))
+        self.label_5.setText(QCoreApplication.translate("MainWindow", u"Convergence criteria:", None))
         self.groupBox_2.setTitle(QCoreApplication.translate("MainWindow", u"Inputs", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Minimum Velocity (m/s)", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Minimum Flight Path Angle (deg)", None))
