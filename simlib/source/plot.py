@@ -11,6 +11,9 @@ from PySide6.QtWidgets import QWidget, QVBoxLayout
 from dynamics import find_state_parameters, find_initial_conditions, find_trim_conditions
 from command import integrate_system, extract_param
 import numpy as np
+from jroot_finder import find_system
+from multiprocessing import Pool
+from functools import partial, cache
 
 
 class GraphWidget(QWidget):
@@ -61,9 +64,45 @@ def plot_b2_answer(graphWidget, velocity=118, climb_angle=np.radians(2), startin
     final_alt_calculated = f(time_est)
     return {"t_climb": time_est, "final_alt": final_alt_calculated}
 
-def plot_curve_fit_output(fig, ax):
-    # fig, axs must be a 2x4 subplot
-    pass
+def find_system_plot(vel, gamma, method, err_type, e):
+    res = find_system(vel, gamma, method, err_type, e)
+    res["Angle of Attack (deg)"] = np.degrees(res["alpha"])
+    res["Thrust (N)"] = res["Thrust"]
+    res["Flight Path Angle (deg)"] = np.degrees(res["gamma"])
+    res["Velocity (m/s)"] = res["V"]
+    res["Pitch Angle (deg)"] = np.degrees(res["pitch"])
+    res["Elevator Inclination (deg)"] = np.degrees(res["delta_el"])
+    return res
+
+
+system_keys = [
+    "Angle of Attack (deg)",
+    "Thrust (N)",
+    "Flight Path Angle (deg)",
+    "Velocity (m/s)",
+    "Pitch Angle (deg)",
+    "Elevator Inclination (deg)"
+]
+
+def param_fix_gamma(graphWidget, param, gamma, vel_min, vel_max, method, err_type, e):
+    vel_vals = np.linspace(vel_min, vel_max, 64)
+    rs = map(partial(find_system_plot, gamma=gamma, method=method, err_type=err_type, e=e), vel_vals)
+    params = [r[param] for r in rs]
+    graphWidget.ax.plot(vel_vals, params)
+    graphWidget.ax.set_xlabel('Velocity (m/s)')
+    graphWidget.ax.set_ylabel(param)
+
+
+def param_fix_vel(graphWidget, param,  vel, gamma_min, gamma_max, method, err_type, e):
+    gamma_vals = np.linspace(gamma_min, gamma_max, 64)
+    rs = map(partial(find_system_plot, vel=vel, method=method, err_type=err_type, e=e), gamma_vals)
+    params = [r[param] for r in rs]
+    errors = [r["alpha_error"] for r in rs]
+    graphWidget.ax.plot(np.degrees(gamma_vals), params)
+    graphWidget.ax.set_xlabel("Flight Path Angle (deg)")
+    graphWidget.ax.set_ylabel(param)
+
+
 
 def make_sample_plot(fig, axs, U):
     "Plot system results on a 4x2 subplot"
