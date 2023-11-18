@@ -11,9 +11,8 @@ from PySide6.QtWidgets import (
 )
 
 from source.plot import param_fix_vel, param_fix_gamma, system_keys, GraphWidget
-from jroot_finder import methods, err_types
+from gui_root_finder_iterables import methods, err_types
 from gui.rf_mwc import Ui_MainWindow
-from main import MainWindow
 import time
 
 class Rf_MW(Ui_MainWindow, QMainWindow):
@@ -90,8 +89,9 @@ class Rf_MW(Ui_MainWindow, QMainWindow):
         self.graph.view.figure.tight_layout()
         self.graph.view.draw()
         end = time.time()
-        print("Elapsed time: {:.6f}".format(end - start))
+        self.elapsed_time.setText("Elapsed time: {:.6f}".format(end - start))
     def mainwindow(self):
+        from main import MainWindow
         # return to main window
         self.mw = MainWindow()
         self.mw.show()

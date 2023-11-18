@@ -133,14 +133,20 @@ class MainWindow(QWidget):
         self.button2.setFont(QFont('ISOCP_IV50', 16))
         self.button2.clicked.connect(self.t_climb_win)
         self.button2.setShortcut(QCoreApplication.translate("MainWindow", u"Ctrl+F", None))
-        self.button3 = QPushButton("Quit",self)
+        self.button3 = QPushButton("Find Trims", self)
         self.button3.setFont(QFont('ISOCP_IV50', 16))
-        self.button3.clicked.connect(sys.exit)
-        self.button3.setShortcut(QCoreApplication.translate("MainWindow", u"Esc", None))
+        self.button3.clicked.connect(self.rf_win)
+        self.button3.setShortcut(QCoreApplication.translate("MainWindow", u"Ctrl+R", None))
+        self.button4 = QPushButton("Quit",self)
+        self.button4.setFont(QFont('ISOCP_IV50', 16))
+        self.button4.clicked.connect(sys.exit)
+        self.button4.setShortcut(QCoreApplication.translate("MainWindow", u"Esc", None))
+        
         layout.addWidget(self.label, 0,0)
         layout.addWidget(self.button1,1,0)
         layout.addWidget(self.button2,2,0)
         layout.addWidget(self.button3,3,0)
+        layout.addWidget(self.button4,4,0)
         self.setLayout(layout)
 
     def simwin(self):
@@ -152,6 +158,11 @@ class MainWindow(QWidget):
         from source.gui_t_climb import TClimbMW
         self.tcw = TClimbMW()
         self.tcw.show()
+        self.hide()
+    def rf_win(self):
+        from source.gui_root_find import Rf_MW
+        self.rfw = Rf_MW()
+        self.rfw.show()
         self.hide()
 
 if __name__ == "__main__":

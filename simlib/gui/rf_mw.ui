@@ -27,6 +27,13 @@
        <item>
         <widget class="QComboBox" name="graph_selector"/>
        </item>
+       <item>
+        <widget class="QLineEdit" name="elapsed_time">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
     </item>

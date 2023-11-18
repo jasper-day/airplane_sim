@@ -1,9 +1,9 @@
-"Jasper's iterable-based root-finding library"
+"Iterable-based root-finding library with various options"
+
+# Used in the GUI section to allow user to select various root-finding methods
 
 from root_finder import minimizing_function, get_system_parameters
 import math
-
-
 
 def converge_rel_error(iterable, e_c, max_terms = 1_000_000_000):
     """Converge an iterable until relative error is less than e_c
