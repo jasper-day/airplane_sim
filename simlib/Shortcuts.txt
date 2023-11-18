@@ -1,0 +1,16 @@
+[Start Menu]
+Start Simulation: Return
+Find Climb Time: Ctrl + F
+Quit: Esc
+
+[Simulation Window]
+Add Trim: Return
+Delete Prev: Ctrl + Del
+Clear All: Alt + Del
+Run Simulation: Shift + Return
+Back to Menu: Esc
+
+[Find Climb Time Window]
+Find Climb Time: Return
+Reset: Ctrl + R
+Back to Menu: Esc
