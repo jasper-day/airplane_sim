@@ -44,6 +44,12 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.graph_selector)
 
+        self.elapsed_time = QLineEdit(self.groupBox)
+        self.elapsed_time.setObjectName(u"elapsed_time")
+        self.elapsed_time.setReadOnly(True)
+
+        self.verticalLayout.addWidget(self.elapsed_time)
+
 
         self.horizontalLayout.addWidget(self.groupBox)
 

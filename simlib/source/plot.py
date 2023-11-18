@@ -11,7 +11,7 @@ from PySide6.QtWidgets import QWidget, QVBoxLayout
 from dynamics import find_state_parameters, find_initial_conditions, find_trim_conditions
 from command import integrate_system, extract_param
 import numpy as np
-from jroot_finder import find_system
+from gui_root_finder_iterables import find_system
 from multiprocessing import Pool
 from functools import partial, cache
 
@@ -67,7 +67,7 @@ def plot_b2_answer(graphWidget, velocity=118, climb_angle=np.radians(2), startin
 def find_system_plot(vel, gamma, method, err_type, e):
     res = find_system(vel, gamma, method, err_type, e)
     res["Angle of Attack (deg)"] = np.degrees(res["alpha"])
-    res["Thrust (N)"] = res["Thrust"]
+    res["Thrust (kN)"] = res["Thrust"] * 1e-3
     res["Flight Path Angle (deg)"] = np.degrees(res["gamma"])
     res["Velocity (m/s)"] = res["V"]
     res["Pitch Angle (deg)"] = np.degrees(res["pitch"])
