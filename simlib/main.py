@@ -140,7 +140,7 @@ class MainWindow(QWidget):
         self.button4 = QPushButton("Quit",self)
         self.button4.setFont(QFont('ISOCP_IV50', 16))
         self.button4.clicked.connect(sys.exit)
-        self.button4.setShortcut(QCoreApplication.translate("MainWindow", u"Esc", None))
+        self.button4.setShortcut(QCoreApplication.translate("MainWindow", u"Ctrl+Q", None))
         
         layout.addWidget(self.label, 0,0)
         layout.addWidget(self.button1,1,0)
