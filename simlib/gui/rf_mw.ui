@@ -7,11 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>906</width>
-    <height>715</height>
+    <height>748</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>SimuPlane™ 1.0.0</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
@@ -60,19 +60,6 @@
      <widget class="QWidget" name="widget_3" native="true">
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <spacer name="verticalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
         <widget class="QTextBrowser" name="textBrowser">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -107,19 +94,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Segoe UI'; font-size:10pt;&quot;&gt;You can also play with the maximum and minimum values for velocity and pitch angle.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
         </widget>
-       </item>
-       <item>
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
        </item>
        <item>
         <widget class="QGroupBox" name="groupBox_3">
@@ -177,7 +151,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
-                 <height>26</height>
+                 <height>70</height>
                 </size>
                </property>
                <property name="font">
@@ -202,7 +176,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
-                 <height>26</height>
+                 <height>70</height>
                 </size>
                </property>
                <property name="font">
@@ -236,7 +210,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
-                 <height>26</height>
+                 <height>70</height>
                 </size>
                </property>
                <property name="font">
@@ -261,7 +235,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
-                 <height>26</height>
+                 <height>70</height>
                 </size>
                </property>
                <property name="font">
@@ -289,7 +263,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                <property name="maximumSize">
                 <size>
                  <width>150</width>
-                 <height>26</height>
+                 <height>70</height>
                 </size>
                </property>
                <property name="font">
@@ -309,7 +283,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
        <item>
         <widget class="QGroupBox" name="groupBox_2">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+          <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -335,10 +309,16 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <item row="2" column="1">
              <widget class="QLabel" name="label_3">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>70</height>
+               </size>
               </property>
               <property name="font">
                <font>
@@ -357,10 +337,16 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <item row="1" column="2">
              <widget class="QDoubleSpinBox" name="gamma_max">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>70</height>
+               </size>
               </property>
               <property name="font">
                <font>
@@ -379,10 +365,16 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <item row="2" column="2">
              <widget class="QDoubleSpinBox" name="vel_min">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>70</height>
+               </size>
               </property>
               <property name="font">
                <font>
@@ -407,10 +399,16 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <item row="0" column="1">
              <widget class="QLabel" name="label">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>70</height>
+               </size>
               </property>
               <property name="font">
                <font>
@@ -429,10 +427,16 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <item row="1" column="1">
              <widget class="QLabel" name="label_2">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>70</height>
+               </size>
               </property>
               <property name="font">
                <font>
@@ -451,10 +455,16 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <item row="3" column="2">
              <widget class="QDoubleSpinBox" name="vel_max">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>70</height>
+               </size>
               </property>
               <property name="font">
                <font>
@@ -479,10 +489,16 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <item row="3" column="1">
              <widget class="QLabel" name="label_4">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>70</height>
+               </size>
               </property>
               <property name="font">
                <font>
@@ -501,10 +517,16 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <item row="0" column="2">
              <widget class="QDoubleSpinBox" name="gamma_min">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>70</height>
+               </size>
               </property>
               <property name="font">
                <font>
@@ -529,6 +551,12 @@ li.checked::marker { content: &quot;\2612&quot;; }
            <layout class="QGridLayout" name="gridLayout">
             <item row="2" column="0">
              <widget class="QSlider" name="horizontalSlider">
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>70</height>
+               </size>
+              </property>
               <property name="font">
                <font>
                 <family>ISOCP_IV50</family>
@@ -560,6 +588,12 @@ li.checked::marker { content: &quot;\2612&quot;; }
             </item>
             <item row="0" column="0">
              <widget class="QRadioButton" name="fix_vel">
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>70</height>
+               </size>
+              </property>
               <property name="font">
                <font>
                 <family>ISOCP_IV50</family>
@@ -576,6 +610,12 @@ li.checked::marker { content: &quot;\2612&quot;; }
             </item>
             <item row="1" column="0">
              <widget class="QRadioButton" name="fix_gamma">
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>70</height>
+               </size>
+              </property>
               <property name="font">
                <font>
                 <family>ISOCP_IV50</family>
@@ -592,6 +632,12 @@ li.checked::marker { content: &quot;\2612&quot;; }
             </item>
             <item row="3" column="0">
              <widget class="QWidget" name="widget" native="true">
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>70</height>
+               </size>
+              </property>
               <property name="font">
                <font>
                 <family>ISOCP_IV50</family>
