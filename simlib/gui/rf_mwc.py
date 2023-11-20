@@ -26,6 +26,10 @@ class Ui_MainWindow(object):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(906, 753)
+        icon = QIcon()
+        icon.addFile(u"../source/appicon.ico", QSize(), QIcon.Normal, QIcon.Off)
+        MainWindow.setWindowIcon(icon)
+        MainWindow.setIconSize(QSize(64, 64))
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.horizontalLayout = QHBoxLayout(self.centralwidget)
@@ -40,6 +44,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.graph_output = QWidget(self.groupBox)
         self.graph_output.setObjectName(u"graph_output")
+        self.graph_output.setMinimumSize(QSize(550, 0))
 
         self.verticalLayout.addWidget(self.graph_output)
 
