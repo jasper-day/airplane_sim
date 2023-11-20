@@ -24,7 +24,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(928, 669)
+        MainWindow.resize(928, 677)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.horizontalLayout = QHBoxLayout(self.centralwidget)
@@ -66,8 +66,8 @@ class Ui_MainWindow(object):
         self.verticalLayout_3.setContentsMargins(-1, -1, -1, 0)
         self.textBrowser = QTextBrowser(self.widget)
         self.textBrowser.setObjectName(u"textBrowser")
-        self.textBrowser.setMinimumSize(QSize(330, 170))
-        self.textBrowser.setMaximumSize(QSize(450, 170))
+        self.textBrowser.setMinimumSize(QSize(330, 175))
+        self.textBrowser.setMaximumSize(QSize(450, 175))
         font1 = QFont()
         font1.setFamilies([u"Segoe UI"])
         font1.setPointSize(11)
