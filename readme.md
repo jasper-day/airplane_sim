@@ -1,12 +1,13 @@
 # SimuPlane
 
 # Project Description
-The aim of this project is to simulate the longitudinal dynamics of a small airplane. The airplane
-encounters aerodynamic forces and moments when in motion, this program provides the facilities to find the trim conditions of the airplane (where all forces are balanced, leading to no change over time), as well as options to provide commands to the airplane, while the simulation runs.
+The aim of this project is to simulate the longitudinal dynamics of a small airplane. The airplane encounters aerodynamic forces and moments when in motion, this program provides the facilities to find the trim conditions of the airplane (where all forces are balanced, leading to no change over time), as well as  input commands to the airplane.
 
-This project outputs a user interface, wherein the user can input the trim conditions of the flight simulation and the the commands of the airplane, to output the response of the system. The response of the system can be a depicted on a series of graphs, in which the user can decide which one they want to view using a drop down menu.
+This project includes a Graphical User interface (GUI), wherein the user can input the trim conditions and the the flight commands, and obtain the response of the airplane. The response of the system can be a depicted by a series of graphs, in which the user can use a drop down menu to choose their desired graph.
 
 Due to the complexity of this simultaion, various nuerical methods were employed to predict the response of the airplane. Python is used for this simulation, as it has a diverse set of packages and libraris that offer features for different simulation components.  
+
+The GUI is written in PyQt, a binder for the original Qt, which was written in C++. PyQt was chosen for its Python flexibility and its robust Qt framework.
 
 # How to use the project
 
@@ -29,6 +30,27 @@ python simlib/main.py
 This takes you to the GUI application, which has options to simulate an airplane, find equilibrium trims at different velocities and angles of attack, and to find the length of time necessary to climb a certain distance.
 
 Most of the files in `simlib/source`` can be run on their own to produce sample output for testing and verification.
+
+## Shortcuts 
+[Start Menu]
+Start Simulation: Ctrl + S
+Find Climb Time: Ctrl + F
+Quit: Ctrl + Q
+
+[Simulation Window]
+Add Trim: Return
+Delete Prev: Ctrl + Del
+Clear All: Alt + Del
+Run Simulation: Shift + Return
+Back to Menu: Esc
+
+[Find Climb Time Window]
+Find Climb Time: Return
+Reset: Ctrl + R
+Back to Menu: Esc
+
+[Find Trim Window]
+Back to Menu: Esc
 
 # Files in this repository
 
@@ -56,11 +78,11 @@ Code files:
 - gui_root_finder_iterables.py
     - iterable-based root-finding library with various options
 - gui_t_climb.py
-    - gui window to calculate the time for climb
+    - GUI window to calculate the time for climb
 - plot.py
     - Plotting functionality for various questions
 - main.py
-    - main logic file, run to open the application
+    - Main logic file, run to start the application
 
 
 
