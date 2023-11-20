@@ -136,7 +136,7 @@ class MainWindow(QWidget):
         self.button3 = QPushButton("Find Trims", self)
         self.button3.setFont(QFont('ISOCP_IV50', 16))
         self.button3.clicked.connect(self.rf_win)
-        self.button3.setShortcut(QCoreApplication.translate("MainWindow", u"Ctrl+R", None))
+        self.button3.setShortcut(QCoreApplication.translate("MainWindow", u"Ctrl+T", None))
         self.button4 = QPushButton("Quit",self)
         self.button4.setFont(QFont('ISOCP_IV50', 16))
         self.button4.clicked.connect(sys.exit)
@@ -167,7 +167,7 @@ class MainWindow(QWidget):
         self.hide()
         
     def setIcon(self):
-        appIcon = QIcon("appicon.png")
+        appIcon = QIcon("source/appicon.png")
         self.setWindowIcon(appIcon)
 
 if __name__ == "__main__":

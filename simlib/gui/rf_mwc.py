@@ -25,7 +25,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(906, 748)
+        MainWindow.resize(906, 753)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.horizontalLayout = QHBoxLayout(self.centralwidget)
@@ -375,7 +375,7 @@ class Ui_MainWindow(object):
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"SimuPlane\u2122 1.0.0", None))
         self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"Output", None))
         self.textBrowser.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
@@ -402,5 +402,8 @@ class Ui_MainWindow(object):
         self.fix_gamma.setText(QCoreApplication.translate("MainWindow", u"Select Flight Path Angle", None))
         self.slider_label.setText(QCoreApplication.translate("MainWindow", u"Velocity:", None))
         self.return_btn.setText(QCoreApplication.translate("MainWindow", u"Back to Menu", None))
+#if QT_CONFIG(shortcut)
+        self.return_btn.setShortcut(QCoreApplication.translate("MainWindow", u"Esc", None))
+#endif // QT_CONFIG(shortcut)
     # retranslateUi
 
