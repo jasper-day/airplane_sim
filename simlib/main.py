@@ -6,7 +6,7 @@ import numpy as np
 from PySide6 import QtWidgets
 from PySide6 import QtCore
 from PySide6.QtCore import QCoreApplication
-from PySide6.QtGui import QMovie, QFont
+from PySide6.QtGui import QMovie, QFont, QIcon
 from PySide6.QtWidgets import (
     QApplication,
     QMainWindow,
@@ -148,6 +148,7 @@ class MainWindow(QWidget):
         layout.addWidget(self.button3,3,0)
         layout.addWidget(self.button4,4,0)
         self.setLayout(layout)
+        self.setIcon
 
     def simwin(self):
         # go to main simulation window
@@ -164,6 +165,10 @@ class MainWindow(QWidget):
         self.rfw = Rf_MW()
         self.rfw.show()
         self.hide()
+        
+    def setIcon(self):
+        appIcon = QIcon("appicon.png")
+        self.setWindowIcon(appIcon)
 
 if __name__ == "__main__":
     # start the application when run

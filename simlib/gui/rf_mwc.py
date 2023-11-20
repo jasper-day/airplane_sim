@@ -25,7 +25,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(906, 715)
+        MainWindow.resize(906, 748)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.horizontalLayout = QHBoxLayout(self.centralwidget)
@@ -66,10 +66,6 @@ class Ui_MainWindow(object):
         self.widget_3.setObjectName(u"widget_3")
         self.verticalLayout_2 = QVBoxLayout(self.widget_3)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-
-        self.verticalLayout_2.addItem(self.verticalSpacer_2)
-
         self.textBrowser = QTextBrowser(self.widget_3)
         self.textBrowser.setObjectName(u"textBrowser")
         sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
@@ -84,10 +80,6 @@ class Ui_MainWindow(object):
         self.textBrowser.setFont(font2)
 
         self.verticalLayout_2.addWidget(self.textBrowser)
-
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-
-        self.verticalLayout_2.addItem(self.verticalSpacer)
 
         self.groupBox_3 = QGroupBox(self.widget_3)
         self.groupBox_3.setObjectName(u"groupBox_3")
@@ -122,7 +114,7 @@ class Ui_MainWindow(object):
         sizePolicy3.setVerticalStretch(0)
         sizePolicy3.setHeightForWidth(self.label_6.sizePolicy().hasHeightForWidth())
         self.label_6.setSizePolicy(sizePolicy3)
-        self.label_6.setMaximumSize(QSize(16777215, 26))
+        self.label_6.setMaximumSize(QSize(16777215, 70))
         self.label_6.setFont(font1)
 
         self.horizontalLayout_5.addWidget(self.label_6)
@@ -131,7 +123,7 @@ class Ui_MainWindow(object):
         self.method_selector.setObjectName(u"method_selector")
         sizePolicy3.setHeightForWidth(self.method_selector.sizePolicy().hasHeightForWidth())
         self.method_selector.setSizePolicy(sizePolicy3)
-        self.method_selector.setMaximumSize(QSize(16777215, 26))
+        self.method_selector.setMaximumSize(QSize(16777215, 70))
         self.method_selector.setFont(font1)
 
         self.horizontalLayout_5.addWidget(self.method_selector)
@@ -149,7 +141,7 @@ class Ui_MainWindow(object):
         self.label_5.setObjectName(u"label_5")
         sizePolicy2.setHeightForWidth(self.label_5.sizePolicy().hasHeightForWidth())
         self.label_5.setSizePolicy(sizePolicy2)
-        self.label_5.setMaximumSize(QSize(16777215, 26))
+        self.label_5.setMaximumSize(QSize(16777215, 70))
         self.label_5.setFont(font1)
 
         self.horizontalLayout_4.addWidget(self.label_5)
@@ -158,7 +150,7 @@ class Ui_MainWindow(object):
         self.err_selector.setObjectName(u"err_selector")
         sizePolicy3.setHeightForWidth(self.err_selector.sizePolicy().hasHeightForWidth())
         self.err_selector.setSizePolicy(sizePolicy3)
-        self.err_selector.setMaximumSize(QSize(16777215, 26))
+        self.err_selector.setMaximumSize(QSize(16777215, 70))
         self.err_selector.setFont(font1)
 
         self.horizontalLayout_4.addWidget(self.err_selector)
@@ -168,7 +160,7 @@ class Ui_MainWindow(object):
         sizePolicy3.setHeightForWidth(self.err_amt.sizePolicy().hasHeightForWidth())
         self.err_amt.setSizePolicy(sizePolicy3)
         self.err_amt.setMinimumSize(QSize(0, 0))
-        self.err_amt.setMaximumSize(QSize(150, 26))
+        self.err_amt.setMaximumSize(QSize(150, 70))
         self.err_amt.setFont(font1)
 
         self.horizontalLayout_4.addWidget(self.err_amt)
@@ -181,8 +173,11 @@ class Ui_MainWindow(object):
 
         self.groupBox_2 = QGroupBox(self.widget_3)
         self.groupBox_2.setObjectName(u"groupBox_2")
-        sizePolicy1.setHeightForWidth(self.groupBox_2.sizePolicy().hasHeightForWidth())
-        self.groupBox_2.setSizePolicy(sizePolicy1)
+        sizePolicy4 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.groupBox_2.sizePolicy().hasHeightForWidth())
+        self.groupBox_2.setSizePolicy(sizePolicy4)
         self.groupBox_2.setMaximumSize(QSize(500, 16777215))
         self.groupBox_2.setFont(font3)
         self.verticalLayout_3 = QVBoxLayout(self.groupBox_2)
@@ -191,19 +186,21 @@ class Ui_MainWindow(object):
         self.gridLayout_2.setObjectName(u"gridLayout_2")
         self.label_3 = QLabel(self.groupBox_2)
         self.label_3.setObjectName(u"label_3")
-        sizePolicy4 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
-        sizePolicy4.setHorizontalStretch(0)
-        sizePolicy4.setVerticalStretch(0)
-        sizePolicy4.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
-        self.label_3.setSizePolicy(sizePolicy4)
+        sizePolicy5 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy5.setHorizontalStretch(0)
+        sizePolicy5.setVerticalStretch(0)
+        sizePolicy5.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
+        self.label_3.setSizePolicy(sizePolicy5)
+        self.label_3.setMaximumSize(QSize(16777215, 70))
         self.label_3.setFont(font1)
 
         self.gridLayout_2.addWidget(self.label_3, 2, 1, 1, 1)
 
         self.gamma_max = QDoubleSpinBox(self.groupBox_2)
         self.gamma_max.setObjectName(u"gamma_max")
-        sizePolicy2.setHeightForWidth(self.gamma_max.sizePolicy().hasHeightForWidth())
-        self.gamma_max.setSizePolicy(sizePolicy2)
+        sizePolicy5.setHeightForWidth(self.gamma_max.sizePolicy().hasHeightForWidth())
+        self.gamma_max.setSizePolicy(sizePolicy5)
+        self.gamma_max.setMaximumSize(QSize(16777215, 70))
         self.gamma_max.setFont(font1)
         self.gamma_max.setMaximum(50.000000000000000)
         self.gamma_max.setValue(30.000000000000000)
@@ -212,8 +209,9 @@ class Ui_MainWindow(object):
 
         self.vel_min = QDoubleSpinBox(self.groupBox_2)
         self.vel_min.setObjectName(u"vel_min")
-        sizePolicy2.setHeightForWidth(self.vel_min.sizePolicy().hasHeightForWidth())
-        self.vel_min.setSizePolicy(sizePolicy2)
+        sizePolicy5.setHeightForWidth(self.vel_min.sizePolicy().hasHeightForWidth())
+        self.vel_min.setSizePolicy(sizePolicy5)
+        self.vel_min.setMaximumSize(QSize(16777215, 70))
         self.vel_min.setFont(font1)
         self.vel_min.setMinimum(-100.000000000000000)
         self.vel_min.setMaximum(1000.000000000000000)
@@ -224,24 +222,27 @@ class Ui_MainWindow(object):
 
         self.label = QLabel(self.groupBox_2)
         self.label.setObjectName(u"label")
-        sizePolicy4.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
-        self.label.setSizePolicy(sizePolicy4)
+        sizePolicy5.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
+        self.label.setSizePolicy(sizePolicy5)
+        self.label.setMaximumSize(QSize(16777215, 70))
         self.label.setFont(font1)
 
         self.gridLayout_2.addWidget(self.label, 0, 1, 1, 1)
 
         self.label_2 = QLabel(self.groupBox_2)
         self.label_2.setObjectName(u"label_2")
-        sizePolicy4.setHeightForWidth(self.label_2.sizePolicy().hasHeightForWidth())
-        self.label_2.setSizePolicy(sizePolicy4)
+        sizePolicy5.setHeightForWidth(self.label_2.sizePolicy().hasHeightForWidth())
+        self.label_2.setSizePolicy(sizePolicy5)
+        self.label_2.setMaximumSize(QSize(16777215, 70))
         self.label_2.setFont(font1)
 
         self.gridLayout_2.addWidget(self.label_2, 1, 1, 1, 1)
 
         self.vel_max = QDoubleSpinBox(self.groupBox_2)
         self.vel_max.setObjectName(u"vel_max")
-        sizePolicy2.setHeightForWidth(self.vel_max.sizePolicy().hasHeightForWidth())
-        self.vel_max.setSizePolicy(sizePolicy2)
+        sizePolicy5.setHeightForWidth(self.vel_max.sizePolicy().hasHeightForWidth())
+        self.vel_max.setSizePolicy(sizePolicy5)
+        self.vel_max.setMaximumSize(QSize(16777215, 70))
         self.vel_max.setFont(font1)
         self.vel_max.setMinimum(-100.000000000000000)
         self.vel_max.setMaximum(1000.000000000000000)
@@ -252,16 +253,18 @@ class Ui_MainWindow(object):
 
         self.label_4 = QLabel(self.groupBox_2)
         self.label_4.setObjectName(u"label_4")
-        sizePolicy4.setHeightForWidth(self.label_4.sizePolicy().hasHeightForWidth())
-        self.label_4.setSizePolicy(sizePolicy4)
+        sizePolicy5.setHeightForWidth(self.label_4.sizePolicy().hasHeightForWidth())
+        self.label_4.setSizePolicy(sizePolicy5)
+        self.label_4.setMaximumSize(QSize(16777215, 70))
         self.label_4.setFont(font1)
 
         self.gridLayout_2.addWidget(self.label_4, 3, 1, 1, 1)
 
         self.gamma_min = QDoubleSpinBox(self.groupBox_2)
         self.gamma_min.setObjectName(u"gamma_min")
-        sizePolicy2.setHeightForWidth(self.gamma_min.sizePolicy().hasHeightForWidth())
-        self.gamma_min.setSizePolicy(sizePolicy2)
+        sizePolicy5.setHeightForWidth(self.gamma_min.sizePolicy().hasHeightForWidth())
+        self.gamma_min.setSizePolicy(sizePolicy5)
+        self.gamma_min.setMaximumSize(QSize(16777215, 70))
         self.gamma_min.setFont(font1)
         self.gamma_min.setMinimum(-50.000000000000000)
         self.gamma_min.setMaximum(0.000000000000000)
@@ -276,6 +279,7 @@ class Ui_MainWindow(object):
         self.gridLayout.setObjectName(u"gridLayout")
         self.horizontalSlider = QSlider(self.groupBox_2)
         self.horizontalSlider.setObjectName(u"horizontalSlider")
+        self.horizontalSlider.setMaximumSize(QSize(16777215, 70))
         self.horizontalSlider.setFont(font1)
         self.horizontalSlider.setMinimum(30)
         self.horizontalSlider.setMaximum(400)
@@ -289,6 +293,7 @@ class Ui_MainWindow(object):
 
         self.fix_vel = QRadioButton(self.groupBox_2)
         self.fix_vel.setObjectName(u"fix_vel")
+        self.fix_vel.setMaximumSize(QSize(16777215, 70))
         self.fix_vel.setFont(font1)
         self.fix_vel.setChecked(False)
 
@@ -296,6 +301,7 @@ class Ui_MainWindow(object):
 
         self.fix_gamma = QRadioButton(self.groupBox_2)
         self.fix_gamma.setObjectName(u"fix_gamma")
+        self.fix_gamma.setMaximumSize(QSize(16777215, 70))
         self.fix_gamma.setFont(font1)
         self.fix_gamma.setChecked(True)
 
@@ -303,6 +309,7 @@ class Ui_MainWindow(object):
 
         self.widget = QWidget(self.groupBox_2)
         self.widget.setObjectName(u"widget")
+        self.widget.setMaximumSize(QSize(16777215, 70))
         self.widget.setFont(font1)
         self.horizontalLayout_3 = QHBoxLayout(self.widget)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
