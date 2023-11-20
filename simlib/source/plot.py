@@ -88,6 +88,7 @@ def param_fix_gamma(graphWidget, param, gamma, vel_min, vel_max, method, err_typ
     vel_vals = np.linspace(vel_min, vel_max, 64)
     rs = map(partial(find_system_plot, gamma=gamma, method=method, err_type=err_type, e=e), vel_vals)
     params = [r[param] for r in rs]
+    nterms = [r[nterms] for r in rs]
     graphWidget.ax.plot(vel_vals, params)
     graphWidget.ax.set_xlabel('Velocity (m/s)')
     graphWidget.ax.set_ylabel(param)
@@ -97,6 +98,7 @@ def param_fix_vel(graphWidget, param, vel, gamma_min, gamma_max, method, err_typ
     gamma_vals = np.linspace(gamma_min, gamma_max, 64)
     rs = map(partial(find_system_plot, vel, method=method, err_type=err_type, e=e), gamma_vals)
     params = [r[param] for r in rs]
+    nterms = [r[nterms] for r in rs]
     graphWidget.ax.plot(np.degrees(gamma_vals), params)
     graphWidget.ax.set_xlabel("Flight Path Angle (deg)")
     graphWidget.ax.set_ylabel(param)

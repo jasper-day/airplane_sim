@@ -67,9 +67,25 @@ if __name__=="__main__":
         # x = U[0]
         return np.array([U[1], -U[0]])
     U_0 = np.array([1,0])
-    t = np.linspace(0, 2*np.pi, 100)
+    # 10 cycles with 20 steps per cycle
+    t = np.linspace(0, 2*np.pi*10, 200)
     X = lambda t: None
     U = rk4_integrate(dU_dt, U_0, X, t)
     import matplotlib.pyplot as plt
-    plt.plot(t, U)
+    plt.plot(t, U[:,0], color='black', label='x')
+    # plt.plot(t, U[:,1], color='gray', label='$\\dot{x}$')
+    plt.plot(t, [np.linalg.norm(U_p) for U_p in U], color='orange', linestyle='--', label="Energy")
+    plt.axhline(-1, linestyle='--', color='black', linewidth=1)
+    plt.axhline(1, linestyle='--', color='black', linewidth=1)
+    plt.xticks(np.arange(0, 2*np.pi*11, 2*np.pi), np.arange(0,11,1))
+    plt.xlabel("Cycles")
+    plt.title("Dissipation in rk4 Solver for $\\ddot{x} + x = 0$")
+    plt.legend(loc=4)
+    # initial energy
+    energy_init = np.linalg.norm(U[0])
+    # final energy
+    energy_end = np.linalg.norm(U[1])
+    print(energy_init)
+    print(energy_end)
+    print(f"Dissipation: {(energy_init-energy_end)/energy_init * 100}%")
     plt.show()
