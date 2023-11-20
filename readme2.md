@@ -1,11 +1,12 @@
 # SimuPlane
 # Project Description
-The aim of this project is to simulate the longitudinal dynamics of a small airplane. The airplane
-encounters aerodynamic forces and moments when in motion, this program provides the facilities to find the trim conditions of the airplane (where all forces are balanced, leading to no change over time), as well as options to provide commands to the airplane, while the simulation runs.
+The aim of this project is to simulate the longitudinal dynamics of a small airplane. The airplane encounters aerodynamic forces and moments when in motion, this program provides the facilities to find the trim conditions of the airplane (where all forces are balanced, leading to no change over time), as well as  input commands to the airplane.
 
-This project outputs a user interface, wherein the user can input the trim conditions of the flight simulation and the the commands of the airplane, to output the response of the system. The response of the system can be a depicted on a series of graphs, in which the user can decide which one they want to view using a drop down menu.
+This project includes a Graphical User interface (GUI), wherein the user can input the trim conditions and the the flight commands, and obtain the response of the airplane. The response of the system can be a depicted by a series of graphs, in which the user can use a drop down menu to choose their desired graph.
 
 Due to the complexity of this simultaion, various nuerical methods were employed to predict the response of the airplane. Python is used for this simulation, as it has a diverse set of packages and libraris that offer features for different simulation components.  
+
+The GUI is written in PyQt, a binder for the original Qt, which was written in C++. PyQt was chosen for its Python flexibility and its robust Qt framework.
 
 # Files in this repository
 
