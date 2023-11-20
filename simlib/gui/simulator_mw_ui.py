@@ -336,7 +336,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.graph_output.sizePolicy().hasHeightForWidth())
         self.graph_output.setSizePolicy(sizePolicy)
-        self.graph_output.setMinimumSize(QSize(600, 0))
+        self.graph_output.setMinimumSize(QSize(650, 0))
 
         self.verticalLayout_5.addWidget(self.graph_output)
 
