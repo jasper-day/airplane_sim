@@ -1,7 +1,7 @@
 [Start Menu]
 Start Simulation: Return
 Find Climb Time: Ctrl + F
-Quit: Esc
+Quit: Ctrl + Q
 
 [Simulation Window]
 Add Trim: Return
@@ -13,4 +13,7 @@ Back to Menu: Esc
 [Find Climb Time Window]
 Find Climb Time: Return
 Reset: Ctrl + R
+Back to Menu: Esc
+
+[Find Trim Window]
 Back to Menu: Esc
