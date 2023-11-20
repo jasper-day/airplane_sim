@@ -84,7 +84,7 @@ C_L_alpha: {deg2rad(C_L_alpha)}
 C_L_delta_el: {deg2rad(C_L_delta_el)}
 C_M_0: {C_M_0}
 C_M_alpha: {deg2rad(C_M_alpha)}
-C_M_delta_el: {C_M_delta_el}""")
+C_M_delta_el: {deg2rad(C_M_delta_el)}""")
     # plot results for validation
     fig,axs = plt.subplots(3,2)
     plot_curve_fit(axs[0,0], alpha, CD, 2, xlabel=r"\alpha", ylabel=r"CD")

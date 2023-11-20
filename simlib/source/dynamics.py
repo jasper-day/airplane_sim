@@ -173,7 +173,6 @@ def find_U_0(system, altitude=None):
         theta, q
     ])
     
-from root_finder import find_system
 
 def find_initial_conditions(velocity, gamma, altitude, q, total_time):
     if velocity == 0:
@@ -188,6 +187,7 @@ def find_initial_conditions(velocity, gamma, altitude, q, total_time):
     return initial_conditions
 
 def find_trim_conditions(velocity, gamma, t_start):
+    from root_finder import find_system
     trim_conditions = find_system(velocity, gamma)
     trim_conditions["t_start"] = t_start
     return trim_conditions
@@ -247,13 +247,13 @@ if __name__ == "__main__":
     axs[1,1].plot(t, rad2deg(Us[:, 4]))
     axs[1,1].set_ylabel("theta (rad)")
     axs[1,1].set_xlabel("time (s)")
-    axs[2,0].plot(t, find_param("gamma (deg)"))
+    axs[2,0].plot(t, find_param("Flight Path Angle (deg)"))
     axs[2,0].set_ylabel("$\\gamma$ (rad)")
     axs[2,0].set_xlabel("time (s)")
-    axs[2,1].plot(t, find_param("z_E"))
+    axs[2,1].plot(t, find_param("Global z Pos"))
     axs[2,1].set_ylabel("z_E")
     axs[2,1].set_xlabel("time (s)")
-    axs[3,0].plot(t, find_param("alpha (deg)"))
+    axs[3,0].plot(t, find_param("Angle of Attack (deg)"))
     axs[3,0].set_ylabel("$\\alpha$ (rad)")
     axs[3,0].set_xlabel("time (s)")
     axs[3,1].plot(t, -Us[:,1])
