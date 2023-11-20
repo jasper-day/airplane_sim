@@ -128,7 +128,7 @@ class MainWindow(QWidget):
         self.button1 = QPushButton("Start Simulation", self)
         self.button1.setFont(QFont('ISOCP_IV50', 16))
         self.button1.clicked.connect(self.simwin)
-        self.button1.setShortcut(QCoreApplication.translate("MainWindow", u"Return", None))
+        self.button1.setShortcut(QCoreApplication.translate("MainWindow", u"Ctrl+S", None))
         self.button2 = QPushButton("Find Climb Time", self)
         self.button2.setFont(QFont('ISOCP_IV50', 16))
         self.button2.clicked.connect(self.t_climb_win)
