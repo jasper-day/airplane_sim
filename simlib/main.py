@@ -148,8 +148,7 @@ class MainWindow(QWidget):
         layout.addWidget(self.button3,3,0)
         layout.addWidget(self.button4,4,0)
         self.setLayout(layout)
-        self.setIcon
-
+        self.setWindowIcon(QIcon("appicon.ico"))
     def simwin(self):
         # go to main simulation window
         self.simwin = SimWindow()
@@ -166,9 +165,6 @@ class MainWindow(QWidget):
         self.rfw.show()
         self.hide()
         
-    def setIcon(self):
-        appIcon = QIcon("source/appicon.png")
-        self.setWindowIcon(appIcon)
 
 if __name__ == "__main__":
     # start the application when run

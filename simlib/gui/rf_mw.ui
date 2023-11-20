@@ -13,6 +13,16 @@
   <property name="windowTitle">
    <string>SimuPlane™ 1.0.0</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../source/appicon.ico</normaloff>../source/appicon.ico</iconset>
+  </property>
+  <property name="iconSize">
+   <size>
+    <width>64</width>
+    <height>64</height>
+   </size>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
@@ -28,7 +38,14 @@
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <widget class="QWidget" name="graph_output" native="true"/>
+        <widget class="QWidget" name="graph_output" native="true">
+         <property name="minimumSize">
+          <size>
+           <width>550</width>
+           <height>0</height>
+          </size>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QComboBox" name="graph_selector">
