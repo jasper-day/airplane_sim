@@ -175,6 +175,7 @@ def find_U_0(system, altitude=None):
     
 
 def find_initial_conditions(velocity, gamma, altitude, q, total_time):
+    from root_finder import find_system
     if velocity == 0:
         raise ValueError("Must have nonzero starting velocity")
     if total_time == 0:
