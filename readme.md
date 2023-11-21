@@ -36,6 +36,7 @@ Most of the files in `simlib/source`` can be run on their own to produce sample 
 Start Simulation: Ctrl + S
 Find Climb Time: Ctrl + F
 Quit: Ctrl + Q
+![Alt text](image.png)
 
 [Simulation Window]
 Add Trim: Return
@@ -43,14 +44,17 @@ Delete Prev: Ctrl + Del
 Clear All: Alt + Del
 Run Simulation: Shift + Return
 Back to Menu: Esc
+![Alt text](image-1.png)
 
 [Find Climb Time Window]
 Find Climb Time: Return
 Reset: Ctrl + R
 Back to Menu: Esc
+![Alt text](image-2.png)
 
 [Find Trim Window]
 Back to Menu: Esc
+![Alt text](image-3.png)
 
 # Files in this repository
 
