@@ -1,9 +1,10 @@
 # SimuPlane
 
 # Project Description
-The aim of this project is to simulate the longitudinal dynamics of a small airplane. The airplane encounters aerodynamic forces and moments when in motion, this program provides the facilities to find the trim conditions of the airplane (where all forces are balanced, leading to no change over time), as well as  input commands to the airplane.
 
-This project includes a Graphical User interface (GUI), wherein the user can input the trim conditions and the the flight commands, and obtain the response of the airplane. The response of the system can be a depicted by a series of graphs, in which the user can use a drop down menu to choose their desired graph.
+The aim of this project is to simulate the longitudinal dynamics of a small airplane. The airplane encounters aerodynamic forces and moments when in motion, and this program provides the facilities to find the trim conditions of the airplane (where all forces are balanced, leading to no change over time), as well as input commands to the airplane.
+
+This project includes a Graphical User interface (GUI), wherein the user can input the trim conditions and the the flight commands, and obtain the response of the airplane. The response of the airplane can be a depicted by a series of graphs, in which the user can use a drop down menu to choose their desired graph.
 
 Due to the complexity of this simultaion, various nuerical methods were employed to predict the response of the airplane. Python is used for this simulation, as it has a diverse set of packages and libraris that offer features for different simulation components.  
 
@@ -11,7 +12,7 @@ The GUI is written in PyQt, a binder for the original Qt, which was written in C
 
 # How to use the project
 
-YOU WILL NEED PYSIDE6 INSTALLED TO RUN THE GUI.
+YOU WILL NEED THE PYSIDE6 MODULE TO RUN THE GUI.
 
 The simplest way to make sure you have all the requirements is to create a virtualenv:
 
